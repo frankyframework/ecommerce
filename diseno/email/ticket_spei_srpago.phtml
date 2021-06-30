@@ -1,0 +1,194 @@
+
+                                  
+<table align="center" class="container float-center" style="max-width: 556px !important; margin: auto;">
+    <tbody>
+        <tr>
+            <td>
+                <table class="spacer">
+                    <tbody>
+                        <tr>
+                            <td height="10px" style="font-size:10px;line-height:10px;">&#xA0;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <tr>
+                <td>
+                    <table class="row">
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <table style="background: #ffffff">
+                                        <tr>
+                                            <th>
+                                                
+                                                    <img src="https://d2mp3bnti41r8r.cloudfront.net/logoreceipt.png" align="center" class="float-center" width="556"> 
+                                                <table class="spacer">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                
+                                                <p class="lead" style="font-family: 'Gotham', arial; text-align: center;color:#585858"></p>
+                                                <p style="font-family: 'Gotham', arial; text-align: center;color:#585858"><?=getFechaUI(date('Y-m-d H:i:s'))?></p>
+                                                <p class="lead" style="font-family: 'Gotham-Light', arial; text-align: center;color:#585858;font-size: 12px;"><br/></p>
+                                                <p style="font-family: 'Gotham-Light', arial; text-align: center;color:#585858; font-size: 16px;"></p>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Title OF METHOD-->
+                                        <tr><td style="padding:20px;">
+                                                <table style="border-spacing:0;border-collapse:collapse;vertical-align:top;text-align:left;width:100%!important;padding:0"><tbody><tr style="vertical-align:top;text-align:left;width:100%;padding:0" align="left"><td style="word-break:break-word;border-collapse:collapse!important;vertical-align:middle;text-align:left;display:table-cell;width:auto!important;padding:12px 0 5px" align="left" valign="middle"><p style="color:#222222;font-family:'HelveticaNeue-Light','Helvetica Neue Light','Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-weight:normal;text-align:left;line-height:0;font-size:14px;border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#e3e3e3;display:block;margin:0;padding:0" align="left"></p></td>
+                                                            <td style="word-break:break-word;border-collapse:collapse!important;vertical-align:middle;text-align:center;display:table-cell;width:120px!important;font-size:11px;white-space:pre-wrap;padding:12px 10px 5px" align="center" valign="middle"><b>PAGO PENDIENTE</b></td>
+                                                            <td style="word-break:break-word;border-collapse:collapse!important;vertical-align:middle;text-align:left;display:table-cell;width:auto!important;padding:12px 0 5px" align="left" valign="middle"><p style="color:#222222;font-family:'HelveticaNeue-Light','Helvetica Neue Light','Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;font-weight:normal;text-align:left;line-height:0;font-size:14px;border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#e3e3e3;display:block;margin:0;padding:0" align="left"></p></td>
+                                                        </tr></tbody></table>
+                                                <tr>
+    <td style="padding:20px;">
+        <table cellspacing='10'  style="border-bottom: 1px solid #f0f0f0;width:100%;padding:0">
+            <tbody>
+                <tr>
+                    <td style="font-size:12px;"><u>Estimado Cliente:</u></td>
+                </tr><tr>
+                    <td style="font-size:12px;">
+                                                    Realizaste una compra, la operación se encuentra en espera de pago en la sucursal <b>OXXO</b> de tu preferencia.
+                            <br/><br/>
+
+                            Para tu comodidad puedes realizar tu pago con sólo presentar esta boleta a nombre de <b>Sr. Pago</b>.
+                                            </td>
+                </tr><tr>
+
+                    <td style="font-size:12px;">Pagar antes de: <b style="color:#d2322d; font-size:12px;">
+                    <?php $expiration_date = explode("T",$order['result']['expiration_date']) ?>
+                    <?=getFechaUI($expiration_date[0])?>
+                    </b>
+
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+
+
+
+        <table style="border-spacing:0;border-collapse:collapse;vertical-align:top;text-align:left;margin-top:15px;width:100%;padding:0">
+            <tbody>
+                <tr style="vertical-align:top;text-align:left;border-bottom-width:0px;border-bottom-color:#f0f0f0;border-bottom-style:solid;width:100%;padding:0" align="left">
+                    <td style="word-break:break-word;border-collapse:collapse!important;vertical-align:top;text-align:left;display:table-cell;width:300px;color:#808080;line-height:18px;padding-bottom: 15px;padding-left:10px" align="left" valign="top">
+
+                        <span style="font-size:11px">Concepto:</span><br/>
+
+                        <div style="width:240px; clear: both; overflow: hidden;height:34px;">
+
+                        <?php foreach($items as $item): ?>
+                            <span style="font-size:12px">
+                                <?=$item['name']?>  <?=$item['unit_price']?> x <?=$item['quantity']?>                      
+                            </span><br />
+                        <?php endforeach; ?>
+                        
+                        </div>
+
+                    </td>
+                    <td style="word-break:break-word;border-collapse:collapse!important;vertical-align:top;text-align:right;display:table-cell;width:90px;white-space:nowrap;font-size:19px;font-weight:bold;padding-bottom: 15px;" align="right" valign="top">
+                    <?=getFormatoPrecio($chargeParams['total'])?>
+                                        <br/>
+                        <span style="color:#808080;font-size:12px;font-weight:normal !important ">
+                                                    </span>
+
+
+                    </td>
+                </tr>
+
+
+                                    <tr>
+                        <td colspan="2" style="word-break:break-word;border-collapse:collapse!important;vertical-align:top;text-align:left;display:table-cell;color:#808080;line-height:18px;padding-bottom: 15px;padding-left:10px" align="left" valign="top">
+
+
+
+
+
+                            <span style="font-size:11px">Referencia OXXO: </span>
+
+                            <span style="font-size:13px;font-weight: bold">
+
+                                <?=$order['result']['barcode']?>                             </span>
+
+
+                        </td>
+                    </tr>
+                
+
+            </tbody>
+          
+          </table>
+
+
+
+
+
+      <table width="100%">
+                <tr><td style="text-align: right;" align="right">
+
+                        <img src="<?=$order['result']['barcode_url']?>"/>
+                    </td></tr>
+            </table>
+
+        
+        
+        
+            <br/>
+        <p style="font-size:12px;"><b>Nota:</b> Te recomendamos que guardes tu comprobante de pago para que lo env&iacute;es en caso de que un agente de Sr. Pago te lo solicite.</p>
+
+                <p style="font-size:12px;">Para preguntas de tu compra como la fecha de entrega por favor escríbenos a <a href='mailto:clientes@srpago.com' class='green'>clientes@srpago.com</a>.</p>
+
+        <br/>
+        <p style="font-size:12px;">Atentamente.</p>
+        <p style="font-size:12px;">Departamento de Atención a Clientes de Sr. Pago</p>
+            </td>
+</tr>    </td>
+</tr>                                                                            </table>
+
+                                                                        </th>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <table style="width: 100%; height: 10px;background: #e0e0e0">
+                                                                <tr style="height: 10px">
+                                                                    <td></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                                                                    
+                                                                                                        <tr>
+                                                        <td>
+                                                            <table style="width: 100%; height: 100px;background: #e0e0e0">
+                                                                <tr>
+                                                                    <td style="padding: 20px">
+                                                                        <p style="text-align: center;font-family: 'Helvetica', sans-serif;font-size: 12px;">Para este pagaré me obligo incondicionalmente a pagar a la orden del banco o la institución financiera que otrorga el crédito del importe de este título. Este pagaré procede del contrato de apertura de crédito que el banco o la institución financiera que otorga el crédito y el tarjetahabiente tienen celebrado. Pagaré negociable únicamente en instituciones de crédito.</p>
+                                                                    </td>
+                                                                </tr>
+                                                                                                                                <tr>
+                                                                    <td style="padding: 20px; text-align: center;">
+                                                                        <p style="text-align: center;text-align: center;font-family: 'Helvetica', sans-serif;font-size: 12px;"> Desierto de los Leones 67 Desp. 105, San Ángel
+                                                                        <br>CP 01000 México DF
+                                                                        <br> Teléfono: 01 (800) 710-2127</p>
+                                                                    </td>
+                                                                </tr>
+                                                                                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                </table>
+                                          
+                                                                                                                          

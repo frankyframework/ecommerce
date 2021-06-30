@@ -1,0 +1,61 @@
+
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?></div>
+    <h1 class="titulo_seccion_admin"><?php echo $title_form; ?></h1>
+    <div class="w-xxxx-12">
+    <?php echo $adminForm->openTag(); ?>
+        <?php if(!empty($id)):?>
+        <?php echo $adminForm->getRow('id'); ?>
+        <?php endif; ?>
+        <?php echo $adminForm->getRow('titulo'); ?>
+        <?php echo $adminForm->getRow('id_promocion'); ?>
+        
+        <?php echo $adminForm->getRow('codigo_promocion'); ?>
+        <div><a href="#" class="link_generate_cupon">Generar Cupon</a></div>
+        <?php echo $adminForm->getRow('fecha_inicio'); ?>
+        <?php echo $adminForm->getRow('fecha_fin'); ?>
+        <?php echo $adminForm->getRow('numero_usos'); ?>
+        <?php echo $adminForm->getRow('numero_usos_usuario'); ?>
+        <div class="content_config_promo"></div>
+        <?php echo $adminForm->getRow('guardar'); ?>
+        
+        
+    <?php echo $adminForm->endTag(); ?>
+   </div>
+</div>
+
+<script >
+
+$(document).ready(function()
+{
+    $( "#frmcupones" ).validate();
+});
+
+$('select[name=id_promocion]').change(function(){
+    if($(this).val() != '')
+    {
+        ajax_setInputsConfigPromo('<?=$id;?>',$(this).val());
+    }
+    else{
+        $('.content_config_promo').empty()
+    }
+});
+
+$('.link_generate_cupon').click(function(e){
+    e.preventDefault();
+    $('input[name=codigo_promocion]').val(getCode(6));
+});
+
+
+ajax_setInputsConfigPromo('<?=$id;?>',$('select[name=id_promocion]').val());
+
+function getCode(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+</script>

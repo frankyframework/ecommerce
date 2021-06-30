@@ -1,0 +1,77 @@
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?></div>
+    <div class="w-xxxx-12">
+         
+            <h1><?php echo $title_form; ?></h1>
+            <?php echo $adminForm->openTag(); ?>
+            <?php if(!empty($id)): ?>
+            <?php echo $adminForm->get('id'); ?>
+            <?php endif; ?>
+            <?php echo $adminForm->getRow('nombre'); ?>
+            <?php echo $adminForm->getRow('telefono'); ?>
+            <?php echo $adminForm->getRow('calle'); ?>
+            <?php echo $adminForm->getRow('numero'); ?>
+            <?php echo $adminForm->getRow('numeroi'); ?>
+            <?php echo $adminForm->getRow('cp'); ?>
+            <?php echo $adminForm->getRow('estado'); ?>
+            <?php echo $adminForm->getRow('ciudad'); ?>
+            <?php echo $adminForm->getRow('municipio'); ?>
+            <?php echo $adminForm->getRow('colonia'); ?>
+            <?php echo $adminForm->getRow('pickup_point'); ?>
+            <div class="w-xxxx-12">
+                <h3>Horario</h3>
+            
+                <div class="w-xxxx-12">
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('lunes'); ?></div>
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('lunes_i'); ?></div>
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('lunes_f'); ?></div>
+                </div>
+                <div class="w-xxxx-12">
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('martes'); ?></div>
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('martes_i'); ?></div>
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('martes_f'); ?></div>
+                </div>
+                <div class="w-xxxx-12">
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('miercoles'); ?></div>
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('miercoles_i'); ?></div>
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('miercoles_f'); ?></div>
+                </div>
+                <div class="w-xxxx-12">
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('jueves'); ?></div>
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('jueves_i'); ?></div>
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('jueves_f'); ?></div>
+                </div>
+                <div class="w-xxxx-12">
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('viernes'); ?></div>
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('viernes_i'); ?></div>
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('viernes_f'); ?></div>
+                </div>
+                <div class="w-xxxx-12">
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('sabado'); ?></div>
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('sabado_i'); ?></div>
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('sabado_f'); ?></div>
+                </div>
+                <div class="w-xxxx-12">
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('domingo'); ?></div>
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('domingo_i'); ?></div>
+                    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4"><?php echo $adminForm->get('domingo_f'); ?></div>
+                </div>
+            </div>
+            <?php echo $adminForm->getRow('guardar'); ?>
+            
+             
+             
+            
+            <?php echo $adminForm->endTag(); ?>
+     
+    </div>
+</div>
+
+<script >
+<!--
+$(document).ready(function()
+{
+    $( "#frmdirecciones" ).validate();
+});
+// -->
+</script>

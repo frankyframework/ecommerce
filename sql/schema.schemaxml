@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8" collation="utf8_general_ci">demotienda</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="ecommerce_cards" view="colnames">
+<left>232</left>
+<top>684</top>
+<width>254</width>
+<height>174</height>
+<sql_create_table>CREATE TABLE `ecommerce_cards` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `numero` char(4) DEFAULT NULL,
+  `nombre` varchar(20) DEFAULT NULL,
+  `uid` int(11) DEFAULT NULL,
+  `conekta` varchar(50) DEFAULT NULL,
+  `fecha` datetime DEFAULT NULL,
+  `status` int(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  CONSTRAINT `ecommerce_cards_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="ecommerce_carrito" view="colnames">
+<left>244</left>
+<top>390</top>
+<width>214</width>
+<height>192</height>
+<sql_create_table>CREATE TABLE `ecommerce_carrito` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT NULL,
+  `cookie_id` varchar(100) NOT NULL,
+  `id_envio` int(11) DEFAULT NULL,
+  `id_facturacion` int(11) DEFAULT NULL,
+  `id_cupon` int(11) DEFAULT NULL,
+  `invoice` varchar(50) DEFAULT NULL,
+  `id_pago` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `id_envio` (`id_envio`),
+  KEY `id_facturacion` (`id_facturacion`),
+  CONSTRAINT `ecommerce_carrito_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="ecommerce_carrito_producto" view="colnames">
+<left>32</left>
+<top>415</top>
+<width>160</width>
+<height>142</height>
+<sql_create_table>CREATE TABLE `ecommerce_carrito_producto` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_producto` int(11) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `caracteristicas` text,
+  `id_carrito` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_carrito` (`id_carrito`),
+  CONSTRAINT `ecommerce_carrito_producto_ibfk_1` FOREIGN KEY (`id_carrito`) REFERENCES `ecommerce_carrito` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="ecommerce_categorias_customers" view="colnames">
+<left>20</left>
+<top>113</top>
+<width>193</width>
+<height>126</height>
+<sql_create_table>CREATE TABLE `ecommerce_categorias_customers` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `categoria` varchar(50) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `fecha` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="ecommerce_customers" view="colnames">
+<left>246</left>
+<top>161</top>
+<width>196</width>
+<height>126</height>
+<sql_create_table>CREATE TABLE `ecommerce_customers` (
+  `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `conekta` varchar(50) DEFAULT NULL,
+  `id_categoria` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_user` (`id_user`),
+  KEY `id_categoria` (`id_categoria`),
+  CONSTRAINT `ecommerce_customers_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ecommerce_customers_ibfk_2` FOREIGN KEY (`id_categoria`) REFERENCES `ecommerce_categorias_customers` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="ecommerce_direcciones" view="colnames">
+<left>708</left>
+<top>25</top>
+<width>205</width>
+<height>323</height>
+<sql_create_table>CREATE TABLE `ecommerce_direcciones` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `fecha` datetime NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `telefono` varchar(21) NOT NULL,
+  `telefono_otro` varchar(21) DEFAULT NULL,
+  `calle` varchar(255) NOT NULL,
+  `numero` varchar(5) NOT NULL,
+  `numeroi` varchar(5) DEFAULT NULL,
+  `cp` varchar(5) NOT NULL,
+  `estado` varchar(255) NOT NULL,
+  `ciudad` varchar(255) NOT NULL,
+  `municipio` varchar(255) NOT NULL,
+  `colonia` varchar(255) NOT NULL,
+  `entre_calle1` varchar(255) DEFAULT NULL,
+  `instrucciones` text,
+  `conekta` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  CONSTRAINT `ecommerce_direcciones_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="ecommerce_direccionesf" view="colnames">
+<left>992</left>
+<top>262</top>
+<width>188</width>
+<height>280</height>
+<sql_create_table>CREATE TABLE `ecommerce_direccionesf` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `fecha` datetime NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `telefono` varchar(21) NOT NULL,
+  `calle` varchar(255) NOT NULL,
+  `numero` varchar(5) NOT NULL,
+  `numeroi` varchar(5) DEFAULT NULL,
+  `cp` varchar(5) NOT NULL,
+  `estado` varchar(255) NOT NULL,
+  `ciudad` varchar(255) NOT NULL,
+  `municipio` varchar(255) NOT NULL,
+  `colonia` varchar(255) NOT NULL,
+  `rfc` varchar(21) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  CONSTRAINT `ecommerce_direccionesf_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="ecommerce_monedas" view="colnames">
+<left>941</left>
+<top>26</top>
+<width>112</width>
+<height>94</height>
+<sql_create_table>CREATE TABLE `ecommerce_monedas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="ecommerce_pedidos" view="colnames">
+<left>751</left>
+<top>556</top>
+<width>173</width>
+<height>280</height>
+<sql_create_table>CREATE TABLE `ecommerce_pedidos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cupon` int(11) DEFAULT NULL,
+  `uid` int(11) NOT NULL,
+  `fecha` datetime NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `metodo_pago` varchar(11) NOT NULL,
+  `metodo_envio` varchar(11) DEFAULT NULL,
+  `monto_envio` float DEFAULT '0',
+  `monto_compra` float NOT NULL,
+  `id_direccion_envio` int(11) DEFAULT NULL,
+  `id_direccion_facturacion` int(11) DEFAULT NULL,
+  `referencia` text,
+  `fecha_pago` datetime DEFAULT NULL,
+  `testigo` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_direccion_envio` (`id_direccion_envio`),
+  KEY `id_direccion_facturacion` (`id_direccion_facturacion`),
+  KEY `uid` (`uid`),
+  CONSTRAINT `ecommerce_pedidos_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="ecommerce_precios" view="colnames">
+<left>1094</left>
+<top>46</top>
+<width>152</width>
+<height>158</height>
+<sql_create_table>CREATE TABLE `ecommerce_precios` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `id_moneda` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `precio` float NOT NULL,
+  `iva` int(11) NOT NULL,
+  `incluye_iva` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_moneda` (`id_moneda`),
+  CONSTRAINT `ecommerce_precios_ibfk_1` FOREIGN KEY (`id_moneda`) REFERENCES `ecommerce_monedas` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="ecommerce_producto_pedido" view="colnames">
+<left>974</left>
+<top>586</top>
+<width>198</width>
+<height>158</height>
+<sql_create_table>CREATE TABLE `ecommerce_producto_pedido` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_pedido` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `caracteristicas` text,
+  `precio` float DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_pedido` (`id_pedido`),
+  CONSTRAINT `ecommerce_producto_pedido_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `ecommerce_pedidos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="users" view="colnames">
+<left>585</left>
+<top>462</top>
+<width>119</width>
+<height>280</height>
+<sql_create_table>CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `usuario` varchar(30) NOT NULL,
+  `contrasena` varchar(32) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `nivel` int(2) NOT NULL DEFAULT '0',
+  `fecha` date NOT NULL,
+  `ultimoAcceso` date DEFAULT NULL,
+  `status` int(1) NOT NULL DEFAULT '1',
+  `nombre` varchar(255) NOT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `sexo` char(1) DEFAULT 'h',
+  `telefono` varchar(21) DEFAULT NULL,
+  `verificado` int(11) NOT NULL,
+  `biografia` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=158 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>

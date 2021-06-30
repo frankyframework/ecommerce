@@ -1,0 +1,122 @@
+<div class="whitepaper">
+	<div class="Header">
+	<div class="Logo_empresa">
+    	<?=makeHTMLImg(getImg('logo.jpg'),'','',"")?>
+    </div>
+    <div class="Logo_paynet">
+    	<div>Servicio a pagar</div>
+
+        <?=makeHTMLImg("/public/skin/ecommerce/images/openpay/paynet_logo.png",150,'',"Logo payment")?>
+    </div>
+    </div>
+    <div class="Data">
+    	<div class="Big_Bullet">
+        	<span></span>
+        </div>
+    	<div class="col1">
+        	<h3>Fecha límite de pago</h3>
+            <h4><?php echo getFechaUI(date('Y-m-d H:i:s', strtotime("+3 days"))); ?></h4>
+            <img width="300" src="<?php echo $order->payment_method->barcode_url; ?>" alt="Código de Barras">
+        	<center><span><?php echo $order->payment_method->reference; ?></span></center>
+            <small>En caso de que el escáner no sea capaz de leer el código de barras, escribir la referencia tal como se muestra.</small>
+
+        </div>
+        <div class="col2">
+        	<h2>Total a pagar</h2>
+            <h1><?=getFormatoPrecio($order->amount)?></h1>
+            <span class="note">La comisión por recepción del pago varía de acuerdo a los términos y condiciones que cada cadena comercial establece.</span>
+        </div>
+    </div>
+    <div class="DT-margin"></div>
+    <div class="Data">
+    	<div class="Big_Bullet">
+        	<span></span>
+        </div>
+    	<div class="col1">
+        	<h3>Detalles de la compra</h3>
+
+        </div>
+	</div>
+    <div class="Table-Data">
+    	<div class="table-row color1">
+        	<div>Descripción</div>
+            <span>  <?php
+						foreach($productos_comprados['productos'] as $producto)
+						{
+								?>
+								<?=$producto["nombre"]?> <?=getFormatoPrecio($producto["precio"])?> x <?=$producto["qty"]?><br />
+								<?php
+						}
+
+		            ?></span>
+        </div>
+    	<div class="table-row color2">
+        	<div>Fecha</div>
+            <span>
+							<?=getFechaUI(date('Y-m-d H:i:s'))?>
+        </span>
+        </div>
+    	<div class="table-row color1">
+        	<div>Correo del cliente</div>
+            <span><?=$MySession->GetVar('email')?></span>
+        </div>
+    	<div class="table-row color2"  style="display:none">
+        	<div>&nbsp;</div>
+            <span>&nbsp;</span>
+        </div>
+    	<div class="table-row color1" style="display:none">
+        	<div>&nbsp;</div>
+            <span>&nbsp;</span>
+        </div>
+    </div>
+    <div class="DT-margin"></div>
+    <div>
+        <div class="Big_Bullet">
+        	<span></span>
+        </div>
+    	<div class="col1">
+        	<h3>Como realizar el pago</h3>
+            <ol>
+            	<li>Acude a cualquier tienda afiliada</li>
+                <li>Entrega al cajero el código de barras y menciona que realizarás un pago de servicio Paynet</li>
+                <li>Realizar el pago en efectivo por <?=getFormatoPrecio($order->amount)?> </li>
+                <li>Conserva el ticket para cualquier aclaración</li>
+            </ol>
+              </div>
+    	<div class="col1">
+        	<h3>Instrucciones para el cajero</h3>
+            <ol>
+            	<li>Ingresar al menú de Pago de Servicios</li>
+                <li>Seleccionar Paynet</li>
+                <li>Escanear el código de barras o ingresar el núm. de referencia</li>
+                <li>Ingresa la cantidad total a pagar</li>
+                <li>Cobrar al cliente el monto total más la comisión</li>
+                <li>Confirmar la transacción y entregar el ticket al cliente</li>
+            </ol>
+          </div>
+    </div>
+
+    <div class="logos-tiendas">
+
+	    <ul>
+				<li><?=makeHTMLImg("/public/skin/ecommerce/images/openpay/01.png",100,50)?></li>
+				 <li><?=makeHTMLImg("/public/skin/ecommerce/images/openpay/02.png",100,50)?></li>
+					 <li><?=makeHTMLImg("/public/skin/ecommerce/images/openpay/03.png",100,50)?></li>
+						<li><?=makeHTMLImg("/public/skin/ecommerce/images/openpay/04.png",100,50)?></li>
+						 <li><?=makeHTMLImg("/public/skin/ecommerce/images/openpay/05.png",100,50)?></li>
+							<li><?=makeHTMLImg("/public/skin/ecommerce/images/openpay/06.png",100,50)?></li>
+							 <li><?=makeHTMLImg("/public/skin/ecommerce/images/openpay/07.png",100,50)?></li>
+								<li><?=makeHTMLImg("/public/skin/ecommerce/images/openpay/08.png",100,50)?></li>
+	    </ul>
+        <div style="height: 90px; width: 190px; float: right; margin-top: 30px;">
+	        ¿Quieres pagar en otras tiendas? visítanos en: www.openpay.mx/tiendas
+        </div>
+
+    </div>
+    <div class="Powered">
+      <?=makeHTMLImg("/public/skin/ecommerce/images/openpay/powered_openpay.png",150,'',"Powered by Openpay")?>
+        <a href="javascript:print();">Imprimir</a>
+    	<a href="<?=$MyRequest->url(HOME)?>">Seguir comprando</a>
+    </div>
+</div>
+<div style="height: 40px; width: 100%; float: left;"></div>

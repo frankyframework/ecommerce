@@ -1,0 +1,223 @@
+<div class="w-xxxx-12 _my_cart _pt_header">
+    <div class="content">
+        <div class="w-xxxx-12 wrapper_white">
+            <h1>Finalizar compra</h1>
+            <div class='w-xxxx-9 contenedor_checkout'>
+              
+            <?php 
+            $active_class='_active';
+            //if($productos_comprados['envio_requerido'] == 1): ?>
+    
+                <div class="_mycart_step _first">
+                    <h2 class='direccion_entrega _tab_step _nono <?=$active_class?>'>Dirección de entrega</h2>
+                    <div>
+                      <?php if(isset($DireccionEnvioCheckoutForm)): ?>
+                        <?php echo $DireccionEnvioCheckoutForm->openTag(); ?>
+                        <?php echo $DireccionEnvioCheckoutForm->getRow("id_envio"); ?>
+                        <label for="id_envio" class="error" style="display:none;"></label>
+                        <?php echo $DireccionEnvioCheckoutForm->getRow("continuar"); ?>
+                        <?php echo $DireccionEnvioCheckoutForm->endTag(); ?>
+                      <?php endif; ?>
+                        <div id="form_direccion_envio" style="display:<?= (isset($DireccionEnvioCheckoutForm) ? 'none' : ''); ?>;">
+                            <?php echo $direccionesForm->openTag(); ?>
+                            <?php echo $direccionesForm->getAllRow(); ?>
+                            <?php echo $direccionesForm->endTag(); ?>
+                        </div>
+                       
+
+                        
+                    </div>
+                    <div id="resumen_checkout_envio"></div>
+                </div>
+                <?php 
+                $active_class = '';
+                //endif;?>
+
+                <div class="_mycart_step _second">
+                    <h2 class='direccion_facturacion _tab_step _nono  <?=$active_class?>'>Dirección de Facturación</h2>
+                    <div style="display:<?=(empty($active_class) ? 'none' : '')?>;">
+                        <?php echo $DireccionCheckoutForm->openTag(); ?>
+                        <?php echo $DireccionCheckoutForm->getRow("id_facturacion"); ?>
+                        <?php echo $DireccionCheckoutForm->getRow("continuar"); ?>
+                        <label for="id_facturacion" class="error" style="display:none;"></label>
+                        <?php echo $DireccionCheckoutForm->endTag(); ?>
+
+                        <div id="form_direccion_facturacion" style="display:none;">
+                            <?php echo $direccionesFacturacionForm->openTag(); ?>
+                            <?php echo $direccionesFacturacionForm->getAllRow(); ?>
+                            <?php echo $direccionesFacturacionForm->endTag(); ?>
+                        </div>
+                    </div>
+                    <div id="resumen_checkout_facturacion"></div>
+                </div>
+
+                <?php if($productos_comprados['envio_requerido'] == 1): ?>
+                <div class="_mycart_step _third">
+
+                    <h2 class='metodo_envio disabled _tab_step _nono'>Selecciona tu método de envio</h2>
+
+                    <div id="content_metodo_envio" style="display:none;">
+                        
+                    </div>
+                    <div id="resumen_metodo_envio"></div>
+                </div>
+                <?php endif; ?>
+
+                <div class="_mycart_step fourth">
+
+                    <h2 class='metodo_pago _tab_step _nono'>Selecciona tu método de pago</h2>
+
+                    <div  id="content_metodo_pago" style="display:none;">
+                       
+                    </div>
+                </div>
+
+
+
+                <div class="_mycart_step fifth">
+                    <h2 class='paga_ahora _tab_step _nono'>Paga tu pedido</h2>
+                    <div id="contenedor_frm_pago">
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-xxxx-3 _checkout_resume">                     
+                    <h2>Resumen de compra</h2>
+                    <?php foreach($productos_comprados['productos'] as $producto): ?>
+                      
+                      
+                    <?php
+
+                    $MyProducto->getInfoProducto($producto["id"]);
+                    $_registro = $MyProducto->getRows();
+
+                    $imagen = "";
+                    $_img = getCoreConfig('ecommerce/product/placeholder');
+                    if($_img != "" && file_exists(PROJECT_DIR.$_img))
+                    {
+                        $imagen = imageResize($_img,90,90, true);
+                    }
+                
+                    if(!empty($_registro["imagen"]))
+                    {
+                        $_imagen = json_decode($_registro["imagen"],true);
+                        
+                        if(is_array($_imagen))
+                        {
+                            if(!empty($_imagen)){
+                            
+                                foreach($_imagen as $foto)
+                                {
+                                
+                                    if($foto['principal'] == 1)
+                                    {
+                                        if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE.'/'.$producto["id"].'/'.$foto['img']))
+                                        {
+                                            $imagen = imageResize($MyConfigure->getUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE."/".$producto["id"].'/'.$foto['img'],90,90, true);  
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else{
+                            $imagen = imageResize($MyConfigure->getUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE."/".$producto["id"].'/'.$_registro['imagen'],90,90, true);
+                        }
+                    }
+
+                    ?>
+                    <ul>
+                     
+                        <li><?php  echo makeHTMLImg($imagen,"","",$producto["nombre"],"class='img_100'"); ?><h3><?=$producto['nombre']; ?></h3></li>
+                        <li>x <span class="_x_number"><?=$producto['qty']; ?> = </span><strong><?=getFormatoPrecio($producto['precio']); ?></strong> </li>
+                    </ul>
+                    <?php endforeach; ?>
+                    <?=render('carrito/frm.cupon.checkout.phtml')?>
+                    <div class="_cont_resume_checkout">
+                        <div class="_coin _checkout_subtotal"><strong>Subtotal</strong>: <span class="price"><?=getFormatoPrecio($productos_comprados['subtotal']);?></span></div>
+                        <div class="_coin _checkout_iva"><strong>IVA</strong>: <span class="price"><?=getFormatoPrecio($productos_comprados['iva_total']);?></span></div>
+                        <div class="_coin _checkout_envio" style="display:none;"><strong>Envio</strong>: <span class="price"></span></div>
+                        <div class="_coin _checkout_descuento" <?=(isset($productos_comprados['descuento']) && $productos_comprados['descuento'] > 0 ? '' : 'style="display:none;"')?>><strong>Descuento:</strong>: <span class="price"><?=getFormatoPrecio($productos_comprados['descuento']);?></span></div>
+                        <div class="_coin _checkout_total"><strong>Total</strong>: <span class="price"><?=getFormatoPrecio($productos_comprados['gran_total']-(isset($productos_comprados['descuento']) ? $productos_comprados['descuento'] : 0));?></span></div>
+                   </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+$(document).ready(function(){
+
+    $( "#frm_direccion_envio" ).validate({
+        submitHandler: function(form)
+        {
+             setDireccionCheckout();
+             return false;
+        }
+    });
+
+    $( "#frmdirecciones" ).validate({
+        submitHandler: function(form)
+        {
+             setNuevaDireccionCheckout();
+             return false;
+        }
+    });
+    
+    
+
+
+    $("input[name=id_envio]").change(function()
+    {
+        if($(this).val() == "otra")
+        {
+            $("#form_pick-up").hide();
+            $("#form_direccion_envio").show();
+            $("form[name=frm_direccion_envio] input[name=continuar]").hide();
+        }
+        else
+        {
+            $("#form_pick-up").hide();
+            $("#form_direccion_envio").hide();
+            $("form[name=frm_direccion_envio] input[name=continuar]").show();
+        }
+    })
+});
+</script>
+
+ <script>
+$(document).ready(function(){
+
+    $( "#frm_direccion" ).validate({
+        submitHandler: function(form)
+        {
+             setFacturacionCheckout();
+             return false;
+        }
+    });
+
+    $( "#frmdirecciones_facturacion" ).validate({
+        submitHandler: function(form)
+        {
+             setNuevaFacturacionCheckout();
+             return false;
+        }
+    });
+
+    $("input[name=id_facturacion]").change(function()
+    {
+       
+        if($(this).val() == "otra")
+        {
+            $("#form_direccion_facturacion").show();
+            $("form[name=frm_direccion] input[name=continuar]").hide();
+        }
+        else
+        {
+            $("#form_direccion_facturacion").hide();
+            $("form[name=frm_direccion] input[name=continuar]").show();
+        }
+    })
+});
+</script>

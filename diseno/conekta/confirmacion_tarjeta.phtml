@@ -1,0 +1,26 @@
+<?php if($status_pago == "pending" || $status_pago == "paid"): ?>
+
+<div class="w-xxxx-12 _success _checkout_success _pt_header">
+    <div class="content">
+        <div class="w-xxxx-12 wrapper_white align_center">
+            <i class="icon icon-valido"></i>
+    		<h1>¡GRACIAS POR TU COMPRA!</h1>
+            <h2>El status de tu transaccion es: <?php echo getStatusTransaccion($status_pago); ?></h2>
+        </div>
+    </div>
+</div>
+
+
+<?=render('checkout/success.order.phtml',['detalle_pedido' => $detalle_pedido,'MyConfigure' => $MyConfigure])?>
+
+<?php else: ?>
+<div class="w-xxxx-12 _success _checkout_error _pt_header">
+    <div class="content">
+        <div class="w-xxxx-12 wrapper_white align_center">
+            <i class="icon icon-c-cancelar"></i>
+    		<h1>Lo sentimos algo salió mal</h1>
+                <h2>El status de tu transaccion es: <?php echo getStatusTransaccion($status_pago); ?></h2>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

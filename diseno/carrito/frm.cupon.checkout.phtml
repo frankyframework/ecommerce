@@ -1,0 +1,34 @@
+<div class="content_cupon_activo">
+    <?php if($MySession->GetVar('cupon_checkout')): ?>
+        <?=render('carrito/cupon.phtml',$MySession->GetVar('cupon_checkout'))?>
+        <script>
+        $('.content_cupon_activo').find('a.remove').click(function(e){
+                e.preventDefault();
+                ecommerce_removeCuponCheckout();
+            });
+        </script>
+    <?php endif; ?>
+</div>
+<div class="content_form_cupon" <?=(!$MySession->GetVar('cupon_checkout') ? '' : 'style="display:none;"')?>>
+    <form name="frmcupon"  id="frmcupon" action="" method="post" >
+        <h3>¿Tienes un cupon? </h3>
+        <div class="_cont_cupon">
+            <input type="text" name="codigo_cupon"  value="" class="required" maxlength="32" />
+            <input class="_btn _secondary _btn_cupon"  type="submit" name="enviaCupon" value="Aplicar cupon" />
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function(){
+
+        $("#frmcupon").validate({
+        submitHandler: function(form)
+        {
+            ecommerce_setCuponCheckout($("#frmcupon").find('input[name=codigo_cupon]').val())
+            return false;
+        }
+
+    });
+    });
+</script>

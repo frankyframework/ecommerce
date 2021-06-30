@@ -1,0 +1,84 @@
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?> </div>
+        <div class="w-xxxx-12 cont_global_admin">
+        <h1 class="titulo_seccion_admin"><?php echo $title_grid; ?></h1>
+        <div class="w-xxxx-12 cont_header_panel">
+            <div class="_wrapp_form_serch">
+                <?php echo $MyFiltrosForm->openTag(); ?>
+                <?php echo $MyFiltrosForm->getAllRow(); ?>
+                <?php echo $MyFiltrosForm->endTag(); ?>
+                <?php if(!empty($frm_constante_link)): ?>
+                  <a href="<?php echo $MyRequest->url($frm_constante_link); ?>" class="_btn_new">Nuevo</a>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <div  class="w-xxxx-12 cont_gral_admin <?php echo $class_grid; ?>">
+            <div >
+                <div class="w-xxxx-12">
+                    <div class="w-xxxx-12 contenedor_titulo_columnas">
+                        <?php $i = 1; ?>
+                        <?php foreach($titulo_columnas_grid as $k =>$v): ?>
+                        <div class="<?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>"><?php echo makeHTMLOrder( $k, $v);  ?></div>
+                        <?php endforeach; ?>
+                        <div class="w-xxxx-1">
+                              <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
+                                  Eliminar
+                              <?php endif; ?>
+                        </div>
+                        <div class="w-xxxx-1">
+                            <?php if(!empty($frm_constante_link)): ?>
+                              Editar
+                            <?php endif; ?>
+                            </div>
+                    </div>
+                    <div class="contenedor_columnas_info"  >
+                    <div class="w-xxxx-12 contenedor_columnas"  >
+                        <?php $i = 1; ?>
+                        <?php foreach($value_columnas_grid as $k): ?>
+                        <div class="{{_data.thisClass}}   <?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>">{{_data.<?php echo $k;  ?>}}</div>
+                        <?php endforeach; ?>
+                        <div class='w-xxxx-1 {{_data.thisClass}}'>
+                            <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
+                            <a class="btn_adm_eliminar" id="{{_data.id}}" href="#{{_data.nuevo_estado}}" ></a>
+                            <?php endif; ?>
+                        </div>
+                        <div class='w-xxxx-1 {{_data.thisClass}}'>
+                            <?php if($MyAccessList->MeDasChancePasar($permisos_grid) && !empty($frm_constante_link)):  ?>
+                            <a class="btn_adm_editar" href="<?php echo $MyRequest->link($frm_constante_link."?id={{_data.id}}&amp;callback={{_data.callback}}"); ?>"><i class="icon icon-editar"> </i></a>
+                            <?php endif; ?>
+                            </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="w-xxxx-12">
+                    <div class="no_hay_datos" ><?php echo $error_grid; ?></div>
+                </div>
+                <div class="w-xxxx-12">
+                    <?php echo render("admin/widget.paginar.phtml"); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script >
+<!--
+$(".contenedor_columnas_info").htmlDataDum(<?php echo json_encode($lista_admin_data); ?>,".no_hay_datos");
+$(window).load(function(){
+    $(".btn_adm_eliminar").click(function(event){
+
+         event.preventDefault();
+         var nuevo_estado = ($(this).attr("href").replace("#","") == "activar" ? 1 : 0);
+         <?php if(getCoreConfig('ecommerce/cupones/showdelete') == 0): ?>      
+                EliminarRegistro('<?php echo $deleteFunction; ?>',$(this).attr("id"),nuevo_estado,'','EliminarRegistorPanelRemove')
+        <?php else: ?>
+                EliminarRegistro('<?php echo $deleteFunction; ?>',$(this).attr("id"),nuevo_estado)
+         <?php endif; ?>
+   
+    });
+
+
+});
+// -->
+</script>

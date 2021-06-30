@@ -1,0 +1,109 @@
+<?xml version='1.0' standalone='yes'?>
+<mensajes>
+    <prefijo>ecommerce_</prefijo>
+     <mensaje>
+        <llave>carrito_error_add</llave>
+        <valor>Error al agregar el producto al carrito.</valor>
+    </mensaje>
+    <mensaje>
+        <llave>carrito_error_config</llave>
+        <valor>Error al configurar el carrito.</valor>
+    </mensaje>
+     <mensaje>
+        <llave>carrito_error_delete</llave>
+        <valor>Error al eliminar el producto del carrito</valor>
+    </mensaje>
+     <mensaje>
+        <llave>carrito_vacio</llave>
+        <valor>El carrito esta vacio</valor>
+    </mensaje>
+     <mensaje>
+        <llave>carrito_error_cantidad</llave>
+        <valor>Error al cambiar la cantidad de productos</valor>
+    </mensaje>
+    <mensaje>
+        <llave>cupon_duplicado</llave>
+        <valor>Este código de cupón ya existe</valor>
+    </mensaje>
+    <mensaje>
+        <llave>cupon_quitar_carrito_error</llave>
+        <valor>Error al eliminar el cupón</valor>
+    </mensaje>
+    <mensaje>
+        <llave>cupon_no_valido</llave>
+        <valor>Este cupón no es valido</valor>
+    </mensaje>
+    <mensaje>
+        <llave>direccion_error_delete</llave>
+        <valor>Error al eliminar la dirección</valor>
+    </mensaje>
+    <mensaje>
+        <llave>tarjeta_error_delete</llave>
+        <valor>Error al eliminar la tarjeta</valor>
+    </mensaje>
+    <mensaje>
+        <llave>tarjeta_duplicado</llave>
+        <valor>Esta tarjeta ya esta registrada</valor>
+    </mensaje>
+    <mensaje>
+        <llave>cambiar_status_pedido_success</llave>
+        <valor>El estado del pago se actualizó correctamente</valor>
+    </mensaje>
+    <mensaje>
+        <llave>cambiar_status_pedido_error</llave>
+        <valor>El estado del pago no se pudo actualizar</valor>
+    </mensaje>
+    <mensaje>
+        <llave>comprovante_vacio</llave>
+        <valor>No se encontro el comprobante de pago</valor>
+    </mensaje>
+    <mensaje>
+        <llave>comprovante_error</llave>
+        <valor>Error al guardar comprobante de pago</valor>
+    </mensaje>
+    <mensaje>
+        <llave>comprovante_success</llave>
+        <valor>El comprobante de pago se guardo correctamente</valor>
+    </mensaje>
+    <mensaje>
+        <llave>limit_cards</llave>
+        <valor>Puedes guardar maximo %s tarjetas</valor>
+    </mensaje>
+    <mensaje>
+        <llave>codigo_cupon_duplicado</llave>
+        <valor>Ya existe un cupon con este código</valor>
+    </mensaje>
+    <mensaje>
+        <llave>cupon_error_delete</llave>
+        <valor>Error al eliminar el cúpon intenta mas tarde</valor>
+    </mensaje>
+    <mensaje>
+        <llave>promocion_error_delete</llave>
+        <valor>Error al eliminar la promoción intenta mas tarde</valor>
+    </mensaje>
+    <mensaje>
+        <llave>cupon_no_exist</llave>
+        <valor>El cupon ingresado no existe</valor>
+    </mensaje>
+    <mensaje>
+        <llave>cupon_expired</llave>
+        <valor>El cupon ingresado a expirado</valor>
+    </mensaje>
+    <mensaje>
+        <llave>cupon_no_aplica</llave>
+        <valor>Tu compra no aplica para esta promoción</valor>
+    </mensaje>
+    <mensaje>
+        <llave>cupon_numero_usos</llave>
+        <valor>El cupon esta agotado</valor>
+    </mensaje>
+    <mensaje>
+        <llave>tienda_error_delete</llave>
+        <valor>Error al eliminar la tienda</valor>
+    </mensaje>
+    <mensaje>
+        <llave>error_transaction</llave>
+        <valor>Error al realizar la transacción intente mas tarde</valor>
+    </mensaje>
+
+</mensajes>

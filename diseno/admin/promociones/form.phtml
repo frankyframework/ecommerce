@@ -1,0 +1,46 @@
+
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?></div>
+    <h1 class="titulo_seccion_admin"><?php echo $title_form; ?></h1>
+    <div class="w-xxxx-12">
+    <?php echo $adminForm->openTag(); ?>
+        <?php if(!empty($id)):?>
+        <?php echo $adminForm->getRow('id'); ?>
+        <?php endif; ?>
+        <?php echo $adminForm->getRow('titulo'); ?>
+        <?php echo $adminForm->getRow('id_promocion'); ?>
+        
+       
+        <?php echo $adminForm->getRow('fecha_inicio'); ?>
+        <?php echo $adminForm->getRow('fecha_fin'); ?>
+        <div class="content_config_promo"></div>
+        <?php echo $adminForm->getRow('guardar'); ?>
+        
+        
+    <?php echo $adminForm->endTag(); ?>
+   </div>
+</div>
+
+<script >
+
+$(document).ready(function()
+{
+    $( "#frmpromocion" ).validate();
+});
+
+$('select[name=id_promocion]').change(function(){
+    if($(this).val() != '')
+    {
+        ajax_setInputsConfigPromo('<?=$id;?>',$(this).val());
+    }
+    else{
+        $('.content_config_promo').empty()
+    }
+});
+
+
+
+ajax_setInputsConfigPromo('<?=$id;?>',$('select[name=id_promocion]').val());
+
+
+</script>

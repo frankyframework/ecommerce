@@ -1,0 +1,44 @@
+<?php if($status_pago == "pending" || $status_pago == "paid"): ?>
+
+<div class="w-xxxx-12 _success _checkout_success _pt_header">
+    <div class="content">
+        <div class="w-xxxx-12 wrapper_white align_center">
+            <i class="icon icon-valido"></i>
+            <h1>¡GRACIAS POR TU COMPRA!</h1>
+            <h2 class="imprimible">Orden #<?=$pedido?></h2>
+            <h4 class="imprimible">El status de tu transaccion es: <?php echo getStatusTransaccion($status_pago); ?></h4>
+        </div>
+    </div>
+</div>
+
+<div class="imprimible imprimible_content">
+<?=render('checkout/success.order.phtml',['detalle_pedido' => $detalle_pedido,'MyConfigure' => $MyConfigure])?>
+</div>
+<?php else: ?>
+<div class="w-xxxx-12 _success _checkout_error _pt_header">
+    <div class="content">
+        <div class="w-xxxx-12 wrapper_white align_center">
+            <i class="icon icon-c-cancelar"></i>
+    		<h1>Lo sentimos algo salió mal</h1>
+                <h2>El status de tu transaccion es: <?php echo getStatusTransaccion($status_pago); ?></h2>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
+
+<div class="action_success">
+    <a href="#" class="imprimir_orden" >Imprimir</a>
+    <a href="<?php echo $MyRequest->url(ADMIN_DETALLE_PEDIDOS); ?>?id=<?= $Tokenizer->token('pedidos',$pedido)?>" class="ver_pedido">Ver pedido</a>
+    <a href="<?=$MyRequest->url(HOME)?>" class="seguir_comprando">Seguir comprando</a>
+</div>
+
+<script>
+  $('.imprimir_orden').click(function(e){
+          e.preventDefault();
+          $('.imprimible_content').find('*').addClass('imprimible');
+         
+          window.print();
+  });
+
+</script>

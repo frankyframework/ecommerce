@@ -1,0 +1,51 @@
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?></div>
+    <div class="w-xxxx-12 cont_global_admin">
+        <h1 class="titulo_seccion_admin">
+            <?php echo $title_grid; ?></h1>
+        <div class="w-xxxx-12 cont_header_panel">
+            <div class="form-group form-inline">
+                <a href="<?php echo $MyRequest->url($frm_constante_link); ?>" class="btn btn-primary green toc-toggle">Nueva</a>
+
+            </div>
+        </div>
+        <div class="w-xxxx-12">
+            <p>Te recordamos que tu información siempre estará cifrada y protegida por nuestros servidores de acuerdo con nuestro <a class="_aviso" href="<?php echo $MyRequest->url(AVISO_PRIVACIDAD) ?>">aviso de privacidad</a></p>
+            <div class="contenedor_columnas_info"  >
+                <div class="w-xxxx-12 contenedor_columnas" id="tarjeta{{_data.id}}"  >
+                    <?php $i = 1; ?>
+                    <?php foreach($value_columnas_grid as $k): ?>
+                    <div class="{{_data.thisClass}}   <?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>">{{_data.<?php echo $k;  ?>}}</div>
+                    <?php endforeach; ?>
+                    <div class='w-xxxx-1 {{_data.thisClass}}'>
+                        <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
+                        <a class="btn_adm_eliminar" id="{{_data.id}}" href="#desactivar" ></a>
+                        <?php endif; ?>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="w-xxxx-12">
+            <div class="no_hay_datos" ><p><?php echo $error_grid; ?></p></div>
+        </div>
+
+
+    </div>
+</div>
+
+<script >
+<!--
+$(".contenedor_columnas_info").htmlDataDum(<?php echo json_encode($lista_admin_data); ?>,".no_hay_datos");
+$(window).load(function(){
+    $(".btn_adm_eliminar").click(function(event){
+
+         event.preventDefault();
+
+         EliminarTarjetaEcommerce($(this).attr("id"))
+
+    });
+});
+// -->
+</script>

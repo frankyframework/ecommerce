@@ -1,0 +1,120 @@
+<?php
+use Franky\Core\validaciones;
+use Ecommerce\model\pedidos;
+use Ecommerce\entity\pedidos as PedidosEntity;
+use Ecommerce\model\producto_pedidoModel;
+use Ecommerce\entity\producto_pedido as producto_pedidoEntity;
+use Base\model\USERS;
+use Ecommerce\model\EcommercelogstatusModel;
+use Ecommerce\entity\EcommercelogstatusEntity;
+
+//include(PROJECT_DIR."/modulos/ecommerce/loads/init.php");
+
+if($MySession->getVar('nivel') != NIVEL_USERDEVELOPER)
+{
+    echo shellFontColor($MyMessageAlert->Message("sin_privilegios"),"rojo")."\n";
+    exit;
+}
+
+
+$ibd  = new Franky\Database\IBD(new \Franky\Database\configure,'conexion_bd',new \Franky\Database\Debug);
+
+
+
+$help = helpShell([
+    ]);
+
+
+$validaciones =  new validaciones();
+$valid = $validaciones->validRules();
+if(!$valid)
+{
+    echo shellFontColor($validaciones->getMsg(),"rojo")."\n\n".$help;
+    exit;
+}
+
+
+
+
+$USERS = new USERS();
+$pedidosModel = new pedidos();
+$PedidosEntity = new PedidosEntity();
+$producto_pedidoModel = new producto_pedidoModel();
+$producto_pedidoEntity = new producto_pedidoEntity();
+$EcommercelogstatusModel    = new EcommercelogstatusModel();
+$EcommercelogstatusEntity   = new EcommercelogstatusEntity();
+
+$pedidosModel->setPage(1);
+$pedidosModel->setTampag(100000);
+$pedidosModel->setOrdensql("ecommerce_pedidos.fecha ASC");
+$result	 		= $pedidosModel->getData('', '','','pending','','openpay_establecimiento');
+
+
+$pedidos = array();
+
+if($pedidosModel->getTotal() > 0)
+{
+    while($registro = $pedidosModel->getRows())
+    {
+      $pedidos[] = $registro;
+    }
+}
+
+foreach($pedidos as $pedido)
+{
+    $referencia = json_decode($pedido['referencia'],true);
+ 
+    if(strtotime(date('Y-m-d')) > strtotime($referencia['due_date']))
+    {
+       
+        $PedidosEntity->setId($pedido['id']);
+        $status_pago = "canceled";
+        $PedidosEntity->setStatus($status_pago);
+
+        if($pedidosModel->save($PedidosEntity->getarrayCopy()) == REGISTRO_SUCCESS)
+        {
+            $EcommercelogstatusEntity->status($status_pago);
+            $EcommercelogstatusEntity->auto(1);
+            $EcommercelogstatusEntity->id_user(0);
+            $EcommercelogstatusEntity->fecha(date('Y-m-d H:i:s'));
+            $EcommercelogstatusEntity->id_pedido($PedidosEntity->getId());
+            $EcommercelogstatusModel->save($EcommercelogstatusEntity->getArrayCopy());
+
+            $detalle_pedido = getPedido($PedidosEntity->getId());
+
+            if($USERS->getData($detalle_pedido['uid'])==REGISTRO_SUCCESS)
+            {
+
+
+              $dataUser = $USERS->getRows();
+
+              $productos_html = render(PROJECT_DIR.'/modulos/ecommerce/diseno/email/productos.phtml',['items' =>$detalle_pedido['productos']]);
+
+
+              $campos = array("orden" => $PedidosEntity->getId(),
+                  "nombre" =>$detalle_pedido['nombre'],
+                  'productos' =>$productos_html,"email" => $dataUser['email'],
+                  'gran_total' => getFormatoPrecio($detalle_pedido['monto_compra']),
+                  'metodo_pago' =>$detalle_pedido['metodo_pago'],
+                  'monto_envio' =>getFormatoPrecio($detalle_pedido['monto_envio']),
+                  'descuento' =>getFormatoPrecio($detalle_pedido['descuento']),
+                  "status" => getStatusTransaccion($status_pago));
+
+              $TemplateemailModel    = new \Base\model\TemplateemailModel;
+              $SecciontransaccionalEntity    = new \Base\entity\SecciontransaccionalEntity;
+              $SecciontransaccionalEntity->friendly('cambio-status-pedido');
+              $TemplateemailModel->setOrdensql('id DESC');
+              $TemplateemailModel->getData([],$SecciontransaccionalEntity->getArrayCopy());
+
+              $registro  = $TemplateemailModel->getRows();
+
+              sendEmail($campos,$registro);
+
+            }
+
+            echo shellFontColor('['+$pedido['id'].']'.$status_pago,"verde")."\n\n";
+        }
+    }
+
+
+}

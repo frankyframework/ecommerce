@@ -1,0 +1,39 @@
+<div class="w-xxxx-12 _checkout_success _pt_header">
+    <div class="content">
+        <div class="w-xxxx-12 wrapper_white">
+            <div class="opps">
+                <div class="opps-header">
+                    <div class="opps-reminder">Ficha digital. No es necesario imprimir.</div>
+                    <div class="opps-info">
+                        <div class="opps-brand"><?php echo makeHTMLImg(getImg("oxxopay_brand.png"),"","","OXXOPay"); ?></div>
+                        <div class="opps-ammount">
+                            <h3>Monto a pagar ID: <?php echo $order->id; ?></h3>
+                            <h2>$<?php echo $order->amount/100 . $order->currency; ?><sup><?php $order->currency; ?></sup></h2>
+                            <p><?php echo  "Payment Method:". $order->charges[0]->payment_method->service_name; ?>OXXO cobrará una comisión adicional al momento de realizar el pago.</p>
+                        </div>
+                    </div>
+                    <div class="opps-reference">
+                        <h3>Referencia</h3>
+                        <h1><?php echo $order->charges[0]->payment_method->reference; ?></h1>
+                    </div>
+                </div>
+                <div class="opps-instructions">
+                    <h3>SE COMPRO</h3>
+                    <?php
+                    foreach($order->line_items as $item)
+                        echo $item->quantity."-".$item->name . "- $". $item->unit_price/100 . "<br>";
+                    ?>
+                    <h3>Instrucciones</h3>
+                    <ol>
+                            <li>Acude a la tienda OXXO más cercana. <a href="https://www.google.com.mx/maps/search/oxxo/" target="_blank">Encuéntrala aquí</a>.</li>
+                            <li>Indica en caja que quieres ralizar un pago de <strong>OXXOPay</strong>.</li>
+                            <li>Dicta al cajero el número de referencia en esta ficha para que tecleé directamete en la pantalla de venta.</li>
+                            <li>Realiza el pago correspondiente con dinero en efectivo.</li>
+                            <li>Al confirmar tu pago, el cajero te entregará un comprobante impreso. <strong>En el podrás verificar que se haya realizado correctamente.</strong> Conserva este comprobante de pago.</li>
+                    </ol>
+                    <div class="opps-footnote">Al completar estos pasos recibirás un correo de <strong>Nombre del negocio</strong> confirmando tu pago.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

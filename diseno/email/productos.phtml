@@ -1,0 +1,32 @@
+<?php
+$productos =  OBJETO_PRODUCTOS;
+$MyProducto =  new $productos();
+?>
+<table style="width:90%">
+<tr><td>Nombre</td><td>Precio</td><td>QTY</td></tr>
+<?php foreach($items as $producto):
+
+  $MyProducto->getInfoProducto($producto["id"]);
+  $_registro = $MyProducto->getRows();
+?>
+  <tr><td style="width:33%">
+    <h3><?php echo $_registro['nombre']; ?></h3>
+    <?php if(!empty($producto['caracteristicas'])): ?>
+          <ul class="caracteristicas">
+          <?php foreach($producto['caracteristicas'] as $caracteristicas): ?>
+              <?php if(!empty($caracteristicas['value'])): ?>
+              <li><strong><?=$caracteristicas['name']?>:</strong><span><?=$caracteristicas['value']?></span></li>
+              <?php endif; ?>
+          <?php endforeach; ?>
+          </ul>
+      <?php endif; ?>
+  </td>
+  
+  <td><?php echo getFormatoPrecio($_registro['precio']); ?></td>
+  
+  <td><?php echo $producto['qty']; ?></td>
+
+
+</tr>
+<?php endforeach; ?>
+<table>

@@ -1,0 +1,123 @@
+<script>
+$("#card-payment-form").find("input[type=submit]").prop("disabled", true);
+$("form[name=frm_tarjeta_checkout] input[name=continuar]").prop("disabled", true);
+var SrPagoonSuccessHandler = function(result){
+    $("input[name=tokenInput]").val(result.token);
+        document.getElementById("card-payment-form").submit();
+    };
+var SrPagoonFailHandler = function(error){
+    _alert("Error " + error.code + ": " + error.message);
+};
+
+$("input[name=id_tarjeta]").change(function()
+{
+    if($(this).val() == 0)
+    {
+        $("#form_new_card").show();
+        $("form[name=frm_tarjeta_checkout] input[name=continuar]").hide();
+    }
+    else
+    {
+        $("#form_new_card").hide();
+        $("form[name=frm_tarjeta_checkout] input[name=continuar]").show();
+    }
+});
+
+var validacionesOpenpay  = function(){
+      $("form[name=card-payment-form]").validate({
+        ignore: [],
+          rules: {
+
+              'holder_name': {
+                 required: true,
+              },
+              'number': {
+                 required: true,
+              //   minlength: 12,
+                //  maxlength: 12
+              },
+              'cvv': {
+                  required: true,
+                  minlength:3,
+                  maxlength: 3
+              },
+              'month': {
+                  required: true
+              },
+              'year': {
+                  required: true
+              }
+
+          },
+          messages: {
+
+              'holder_name': {
+                  required: "Favor de escribir el nombre de la tarjeta"
+              },
+              'number': {
+                  required: "Favor de escribir el n&uacute;mero de la tarjeta",
+                  minlength: "El n&uacute;mero de tarjeta debe tener 12 numeros",
+                  maxlength: "El n&uacute;mero de tarjeta debe tener 12 numeros",
+              },
+              'cvv': {
+                 required: "Favor de escribir el n&uacute;mero de seguridad",
+                  minlength: "El n&uacute;mero de seguridad debe tener 3 numeros",
+                  maxlength: "El n&uacute;meros de seguridad debe tener 3 numeros",
+              },
+               'month': {
+                 required: "Favor de seleccionar el mes de expiraci&oacute;n",
+              },
+              'year': {
+                 required: "Favor de seleccionar el a&ntilde;o de expiraci&oacute;n"
+              },
+
+          },
+
+           invalidHandler: function(event, validator) {
+
+
+            },
+          submitHandler: function() {
+
+           
+
+                SrPago.setLiveMode(<?=(getCoreConfig('ecommerce/sr-pago/sandbox') ? 'false': 'true')?>);
+                SrPago.setPublishableKey("<?=getCoreConfig('ecommerce/sr-pago/public')?>");
+
+               
+                var card = {
+                    number: $('input[name=number]').val(),
+                    holder_name: $('input[name=holder_name]').val(),
+                    cvv: $('input[name=cvv]').val(),
+                    exp_month: $('select[name=month]').val(),
+                    exp_year: $('select[name=year]').val()
+                };        
+                SrPago.token.create(card,SrPagoonSuccessHandler,SrPagoonFailHandler);
+
+                return false;
+
+          },
+          onkeyup: false,
+          errorClass: "error invalid-input",
+          validClass: "valid-input"
+
+      });
+      
+    $("form[name=frm_tarjeta_checkout]").validate({
+    ignore: [],
+
+      submitHandler: function() {
+        return true;
+      }
+
+  });
+};
+
+importarScript('https://js.srpago.com/v1/srpago.min.js',function(){
+    importarScript('https://js.srpago.com/v1/srpago.encryption.min.js',function(){
+        $("#card-payment-form").find("input[type=submit]").prop("disabled", false);
+        $("form[name=frm_tarjeta_checkout] input[name=continuar]").prop("disabled", false);
+        validacionesOpenpay()
+    });
+});
+</script>

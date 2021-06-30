@@ -1,0 +1,52 @@
+{
+    "schema" :
+    {
+        "attributes":[
+            {
+                "name":"id",
+                "type":"int",
+                "length":11,
+                "null":0,
+                "auto_increment":1
+            },
+            {
+                "name":"nombre",
+                "type":"varchar",
+                "length":255,
+                "null":0
+            },  
+            {
+                "name":"dataClass",
+                "type":"text",
+                "null":0
+            },
+            {
+                "name":"createdAt",
+                "type":"datetime",
+                "null":0               
+            },
+            {
+                "name":"updateAt",
+                "type":"datetime",
+                "null":1
+            }
+
+        ],
+        "config":{
+            "primary":"id",
+            "engine":"MyISAM"
+        }
+    } ,
+    "data":[
+        {
+            "nombre":"Descuento por porcentaje (%)",
+            "dataClass":"\\Ecommerce\\Data\\DescuentoPorcentajeData",
+            "createdAt":"2021-01-01 00:00:00"
+        },
+        {
+            "nombre":"Descuento tarifa plana",
+            "dataClass":"\\Ecommerce\\Data\\DescuentoTarifaPlanaData",
+            "createdAt":"2021-01-01 00:00:00"
+        }
+    ]
+}

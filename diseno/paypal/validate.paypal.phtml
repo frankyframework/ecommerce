@@ -1,0 +1,69 @@
+<script>
+
+var paypalCheckout = function(sandbox,idsb,idlive,gran_total)
+{
+    paypal.Button.render({
+        locale: 'es_ES',
+        env: (sandbox == 1 ? 'sandbox' : 'production'),
+        client: {
+            sandbox:    idsb,
+            production: idlive
+        },
+        commit: true,
+        payment: function(data, actions) {
+
+            return actions.payment.create({
+                /*
+                "payment_definitions": [
+                    {
+                        "amount": {
+                            "currency": 'MXN',
+                            "value": gran_total
+                        },
+                        name: 'Standard Plan',
+                       type: 'REGULAR',
+                       frequency_interval: '1',
+                        frequency: 'MONTH',
+                        cycles: '11',
+                    }
+                ],
+                 merchant_preferences: {
+    setup_fee: {
+      currency: 'USD',
+      value: '1'
+    },
+    cancel_url: 'http://localhost:3000/cancel',
+    return_url: 'http://localhost:3000/processagreement',
+    max_fail_attempts: '0',
+    auto_bill_amount: 'YES',
+    initial_fail_amount_action: 'CONTINUE'
+  }
+             **/
+                payment: {
+                    transactions: [
+                        {
+                            amount: {
+                                total: gran_total,
+                                currency: 'MXN'
+                            }
+                        }]
+                }
+
+            });
+
+
+        },
+        onAuthorize: function(data, actions) {
+            return actions.payment.execute().then(function() {
+                console.log('Payment Complete!');
+                window.location = "/ecommerce/paypal/confirmacion/?paymentID="+data.paymentID+"&payerID="+data.payerID+"&token="+data.paymentToken
+            });
+        }
+    }, '#paypal-button-container');
+};
+
+importarScript('https://www.paypalobjects.com/api/checkout.js',function(){
+    paypalCheckout('<?=getCoreConfig('ecommerce/paypal/sandbox')?>','<?=getCoreConfig('ecommerce/paypal/keysandbox')?>','<?=getCoreConfig('ecommerce/paypal/key')?>','<?=$data['gran_total']+(isset($data['monto_envio']) ? $data['monto_envio']: 0)-(isset($data['descuento'])? $data['descuento'] : 0)?>');
+});
+
+</script>

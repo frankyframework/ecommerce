@@ -1,0 +1,24 @@
+<?php if($MyAccessList->MeDasChancePasar(CARRITO_ECOMMERCE) && $MyFrankyMonster->MySeccion() != CHECKOUT_ECOMMERCE): ?>
+<div id="widget_carrito">
+    <a class="abrir_carrito"><span>Mi carrito</span><span class="count_productos">0</span></a>
+    <div class="w-xxxx-12 cont_detalle _mini_cart" style="display: none;">
+        <a  class="cerrar_carrito" href="#"></i></a>
+        <div class="w-xxxx-12 productos">
+        </div>
+        <div class="w-xxxx-12">
+            <div class="w-xxxx-6 w-x-6"><a class="_minicart _mycart" href="<?php echo $MyRequest->url(CARRITO_COMPRAS); ?>">Mi carrito</a></div>
+            <?php
+            $action = $MyRequest->link(LOGIN)."?callback=".$MyRequest->link("/setCarritoUser.php");
+            if($MySession->LoggedIn()):
+                $action = $MyRequest->url(CHECKOUT_ECOMMERCE);
+            endif;
+            ?>
+            <div class="w-xxxx-6 w-x-6"><a class="_minicart _checkout" href="<?php echo $action; ?>">Pagar</a></div>
+        </div>
+    </div>
+    <div class="cont_vacio" style="display: none;">
+        <div><a class="cerrar_carrito _no_products" href="#"></a></div>
+       <p>No tienes productos en el carrito</p>
+    </div>
+</div>
+<?php endif; ?>

@@ -1,0 +1,35 @@
+
+<form action="https://www.<?php echo (getCoreConfig('ecommerce/paypal/sandbox') == 1  ? "sandbox." : ""); ?>paypal.com/cgi-bin/webscr" method="post">
+    <input type="hidden" name="cmd" value="_cart">
+    <input type="hidden" name="upload" value="1">
+    <input type="hidden" name="business" value="">
+    <input type="hidden" name="currency_code" value="">
+    <input type="hidden" name="no_shipping" value="1">
+    <input type="hidden" name="invoice" id="invoice" value="<?php echo $id_transaccion; ?>" >
+    <?php $count = 1; ?>
+    <?php foreach($carrito_compras as $_carrito_compras): ?>
+    <?php for($x = 1; $x <=  $_carrito_compras["qty"]; $x++): ?>
+
+    <?php if(!empty($_carrito_compras["descuento_cupon"])):
+
+
+        $cupon = 0;
+        foreach($_carrito_compras["descuento_cupon"] as $k => $v):
+
+                if($v["aplicado"] >= $x)
+                {
+
+                    $cupon += $v["monto"];
+                }
+
+         endforeach;
+     endif; ?>
+<?php echo "valor cupon: ". $cupon; ?>
+    <input type="hidden" name="amount_<?php echo $count; ?>" value="<?php echo $_carrito_compras["precio"]; ?>">
+    <input type="hidden" name="item_name_<?php echo $count; ?>" value="<?php echo $_carrito_compras["nombre"]; ?>">
+    <input type="hidden" name="discount_amount_<?php echo $count; ?>" value="<?php echo (($_carrito_compras["descuento"]/100)*$_carrito_compras["precio"])+$cupon; ?>">
+    <?php $count++; ?>
+    <?php endfor; ?>
+    <?php endforeach; ?>
+    <input type="image" src="http://www.paypal.com/es_XC/i/btn/x-click-but01.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+</form>

@@ -1,0 +1,320 @@
+<div class="content">
+<div class="w-xxxx-12">
+    <?php echo breadcrumbs(); ?>
+</div>
+
+<div class="w-xxxx-12 cont_header_panel">
+          <div class="_wrapp_form_serch">   
+          <a href="#" class="imprimir_orden">Imprimir orden</a>
+          </div>
+          <?php if(in_array($detalle_pedido['metodo_pago'],['srpago_oxxo','srpago_spei'])): ?>
+            <div class="_wrapp_form_serch">
+            <a href="#" class="imprimir_ticket">Imprimir ticket</a>
+          </div>
+          <?php endif;?>
+   
+</div>
+
+
+<div class="w-xxxx-8 m-l-xxxx-2 w-xxx-10  m-l-xxx-1 w-xx-12  m-l-xx-0 _card _m_t_30 imprimible_content">
+    <h1>Detalle de pedido</h1>
+
+    <ul class="_ul_txt_standar ">
+      <li><strong>Fecha:</strong> <?php echo getFechaUI($detalle_pedido['fecha']); ?></li>
+        <li><strong >Usuario:</strong> <?php echo $detalle_pedido['nombre_user']; ?></li>
+        <li><strong class="imprimible">Pedido:</strong> #<?php echo $detalle_pedido['id']; ?></li>
+        <li><strong>Método de pago:</strong> <?php echo $detalle_pedido['metodo_pago']; ?></li>
+        <li><strong>Estatus de pago:</strong> <span class='set-status'><?php echo getStatusTransaccion($detalle_pedido['status']); ?></span></li>
+        <li><strong>Monto envio:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_envio']); ?></li>
+        <li><strong>Descuento:</strong> <?php echo getFormatoPrecio($detalle_pedido['descuento']); ?></li>
+        <li><strong>Total productos:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_compra']); ?></li>
+        <li><strong>Total a pagar:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_compra']-$detalle_pedido['descuento']+$detalle_pedido['monto_envio']); ?></li>
+        <li class="_total"><strong>Monto pagado:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_pagado']); ?></li>
+        <?php
+
+        $referencia = json_decode($detalle_pedido['referencia'],true);
+        if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PEDIDOS))
+        {
+            ?>
+            <?php if($detalle_pedido['metodo_pago'] == 'paypal'): ?>
+              <li>Referencia: <?=$referencia['paymentID']?></li>
+            <?php endif;?>
+            <?php if($detalle_pedido['metodo_pago'] == 'conekta_tarjeta'): ?>
+                <li>Referencia: <?=$referencia['id']?></li>
+            <?php endif;?>
+
+            <?php if($detalle_pedido['metodo_pago'] == 'conekta_oxxo'): ?>
+                <li>Referencia: <?=$referencia['id']?></li>
+            <?php endif;?>
+            <?php if($detalle_pedido['metodo_pago'] == 'openpay_tarjeta'): ?>
+              <li>Referencia: <?=$referencia['id']?></li>
+              <li>Autorizacion: <?=$referencia['authorization']?></li>
+            <?php endif;?>
+            <?php if($detalle_pedido['metodo_pago'] == 'openpay_establecimiento'): ?>
+              <li>Referencia: <?=$referencia['id']?></li>
+            <?php endif;?>
+            <?php if($detalle_pedido['metodo_pago'] == 'srpago_tarjeta'): ?>
+                <li>Referencia: <?=$referencia['id']?></li>
+            <?php endif;?>
+            <?php if($detalle_pedido['metodo_pago'] == 'srpago_oxxo'): ?>
+              <li>Referencia: <?=$referencia['id']?></li>
+            <?php endif;?>
+
+            <?php if($detalle_pedido['metodo_pago'] == 'srpago_spei'): ?>
+              <li>Referencia: <?=$referencia['id']?></li>
+            <?php endif;?>
+            <?php
+        }
+        ?>
+        <?php if($detalle_pedido['metodo_pago'] == 'conekta_oxxo'): ?>
+          <li>Referencia pago oxxo: <?=$referencia['referencia']?></li>
+        <?php endif;?>
+        <?php if($detalle_pedido['metodo_pago'] == 'openpay_establecimiento'): ?>
+          <li>Codigo de pago: <?=makeHTMLImg($referencia['payment_method']['barcode_url'],150,'','codigo de barras pago');?></li>
+          <li>Referencia pago: <?=$referencia['payment_method']['reference']?></li>
+          <li>Fecha limite de pago: <?=getfechaUI($referencia['due_date'])?></li>
+        <?php endif;?>
+        <?php if($detalle_pedido['metodo_pago'] == 'srpago_oxxo'): ?>
+
+        
+          <?php $expiration_date = explode("T",$referencia['expiration_date']); ?>
+          <li>Codigo de pago: <?=makeHTMLImg($referencia['barcode_url'],150,'','codigo de barras pago');?></li>
+          <li>Referencia pago: <?=$referencia['barcode']?></li>
+          <li>Fecha limite de pago: <?=getfechaUI($expiration_date[0])?></li>
+         
+
+        <?php endif;?>
+        <?php if($detalle_pedido['metodo_pago'] == 'srpago_spei'): ?>
+
+        <li>Referencia pago: <?=$referencia['order_id']?></li>
+       
+        <?php endif;?>
+    </ul>
+    <div class="order_content">
+    <h4>Productos</h4>
+
+    <div  class="content_carrito">
+
+
+<?php foreach($detalle_pedido['productos'] as $producto): ?>
+
+    <div class="_list_mycart_product contenedor_producto_<?php echo $_carrito_compras["id"]; ?>">
+                    <div class="_mycart_resume">
+<?php
+$imagen = "";
+    $_img = getCoreConfig('ecommerce/product/placeholder');
+    if($_img != "" && file_exists(PROJECT_DIR.$_img))
+    {
+      $imagen = imageResize($_img,50,50, true);
+    }
+
+    if(!empty($producto["imagen"]))
+    {
+        $_imagen = json_decode($producto["imagen"],true);
+        if(is_array($_imagen))
+        {
+            if(!empty($_imagen)){
+
+                foreach($_imagen as $foto)
+                {
+                    if($foto['principal'] == 1)
+                    {
+                        if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE.'/'.$producto["id"].'/'.$foto['img']))
+                        {
+                            $imagen = imageResize($MyConfigure->getUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE."/".$producto["id"].'/'.$foto['img'],50,50, true);
+                        }
+                    }
+                }
+            }
+        }
+        else{
+            $imagen = imageResize($MyConfigure->getUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE."/".$producto["id"].'/'.$producto['imagen'],50,50, true);
+        }
+    }
+
+
+    ?>
+  <div class="_col_mycart_resume _img_product">
+      <?=makeHTMLImg($imagen,50,50,$producto['nombre'])?>
+    </div>
+    <div class="_col_mycart_resume _name">
+                            <div class="_row_mycart_resume">
+                                <h3><?php echo $producto['nombre']; ?></h3>
+                            </div>
+
+                            <?php if(!empty($producto['caracteristicas'])): ?>
+                                    <ul class="caracteristicas">
+                                    <?php foreach($producto['caracteristicas'] as $caracteristicas): ?>
+                                      <?php if(!empty($caracteristicas['value'])): ?>
+                                        <li><strong><?=$caracteristicas['name']?>:</strong><span><?=$caracteristicas['value']?></span></li>
+                                        <?php endif ;?>
+                                    <?php endforeach; ?>
+                                    </ul>
+                                <?php endif; ?>
+
+    </div>
+    <div class='_col_mycart_resume _cont_control_qty'><?php echo $producto['qty']; ?></div>
+    <div class="_col_mycart_resume subtotal_producto"><strong>Precio:</strong> <?php echo getFormatoPrecio($producto['precio']); ?></div>
+
+
+</div>
+</div>
+<?php endforeach; ?>
+</div>
+    </div>
+    <?php if(isset($detalle_pedido['envio']) && !empty($detalle_pedido['envio'])): ?>
+      <?php if(!empty( $detalle_pedido['metodo_envio'] )): ?>
+        <h4>Datos del envio</h4>
+        <?=getCoreConfig('ecommerce/'.$detalle_pedido['metodo_envio']['path'].'/titulo')?>
+      <?php endif; ?>
+      
+      <?php $direccion = "%s: calle %s #%s, Colonia %s, municipio %s,%s C.P. %d"; ?>
+      <div>
+        <?php echo sprintf($direccion,$detalle_pedido['envio']["nombre"],$detalle_pedido['envio']["calle"],$detalle_pedido['envio']["numero"],$detalle_pedido['envio']["colonia"],$detalle_pedido['envio']["municipio"],$detalle_pedido['envio']["estado"],$detalle_pedido['envio']["cp"]); ?>
+      </div>
+
+    <?php endif; ?>
+
+
+
+    <?php if(isset($detalle_pedido['facturacion']) && !empty($detalle_pedido['facturacion'])): ?>
+      <h4>Dirección de facturación</h4>
+      <?php $direccion = "%s: calle %s #%s, Colonia %s, municipio %s,%s C.P. %d"; ?>
+      <div>
+        <?php echo sprintf($direccion,$detalle_pedido['facturacion']["nombre"],$detalle_pedido['facturacion']["calle"],$detalle_pedido['facturacion']["numero"],$detalle_pedido['facturacion']["colonia"],$detalle_pedido['facturacion']["municipio"],$detalle_pedido['facturacion']["estado"],$detalle_pedido['facturacion']["cp"]); ?>
+      </div>
+      <div>RFC: <?php echo $detalle_pedido['facturacion']["rfc"]; ?></div>
+    <?php endif; ?>
+    </div>
+
+
+
+    <div class="w-xxxx-8 m-l-xxxx-2 w-xxx-10  m-l-xxx-1 w-xx-12  m-l-xx-0 _card _m_t_30">
+
+          <h3>Actualizaciones de la orden<h3>
+      <?php if(!empty($logStatus)): ?>
+      <?php foreach($logStatus as $status): ?>
+      <ul>
+        <li>Fecha: <?=$status['fecha']?></li>
+        <li>Status: <?=$status['status']?></li>
+        <?php if(!empty($status['info']['monto'])): ?>
+        <li>Monto: <?=getFormatoPrecio($status['info']['monto'])?></li>
+      <?php endif;?>
+      <?php if(!empty($status['info']['nota'])): ?>
+        <li>Nota: <?=$status['info']['nota']?></li>
+        <?php endif;?>
+      </ul>
+      <hr />
+      <?php endforeach; ?>
+      <?php else: ?>
+        <p>Sin actualizaciones recientes</p>
+      <?php endif; ?>
+
+        <?php if($MyAccessList->MeDasChancePasar(ADMINISTRAR_MIS_PEDIDOS) &&  in_array($detalle_pedido['status'],['pending','in-progress','pago_incompleto'])): ?>
+    <?php echo $ComprovantePagoForm->openTag(); ?>
+    <?php echo $ComprovantePagoForm->getAllRow(); ?>
+    <?php echo $ComprovantePagoForm->endTag(); ?>
+    <script >
+
+    $(document).ready(function()
+    {
+        $( "#frmComprovante" ).validate();
+    });
+
+    </script>
+
+    <?php endif; ?>
+    <?php if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PEDIDOS) && $detalle_pedido['status'] != 'canceled'): ?>
+    <?php echo $StatusPagoForm->openTag(); ?>
+
+    <?php echo $StatusPagoForm->getRow('id'); ?>
+    <?php echo $StatusPagoForm->getRow('status'); ?>
+
+    <div class="content_monto" style="display:none;">
+    <?php echo $StatusPagoForm->getRow('cantidad'); ?>
+  </div>
+    <div class="content_nota" style="display:none;">
+    <?php echo $StatusPagoForm->getRow('nota'); ?>
+    </div>
+    <?php echo $StatusPagoForm->getRow('guardar'); ?>
+    <?php echo $StatusPagoForm->endTag(); ?>
+    <script >
+
+    $(document).ready(function()
+    {
+        $( "form[name=frmStatus]" ).find('select[name=status]').change(function(){
+
+
+                    $('.content_monto').show();
+
+
+
+                if($(this).val() == "partially-refunded" ||
+                $(this).val() == "refunded" ||
+                $(this).val() == "request_refunded" ||
+                $(this).val() == "canceled"
+                )
+                {
+                    $('.content_nota').show();
+                }
+                else
+                {
+                    $('.content_nota').hide();
+                }
+
+        });
+
+        $('form[name=frmStatus').validate({
+
+             submitHandler: function(form)
+                {
+                   SetStatusPagoEcommerce();
+                   return false;
+                }
+        });
+
+        
+
+
+
+    });
+
+    </script>
+
+    <?php endif; ?>
+    <?php $testigo = json_decode($detalle_pedido['testigo'],true); ?>
+    <?php if(!empty($testigo )): ?>
+    <h4>Comprobantes</h4>
+
+    <?php
+    $n = 1;
+    foreach($testigo as $comprovante): ?>
+    <?php echo makeHTMLImg(imageResize($MyConfigure->getUploadDir()."/ecommerce/pedidos/".$detalle_pedido['uid']."/".$detalle_pedido['id']."/".$comprovante,500,500)); ?>
+    <?php
+    $n++;
+    endforeach; ?>
+    <?php endif; ?>
+    </div>
+</div>
+
+
+<?php if(in_array($detalle_pedido['metodo_pago'],['srpago_oxxo','srpago_spei'])): ?>
+  <iframe  name="frameticket" id="frameticket" frameborder="0" src="/ecommerce/srpago/ticket.php?url=<?=urlencode($referencia['url'])?>" width="100%"
+    height="500" class="" style="display:none;">
+</iframe>
+<?php endif;?>
+
+<script>
+  $('.imprimir_orden').click(function(e){
+          e.preventDefault();
+          $('.imprimible_content').find('*').addClass('imprimible');
+         
+          window.print();
+  });
+  $('.imprimir_ticket').click(function(e){
+          e.preventDefault();
+          window.frames["frameticket"].focus();
+          window.frames["frameticket"].print();
+  });
+
+</script>

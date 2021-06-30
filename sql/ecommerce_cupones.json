@@ -1,0 +1,85 @@
+{
+    "schema" :
+    {
+        "attributes":[
+            {
+                "name":"id",
+                "type":"int",
+                "length":11,
+                "null":0,
+                "auto_increment":1
+            },
+            {
+                "name":"titulo",
+                "type":"varchar",
+                "length":255,
+                "null":0
+            },
+            {
+                "name":"id_promocion",
+                "type":"int",
+                "length":255,
+                "null":0
+            },
+            {
+                "name":"fecha_inicio",
+                "type":"date",
+                "null":1
+            },
+            {
+                "name":"fecha_fin",
+                "type":"date",
+                "null":0
+            },
+            {
+                "name":"numero_usos",
+                "type":"int",
+                "null":1
+                
+            },
+            {
+                "name":"numero_usos_usuario",
+                "type":"int",
+                "null":1
+                
+            },
+            {
+                "name":"codigo_promocion",
+                "type":"varchar",
+                "length":255,
+                "null":0
+            },
+            {
+                "name":"data",
+                "type":"text",
+                "null":0
+            },
+            
+            {
+                "name":"status",
+                "type":"int",
+                "length":1,
+                "null":0
+            },
+           
+            {
+                "name":"createdAt",
+                "type":"datetime",
+                "null":0
+                
+            },
+            {
+                "name":"updateAt",
+                "type":"datetime",
+                "null":1
+            }
+
+        ],
+        "config":{
+            "primary":"id",
+            "engine":"MyISAM"
+        }
+    }
+    ,
+    "data":[]
+}

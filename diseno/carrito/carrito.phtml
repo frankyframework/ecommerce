@@ -1,0 +1,161 @@
+<div class="w-xxxx-12 _my_cart _pt_header">
+    <div class="content">
+        <div class="w-xxxx-12 wrapper_white">
+            <h1>Mi carrito</h1>
+            <?php if(!empty($carrito_compras)) :
+            $gran_total = 0;
+
+            $gran_subtotal = 0;
+            ?>
+            <div  class="content_carrito">
+            <?php foreach($carrito_compras as $_carrito_compras): ?>
+                <div class="_list_mycart_product contenedor_producto_<?php echo $_carrito_compras["id"]; ?>">
+                    <div class="_mycart_resume">
+                        <div class="_col_mycart_resume _img_product">
+                            <?php  echo makeHTMLImg(imageResize($_carrito_compras["imagen"],200,200),"","",$_carrito_compras["nombre"],"class='img_100'"); ?>
+                        </div>
+                        <div class="_col_mycart_resume _name">
+                            <div class="_row_mycart_resume">
+                                <h3><a href="<?php echo $_carrito_compras["link"]; ?>"><?php echo $_carrito_compras["nombre"]; ?></a></h3>
+                                
+                             </div>
+
+                             <?php if(!empty($_carrito_compras['caracteristicas'])): ?>
+                                    <ul class="caracteristicas">
+                                    <?php foreach($_carrito_compras['caracteristicas'] as $caracteristicas): ?>
+                                   
+                                        <li><strong><?=$caracteristicas['name']?>:</strong><span><?=$caracteristicas['value']?></span></li>
+                                    <?php endforeach; ?>
+                                    </ul>
+                                <?php endif; ?>
+
+                                
+                            <div class="_row_mycart_resume precio_producto"><?= getFormatoPrecio($_carrito_compras["precio"]); ?></div>
+                        </div>
+
+
+                        <div class='_col_mycart_resume _cont_control_qty'>
+                            <div class="_control_qty">
+                                <a class="menos_qty" data-id='<?php echo $_carrito_compras["id"]; ?>' href="#"><i class='icon icon-c-eliminar'></i></a>
+                                <input type="text" data-id='<?php echo $_carrito_compras["id"]; ?>' value="<?php echo $_carrito_compras["qty"]; ?>" name="qty_<?php echo $_carrito_compras["id"]; ?>" />
+                                <a class="mas_qty"  data-id='<?php echo $_carrito_compras["id"]; ?>'  href="#"><i class='icon icon-c-agregar'></i></a>
+                            </div>
+                        </div>
+                        
+                        <div class="_col_mycart_resume subtotal_producto">
+                            <?php $precio =  $_carrito_compras["precio"] * $_carrito_compras["qty"]; ?>
+                            <?php echo getFormatoPrecio($precio); ?>
+                        </div>
+                        <div class="_col_mycart_resume _eliminar"><a href="#" data-id='<?php echo $_carrito_compras["id"]; ?>' class="eliminar_producto_carrito _btn_eliminar">Eliminar</a></div>
+                    </div>
+
+                </div>
+            <?php
+
+            $gran_total += $precio;
+            $gran_subtotal += $precio;
+            ?>
+            <?php endforeach; ?>
+
+
+                <div class="w-xxxx-6">
+                     <?=render('carrito/frm.cupon.phtml')?>
+                </div>
+
+
+            <div class="_mycart_checkout">
+                <div class='resumen_page_carrito'>
+                  <?php       $parse_precio =  getCarrito(); ?>
+                  <div class="_mycart_resume _subtotal">Subtotal: <span class="subtotal"><?php echo getFormatoPrecio($parse_precio['subtotal']); ?></span></div>
+                  <div class="_mycart_resume _iva">IVA: <span class="iva"><?php echo getFormatoPrecio($parse_precio['iva_total']); ?></span></div>
+                  <div class="_mycart_resume _descuento" <?=(isset($parse_precio['descuento']) && $parse_precio['descuento'] > 0 ? '' : 'style="display:none;"')?>>Descuento: <span class="descuento"><?php echo getFormatoPrecio($parse_precio['descuento']); ?></span></div>
+                  <div class="_mycart_resume _total">Total: <span class="total"><?php echo getFormatoPrecio($parse_precio['gran_total']-(isset($parse_precio['descuento']) ? $parse_precio['descuento'] : 0)); ?></span></div>
+                </div>
+                <div>
+                    <?php
+                    $action = $MyRequest->link(LOGIN);
+                    if($MySession->LoggedIn()):
+                        $action = $MyRequest->url(CHECKOUT_ECOMMERCE);
+                    endif;
+                    ?>
+
+                    <form name="frmcarrito" action="<?php echo $action; ?>" method="GET">
+                        <?php if(!$MySession->LoggedIn()): ?>
+                        <input type='hidden' name="callback" value="<?php echo $MyRequest->link("/setCarritoUser.php"); ?>" />
+                        <?php endif; ?>
+                        <input class="_btn_pay" type='submit' name="pagar_ahora" value="Ir a pagar" />
+                    </form>
+                </div>
+            </div>
+
+            </div>
+            <?php else: ?>
+            <div  class="content_carrito_vacio">
+                <h3>Carrito vacio</h3>
+                <p>No tienes productos en tu carrito</p>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<script >
+
+$(document).ready(function(){
+
+
+    var time_event_carrito = null;
+    $("a.menos_qty").click(function(e){
+        e.preventDefault();
+        if(time_event_carrito != null)
+        {
+           clearTimeout(time_event_carrito);
+        }
+        var id = $(this).attr('data-id');
+        var qty = parseInt($("input[name=qty_"+id+"]").val());
+        if(qty > 1)
+        {
+            $("input[name=qty_"+id+"]").val(qty-1);
+            time_event_carrito = setTimeout(function(){
+               setQTYProductoCarrido(id,parseInt($("input[name=qty_"+id+"]").val()));
+             }, 3000);
+        }
+
+    });
+    $("a.mas_qty").click(function(e){
+        e.preventDefault();
+        if(time_event_carrito != null)
+        {
+           clearTimeout(time_event_carrito);
+        }
+        var id = $(this).attr('data-id');
+        var qty = parseInt($("input[name=qty_"+id+"]").val());
+
+        $("input[name=qty_"+id+"]").val(qty+1);
+        time_event_carrito = setTimeout(function(){
+        setQTYProductoCarrido(id,parseInt($("input[name=qty_"+id+"]").val()))
+         }, 3000);
+
+    });
+    $("input[name^='qty_']").keyup(function(e){
+        if(time_event_carrito != null)
+        {
+           clearTimeout(time_event_carrito);
+        }
+        var id = $(this).attr('data-id');
+        if(parseInt($("input[name=qty_"+id+"]").val()) > 0)
+        {
+          time_event_carrito = setTimeout(function(){
+            setQTYProductoCarrido(id,parseInt($("input[name=qty_"+id+"]").val()));
+            }, 3000);
+        }
+
+
+    });
+    $("a.eliminar_producto_carrito").click(function(e){
+        e.preventDefault();
+        var id = $(this).attr('data-id');
+        eliminarProductoCarrito(id);
+    });
+});
+
+</script>

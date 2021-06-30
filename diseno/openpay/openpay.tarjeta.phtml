@@ -1,0 +1,28 @@
+<div class="w-xxxx-12">
+    <div class="w-xxxx-10">
+
+      <?php if(!empty($cards))
+      {
+        $cards['0'] = 'Nueva tarjeta';
+        $checkoutForm->addCard($cards);
+        echo $checkoutForm->openTag();
+        echo $checkoutForm->getRow("id_tarjeta");
+        echo "<label for=\"id_tarjeta\" class=\"error\" style=\"display:none;\"></label>";
+        echo $checkoutForm->getRow("continuar");
+        echo $checkoutForm->endTag();
+      }
+      ?>
+      <div id="form_new_card" style="<?=(!empty($cards) ? "display:none;" : "")?>">
+      <?php
+      echo $MyForm->openTag();
+      echo $MyForm->getAllRow();
+      echo $MyForm->endTag();
+      ?>
+      </div>
+
+    </div>
+    <div class="w-xxxx-2">
+        <a href="javascript:void(0)" onclick="changePaimentMethod();"><i class="icon icon-editar"></i> Editar</a>
+    </div>
+  </div>
+

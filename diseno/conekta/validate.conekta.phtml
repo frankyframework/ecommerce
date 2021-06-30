@@ -1,0 +1,123 @@
+<script>
+$("#card-form").find("input[type=submit]").prop("disabled", true);
+$("form[name=frm_tarjeta_checkout] input[name=continuar]").prop("disabled", true);
+var conektaSuccessResponseHandler = function(token) {
+  var $form = $("#card-form");
+  $form.append($("<input name=\"token\" type=\"hidden\">").val(token.id));
+  $form.get(0).submit();
+};
+
+var conektaErrorResponseHandler = function(response) {
+   var $form = $("#card-form");
+  // console.log(response);
+  _alert(response.message_to_purchaser,"Error");
+  $form.find("input[type=submit]").prop("disabled", false);
+
+  return false;
+};
+$("input[name=id_tarjeta]").change(function()
+{
+    if($(this).val() == 0)
+    {
+        $("#form_new_card").show();
+        $("form[name=frm_tarjeta_checkout] input[name=continuar]").hide();
+    }
+    else
+    {
+        $("#form_new_card").hide();
+        $("form[name=frm_tarjeta_checkout] input[name=continuar]").show();
+    }
+});
+var validacionesConekta  = function(){    
+        $( "#card-form").validate({
+            ignore: [],
+            rules: {
+
+                'card[name]': {
+                   required: true,
+                },
+                'card[number]': {
+                   required: true,
+                //   minlength: 12,
+                  //  maxlength: 12
+                },
+                'card[cvc]': {
+                    required: true,
+                    minlength:3,
+                    maxlength: 3
+                },
+                'card[exp_month]': {
+                    required: true
+                },
+                'card[exp_year]': {
+                    required: true
+                }
+
+            },
+            messages: {
+
+                'card[name]': {
+                    required: "Favor de escribir el nombre de la tarjeta"
+                },
+                'card[number]': {
+                    required: "Favor de escribir el n&uacute;mero de la tarjeta",
+                    minlength: "El n&uacute;mero de tarjeta debe tener 12 n&uacute;meros",
+                    maxlength: "El n&uacute;mero de tarjeta debe tener 12 n&uacute;meros",
+                },
+                'card[cvc]': {
+                   required: "Favor de escribir el n&uacute;mero de seguridad",
+                    minlength: "El n&uacute;mero de seguridad debe tener 3 n&uacute;meros",
+                    maxlength: "El n&uacute;mero de seguridad debe tener 3 n&uacute;meros",
+                },
+                 'card[exp_month]': {
+                   required: "Favor de escribir el mes de expiraci&oacute;n"
+                },
+                'card[exp_year]': {
+                   required: "Favor de escribir el a&ntilde;o de expiraci&oacute;n"
+                },
+
+            },
+
+            invalidHandler: function(event, validator) {
+
+
+              },
+             submitHandler: function() {
+
+                Conekta.setPublicKey('<?php echo (getCoreConfig('ecommerce/conekta/sandbox') == 1 ? getCoreConfig('ecommerce/conekta/publicsandbox') :  getCoreConfig('ecommerce/conekta/public')); ?>');
+
+                //jQuery generate the token on submit.
+
+                var $form = $("form[name=card-form]");
+                // Prevents double clic
+
+                $form.find("input[type=submit]").prop("disabled", true);
+
+                Conekta.token.create($form, conektaSuccessResponseHandler, conektaErrorResponseHandler);
+
+                return false
+
+            },
+            onkeyup: false,
+            errorClass: "error invalid-input",
+            validClass: "valid-input"
+        });
+        
+        
+    $( "#frm_tarjeta_checkout").validate({
+        submitHandler: function(form)
+        {
+
+             return true;
+        }
+    });
+}
+
+importarScript('https://cdn.conekta.io/js/latest/conekta.js',function(){
+
+    Conekta.setPublicKey('<?=(getCoreConfig('ecommerce/conekta/sandbox') == 1 ? getCoreConfig('ecommerce/conekta/publicsandbox') : getCoreConfig('ecommerce/conekta/public'))?>');
+    $("#card-form").find("input[type=submit]").prop("disabled", false);
+    $("form[name=frm_tarjeta_checkout] input[name=continuar]").prop("disabled", false);
+    validacionesConekta();
+});
+</script>

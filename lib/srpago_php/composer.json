@@ -1,0 +1,28 @@
+{
+  "name": "srpago/srpago_php",
+  "description": "SrPago Dev PHP Library",
+  "version": "1.0.0",
+  "keywords": [
+    "srpago",
+    "card payment",
+    "payment processing",
+    "api"
+  ],
+  "homepage": "https://srpago.com/",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "SrPago and contributors",
+      "homepage": "https://github.com/srpago"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-mbstring": "*"
+  },
+  "autoload": {
+    "psr-4": { "SrPago\\" : "lib/" }
+  }
+}

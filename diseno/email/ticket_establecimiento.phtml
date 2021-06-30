@@ -1,0 +1,192 @@
+<div style="background-color:#FFF;
+width:812px;
+height: 1123px;
+margin:0 auto;
+border:#D8D8D8 1px solid;">
+	<div style="clear:both;
+	float:left;
+	width:84%;
+	margin:4% 8% 4% 8%;">
+	<div class="Logo_empresa">
+    	<?=makeHTMLImg($MyRequest->link(getImg('logo.jpg'),false,true),'','',"","style='width:220px;	float:left;'")?>
+    </div>
+    <div class="Logo_paynet">
+    	<div>Servicio a pagar</div>
+
+        <?=makeHTMLImg($MyRequest->link("/public/skin/ecommerce/images/openpay/paynet_logo.png",false,true),150,'',"Logo payment","style='float:right;
+      	margin-top:3px;'")?>
+    </div>
+    </div>
+    <div class="Data">
+    	<div style="width:40px;
+    	float:left;
+    	margin-right:24px;">
+        	<span></span>
+        </div>
+    	<div style="width:350px;
+    	float:left;">
+        	<h3>Fecha límite de pago</h3>
+            <h4><?php echo getFechaUI($due_date); ?></h4>
+            <img width="300" src="<?=$referencia['payment_method']['barcode_url']?>" alt="Código de Barras">
+        	<center><span><?=$referencia['payment_method']['reference']?></span></center>
+            <small>En caso de que el escáner no sea capaz de leer el código de barras, escribir la referencia tal como se muestra.</small>
+
+        </div>
+        <div style="width:358px;
+      	float:right;
+      	color:#FFF;
+      	padding:40px 0 40px 40px; background-color:#f9b317;">
+        	<h2>Total a pagar</h2>
+            <h1><?=getFormatoPrecio($referencia['amount'])?></h1>
+            <span class="note">La comisión por recepción del pago varía de acuerdo a los términos y condiciones que cada cadena comercial establece.</span>
+        </div>
+    </div>
+    <div class="DT-margin"></div>
+    <div class="Data">
+    	<div class="Big_Bullet">
+        	<span></span>
+        </div>
+    	<div style="width:350px;
+    	float:left;">
+        	<h3>Detalles de la compra</h3>
+
+        </div>
+	</div>
+    <div style="margin:20px 0 0 0;
+  	clear:both;
+  	width:100%;
+  	display:block;
+  	float:left;">
+    	<div style="float:left;
+    	width:83%;
+    	padding:0 8.5%; background-color:#F3F3F3;">
+        	<div style="	float:left;
+          	width:250px;
+          	padding:15px 0;">Descripción</div>
+            <span style="float:left;
+          	border-left:3px solid #FFF;
+          	padding:15px 0 15px 40px;">
+
+
+        <?php
+        foreach($productos_comprados['productos'] as $producto)
+        {
+            ?>
+            <?=$producto["nombre"]?> <?=getFormatoPrecio($producto["precio"])?> x <?=$producto["qty"]?><br />
+            <?php
+        }
+
+        ?></span>
+        </div>
+    	<div style="float:left;
+    	width:83%;
+    	padding:0 8.5%; background-color:#EBEBEB;">
+        	<div style="	float:left;
+          	width:250px;
+          	padding:15px 0;">Fecha</div>
+            <span style="float:left;
+          	border-left:3px solid #FFF;
+          	padding:15px 0 15px 40px;">
+							<?=getFechaUI(date('Y-m-d H:i:s'))?>
+        </span>
+        </div>
+    	<div style="float:left;
+    	width:83%;
+    	padding:0 8.5%; background-color:#F3F3F3;">
+        	<div style="	float:left;
+          	width:250px;
+          	padding:15px 0;">Correo del cliente</div>
+            <span style="float:left;
+          	border-left:3px solid #FFF;
+          	padding:15px 0 15px 40px;"><?=$MySession->GetVar('email')?></span>
+        </div>
+    	<div class="float:left;
+    	width:83%;
+    	padding:0 8.5%; background-color:#EBEBEB;display:none" >
+        	<div style="	float:left;
+          	width:250px;
+          	padding:15px 0;">&nbsp;</div>
+            <span style="float:left;
+          	border-left:3px solid #FFF;
+          	padding:15px 0 15px 40px;">&nbsp;</span>
+        </div>
+    	<div style="float:left;
+    	width:83%;
+    	padding:0 8.5%; background-color:#F3F3F3; display:none" >
+        	<div style="	float:left;
+          	width:250px;
+          	padding:15px 0;">&nbsp;</div>
+            <span style="float:left;
+          	border-left:3px solid #FFF;
+          	padding:15px 0 15px 40px;">&nbsp;</span>
+        </div>
+    </div>
+    <div class="DT-margin"></div>
+    <div>
+        <div class="Big_Bullet">
+        	<span></span>
+        </div>
+    	<div style="width:350px;
+    	float:left;">
+        	<h3>Como realizar el pago</h3>
+            <ol>
+            	<li>Acude a cualquier tienda afiliada</li>
+                <li>Entrega al cajero el código de barras y menciona que realizarás un pago de servicio Paynet</li>
+                <li>Realizar el pago en efectivo por <?=getFormatoPrecio($referencia['amount'])?> </li>
+                <li>Conserva el ticket para cualquier aclaración</li>
+            </ol>
+            </div>
+    	<div style="width:350px;
+    	float:left;">
+        	<h3>Instrucciones para el cajero</h3>
+            <ol>
+            	<li>Ingresar al menú de Pago de Servicios</li>
+                <li>Seleccionar Paynet</li>
+                <li>Escanear el código de barras o ingresar el núm. de referencia</li>
+                <li>Ingresa la cantidad total a pagar</li>
+                <li>Cobrar al cliente el monto total más la comisión</li>
+                <li>Confirmar la transacción y entregar el ticket al cliente</li>
+            </ol>
+            </div>
+    </div>
+
+    <div style="clear:both;
+  	float:left;
+  	width:92%;
+  	padding:10px 0 10px 8%;
+  	border-top:1px solid #EDEDED;
+  	border-bottom:1px solid #EDEDED;
+  	margin:20px 0 0 0;">
+
+	    <ul style="margin: 0;
+    	list-style: none;
+    	padding: 0;
+    	width: 480px;
+    	float: left;">
+				<li style="	float: left;
+        	margin: 10px 10px 0 10px;"><?=makeHTMLImg($MyRequest->link("/public/skin/ecommerce/images/openpay/01.png",false,true),100,50)?></li>
+          <li style="	float: left;
+          	margin: 10px 10px 0 10px;"><?=makeHTMLImg($MyRequest->link("/public/skin/ecommerce/images/openpay/02.png",false,true),100,50)?></li>
+            <li style="	float: left;
+            	margin: 10px 10px 0 10px;"><?=makeHTMLImg($MyRequest->link("/public/skin/ecommerce/images/openpay/03.png",false,true),100,50)?></li>
+              <li style="	float: left;
+              	margin: 10px 10px 0 10px;"><?=makeHTMLImg($MyRequest->link("/public/skin/ecommerce/images/openpay/04.png",false,true),100,50)?></li>
+                <li style="	float: left;
+                	margin: 10px 10px 0 10px;"><?=makeHTMLImg($MyRequest->link("/public/skin/ecommerce/images/openpay/05.png",false,true),100,50)?></li>
+                  <li style="	float: left;
+                  	margin: 10px 10px 0 10px;"><?=makeHTMLImg($MyRequest->link("/public/skin/ecommerce/images/openpay/06.png",false,true),100,50)?></li>
+                    <li style="	float: left;
+                    	margin: 10px 10px 0 10px;"><?=makeHTMLImg($MyRequest->link("/public/skin/ecommerce/images/openpay/07.png",false,true),100,50)?></li>
+                      <li style="	float: left;
+                      	margin: 10px 10px 0 10px;"><?=makeHTMLImg($MyRequest->link("/public/skin/ecommerce/images/openpay/08.png",false,true),100,50)?></li>
+	    </ul>
+        <div style="height: 90px; width: 190px; float: right; margin-top: 30px;">
+	        ¿Quieres pagar en otras tiendas? visítanos en: www.openpay.mx/tiendas
+        </div>
+
+    </div>
+    <div class="Powered">
+      <?=makeHTMLImg($MyRequest->link("/public/skin/ecommerce/images/openpay/powered_openpay.png",false,true),150,'',"Powered by Openpay")?>
+    </div>
+</div>
+<div style="height: 40px; width: 100%; float: left;"></div>

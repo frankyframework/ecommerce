@@ -1,0 +1,26 @@
+{
+    "name": "frankyframework/ecommerce",
+    "type": "franky-module",
+    "description": "Ecommerce",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Ussiel Acevedo",
+            "email": "ussiel@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "frankyframework/module-installer-plugin" : "1.0.x-dev",
+        "openpay/sdk" : "1.2.3",
+        "conekta/conekta-php" : "4.0.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ecommerce\\": "src/",
+            "SrPago\\": "lib/srpago_php/SrPago"
+        }
+    },
+    "license": "MIT"
+}
