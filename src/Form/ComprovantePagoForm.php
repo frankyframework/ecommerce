@@ -10,7 +10,7 @@ class ComprovantePagoForm extends \Franky\Form\Form
 
        $this->setAtributos(array(
             'name' => $name,
-            'action' => "/ecommerce/admin/pedidos/comprovante-pago.php",
+            'action' => "/ecommerce/mi-cuenta/pedidos/comprovante-pago.php",
             'method' => 'post',
             'enctype' => "multipart/form-data"
         ));

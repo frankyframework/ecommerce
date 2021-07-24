@@ -10,7 +10,7 @@ class conektaForm extends \Franky\Form\Form
 
        $this->setAtributos(array(
             'name' => $name,
-            'action' => "/ecommerce/admin/tarjetas/submit.php",
+            'action' => "/ecommerce/mi-cuenta/tarjetas/submit.php",
             'method' => 'post'
         ));
 
