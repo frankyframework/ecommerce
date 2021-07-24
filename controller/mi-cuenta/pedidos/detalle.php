@@ -14,10 +14,13 @@ $id = $Tokenizer->decode($MyRequest->getRequest('id'));
 $detalle_pedido = getPedido($id,$uid);
 
 
+$uid = $MySession->GetVar('id');
 
-$StatusPagoForm = new StatusPagoForm('frmStatus');
-$StatusPagoForm->setAtributoInput('id', 'value', $MyRequest->getRequest('id'));
-$StatusPagoForm->setAtributoInput('status', 'value', $detalle_pedido['status']);
+
+$ComprovantePagoForm = new ComprovantePagoForm('frmComprovante');
+$ComprovantePagoForm->setAtributoInput('id', 'value', $MyRequest->getRequest('id'));
+$ComprovantePagoForm->setAtributoInput('callback', 'value', $Tokenizer->token('pedido',$MyRequest->getURI()));
+
 
 $EcommercelogstatusEntity->id_pedido($id);
 $EcommercelogstatusModel->setTampag(10);

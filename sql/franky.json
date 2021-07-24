@@ -27,6 +27,36 @@
             "status":1,
             "editable":1,
             "modulo":"ecommerce"
+        },
+        {
+            "php":"mi-cuenta/pedidos/lista.php",
+            "css":"",
+            "js":[],
+            "jquery":[],
+            "permisos":[3],
+            "constante":"MICUENTA_LISTA_PEDIDOS",
+            "url":"mi-cuenta/ecommerce/pedidos/",
+            "nombre":"Mis ordenes de compra",
+            "ajax":["base/ajax.admin.js","ecommerce/ajax.admin.js"],
+            "status":1,
+            "editable":1,
+            "modulo":"ecommerce"
+        },
+        {
+            "php":"mi-cuenta/pedidos/detalle.php",
+            "css":"",
+            "js":[],
+            "jquery":["jquery-validate"],
+            "permisos":[3],
+            "constante":"MICUENTA_DETALLE_PEDIDOS",
+            "url":"mi-cuenta/ecommerce/pedidos/detalle/",
+            "nombre":"Detalle de la orden",
+            "ajax":["base/ajax.admin.js","ecommerce/ajax.admin.js"],
+            "status":1,
+            "editable":1,
+            "modulo":"ecommerce"
         }
+
+
     ]
 }

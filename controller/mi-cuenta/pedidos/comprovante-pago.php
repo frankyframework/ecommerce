@@ -16,10 +16,6 @@ if($MyAccessList->MeDasChancePasar(ADMINISTRAR_MIS_PEDIDOS))
 {
   $uid = $MySession->GetVar('id');
 }
-else if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PEDIDOS))
-{
-  $uid = "";
-}
 else{
   $uid = -1;
   $error = true;

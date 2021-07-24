@@ -30,38 +30,11 @@
         <li><strong>Total productos:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_compra']); ?></li>
         <li><strong>Total a pagar:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_compra']-$detalle_pedido['descuento']+$detalle_pedido['monto_envio']); ?></li>
         <li class="_total"><strong>Monto pagado:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_pagado']); ?></li>
-        
-        
-        
-        <?php $referencia = json_decode($detalle_pedido['referencia'],true); ?>
-        <?php if($detalle_pedido['metodo_pago'] == 'paypal'): ?>
-          <li>Referencia: <?=$referencia['paymentID']?></li>
-        <?php endif;?>
-        <?php if($detalle_pedido['metodo_pago'] == 'conekta_tarjeta'): ?>
-            <li>Referencia: <?=$referencia['id']?></li>
-        <?php endif;?>
+        <?php
 
-        <?php if($detalle_pedido['metodo_pago'] == 'conekta_oxxo'): ?>
-            <li>Referencia: <?=$referencia['id']?></li>
-        <?php endif;?>
-        <?php if($detalle_pedido['metodo_pago'] == 'openpay_tarjeta'): ?>
-          <li>Referencia: <?=$referencia['id']?></li>
-          <li>Autorizacion: <?=$referencia['authorization']?></li>
-        <?php endif;?>
-        <?php if($detalle_pedido['metodo_pago'] == 'openpay_establecimiento'): ?>
-          <li>Referencia: <?=$referencia['id']?></li>
-        <?php endif;?>
-        <?php if($detalle_pedido['metodo_pago'] == 'srpago_tarjeta'): ?>
-            <li>Referencia: <?=$referencia['id']?></li>
-        <?php endif;?>
-        <?php if($detalle_pedido['metodo_pago'] == 'srpago_oxxo'): ?>
-          <li>Referencia: <?=$referencia['id']?></li>
-        <?php endif;?>
-
-        <?php if($detalle_pedido['metodo_pago'] == 'srpago_spei'): ?>
-          <li>Referencia: <?=$referencia['id']?></li>
-        <?php endif;?>
-           
+        $referencia = json_decode($detalle_pedido['referencia'],true);
+       
+        ?>
         <?php if($detalle_pedido['metodo_pago'] == 'conekta_oxxo'): ?>
           <li>Referencia pago oxxo: <?=$referencia['referencia']?></li>
         <?php endif;?>
@@ -206,65 +179,21 @@ $imagen = "";
         <p>Sin actualizaciones recientes</p>
       <?php endif; ?>
 
-     
-    <?php if($detalle_pedido['status'] != 'canceled'): ?>
-    <?php echo $StatusPagoForm->openTag(); ?>
+      <?php if(in_array($detalle_pedido['status'],['pending','in-progress','pago_incompleto'])): ?>
+        <?php echo $ComprovantePagoForm->openTag(); ?>
+        <?php echo $ComprovantePagoForm->getAllRow(); ?>
+        <?php echo $ComprovantePagoForm->endTag(); ?>
+        <script >
 
-    <?php echo $StatusPagoForm->getRow('id'); ?>
-    <?php echo $StatusPagoForm->getRow('status'); ?>
-
-    <div class="content_monto" style="display:none;">
-    <?php echo $StatusPagoForm->getRow('cantidad'); ?>
-  </div>
-    <div class="content_nota" style="display:none;">
-    <?php echo $StatusPagoForm->getRow('nota'); ?>
-    </div>
-    <?php echo $StatusPagoForm->getRow('guardar'); ?>
-    <?php echo $StatusPagoForm->endTag(); ?>
-    <script >
-
-    $(document).ready(function()
-    {
-        $( "form[name=frmStatus]" ).find('select[name=status]').change(function(){
-
-
-                    $('.content_monto').show();
-
-
-
-                if($(this).val() == "partially-refunded" ||
-                $(this).val() == "refunded" ||
-                $(this).val() == "request_refunded" ||
-                $(this).val() == "canceled"
-                )
-                {
-                    $('.content_nota').show();
-                }
-                else
-                {
-                    $('.content_nota').hide();
-                }
-
+        $(document).ready(function()
+        {
+            $( "#frmComprovante" ).validate();
         });
 
-        $('form[name=frmStatus').validate({
+        </script>
 
-             submitHandler: function(form)
-                {
-                   SetStatusPagoEcommerce();
-                   return false;
-                }
-        });
+      <?php endif; ?>
 
-        
-
-
-
-    });
-
-    </script>
-
-    <?php endif; ?>
     <?php $testigo = json_decode($detalle_pedido['testigo'],true); ?>
     <?php if(!empty($testigo )): ?>
     <h4>Comprobantes</h4>

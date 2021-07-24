@@ -1,0 +1,82 @@
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?></div>
+    <div class="w-xxxx-12 cont_global_admin">
+        <h1 class="titulo_seccion_admin">Resumen de compras</h1>
+        <p>En esta sección encontrarás todas las compras que has realizado y las que se encuentran pendiente de pago.</p>
+        <div class="w-xxxx-12 cont_header_panel _orders _calendar">
+            <div class="form-group form-inline">
+                <?php echo $MyFiltrosForm->openTag(); ?>
+                <?php echo $MyFiltrosForm->getAllRow(); ?>
+                <?php echo $MyFiltrosForm->endTag(); ?>
+            </div>
+        </div>
+
+        <div  class="w-xxxx-12 cont_gral_admin pedidos">
+                <div class="w-xxxx-12">
+                    <div class="w-xxxx-12 contenedor_titulo_columnas">
+                        <?php $i = 1; ?>
+                        <?php foreach($titulo_columnas_grid as $k =>$v): ?>
+                        <div class="<?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>"><?php echo makeHTMLOrder( $k, $v);  ?></div>
+                        <?php endforeach; ?>
+                        <div class="w-xxxx-1">Detalle</div> -
+                    </div>
+                    <div class="contenedor_columnas_info"  >
+                    <div class="w-xxxx-12 contenedor_columnas"  >
+                        <?php $i = 1; ?>
+                        <?php foreach($value_columnas_grid as $k): ?>
+                        <div class="{{_data.thisClass}}   <?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>">{{_data.<?php echo $k;  ?>}}</div>
+                        <?php endforeach; ?>
+
+                        <div class='w-xxxx-1 {{_data.thisClass}}'>
+                           <a href="<?php echo $MyRequest->url(MICUENTA_DETALLE_PEDIDOS); ?>?id={{_data.id}}"><i class="icon icon-editar"></i>Detalle</a>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="w-xxxx-12">
+                    <div class="no_hay_datos" ><?php echo $error_grid; ?></div>
+                </div>
+                <div class="w-xxxx-12">
+                    <?php echo render("admin/widget.paginar.phtml"); ?>
+                </div>
+        </div>
+    </div>
+</div>
+
+<script >
+<!--
+$(".contenedor_columnas_info").htmlDataDum(<?php echo json_encode($lista_admin_data); ?>,".no_hay_datos");
+// -->
+</script>
+
+
+ <?php if(!$Mobile_detect->isMobile()): ?>
+<script >
+<!--
+$( document ).ready(function() {
+ $(function() {
+     $( "input[name=rango_inicial]" ).datepicker({
+         defaultDate: "+1w",
+         changeMonth: false,
+         numberOfMonths: 3,
+         dateFormat:"yy-mm-dd",
+         maxDate: "+0D",
+         onClose: function( selectedDate ) {
+         $("input[name=rango_final]" ).datepicker( "option", "minDate", selectedDate );
+         }
+     });
+     $( "input[name=rango_final]" ).datepicker({
+         defaultDate: "+1w",
+         changeMonth: false,
+         numberOfMonths: 3,
+         dateFormat:"yy-mm-dd",
+         maxDate: "+0D",
+         onClose: function( selectedDate ) {
+         $( "input[name=rango_inicial]").datepicker( "option", "maxDate", selectedDate );
+         }
+     });
+ });
+});
+// -->
+</script>
+<?php endif; ?>
