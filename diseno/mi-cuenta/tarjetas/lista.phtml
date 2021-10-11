@@ -34,10 +34,10 @@
 
     </div>
 </div>
-
+<script type="text/javascript">
+window.admingrid = <?php echo json_encode($lista_admin_data); ?>;
+</script>
 <script >
-<!--
-$(".contenedor_columnas_info").htmlDataDum(<?php echo json_encode($lista_admin_data); ?>,".no_hay_datos");
 $(window).load(function(){
     $(".btn_adm_eliminar").click(function(event){
 
@@ -47,5 +47,4 @@ $(window).load(function(){
 
     });
 });
-// -->
 </script>

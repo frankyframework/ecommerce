@@ -43,16 +43,13 @@
     </div>
 </div>
 
-<script >
-<!--
-$(".contenedor_columnas_info").htmlDataDum(<?php echo json_encode($lista_admin_data); ?>,".no_hay_datos");
-// -->
+<script type="text/javascript">
+window.admingrid = <?php echo json_encode($lista_admin_data); ?>;
 </script>
 
 
  <?php if(!$Mobile_detect->isMobile()): ?>
 <script >
-<!--
 $( document ).ready(function() {
  $(function() {
      $( "input[name=rango_inicial]" ).datepicker({
@@ -77,6 +74,5 @@ $( document ).ready(function() {
      });
  });
 });
-// -->
 </script>
 <?php endif; ?>
