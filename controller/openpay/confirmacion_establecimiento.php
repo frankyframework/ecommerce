@@ -203,15 +203,13 @@ if($MyPedido->save($MyPedidoEntity->getArrayCopy()) == REGISTRO_SUCCESS)
         $campos['ticket_establecimiento'] = render(PROJECT_DIR.'/modulos/ecommerce/diseno/email/ticket_establecimiento.phtml',
             [ 'due_date' => $limit[0].' '.$limit[1],'productos_comprados' =>$productos_comprados,'referencia' => $referencia,'MyRequest' => $MyRequest,'MySession' => $MySession]);
 
-    $TemplateemailModel    = new \Base\model\TemplateemailModel;
-    $SecciontransaccionalEntity    = new \Base\entity\SecciontransaccionalEntity;
-    $SecciontransaccionalEntity->friendly('nueva-orden-de-compra-establecimiento-openpay');
-    $TemplateemailModel->setOrdensql('id DESC');
-    $TemplateemailModel->getData([],$SecciontransaccionalEntity->getArrayCopy());
-
-    $registro  = $TemplateemailModel->getRows();
+            $TemplateemailModel    = new \Base\model\TemplateemailModel;
+            $TemplateemailEntity    = new \Base\entity\TemplateemailEntity;
+            $TemplateemailEntity->id(getCoreConfig('ecommerce/openpay/email-order-establecimiento'));
+            $TemplateemailModel->getData($TemplateemailEntity->getArrayCopy());
+            $registro  = $TemplateemailModel->getRows();
     
-    sendEmail($campos,$registro);
+            sendEmail($campos,$registro);
 
     $ObserverManager->dispatch('finalizar_orden_ecommerce',[$pedido]);
 }

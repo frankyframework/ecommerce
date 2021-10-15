@@ -280,13 +280,13 @@ if(!$error)
             'gran_total' => getFormatoPrecio($productos_comprados['gran_total']+$data['monto_envio']-$productos_comprados['descuento']),'metodo_pago' =>'Pago con tarjeta','status' => getStatusTransaccion($status_pago));
 
 
-        $TemplateemailModel    = new \Base\model\TemplateemailModel;
-        $SecciontransaccionalEntity    = new \Base\entity\SecciontransaccionalEntity;
-        $SecciontransaccionalEntity->friendly('nueva-orden-de-compra');
-        $TemplateemailModel->setOrdensql('id DESC');
-        $TemplateemailModel->getData([],$SecciontransaccionalEntity->getArrayCopy());
+        
+            $TemplateemailModel    = new \Base\model\TemplateemailModel;
+            $TemplateemailEntity    = new \Base\entity\TemplateemailEntity;
+            $TemplateemailEntity->id(getCoreConfig('ecommerce/conekta/email-order-tarjeta'));
+            $TemplateemailModel->getData($TemplateemailEntity->getArrayCopy());
+            $registro  = $TemplateemailModel->getRows();
 
-        $registro  = $TemplateemailModel->getRows();
 
         sendEmail($campos,$registro);
 

@@ -77,12 +77,11 @@ if ($data_conketa->type == 'charge.paid'){
               $campos = array("orden" => $PedidosEntity->getId(),"nombre" =>$detalle_pedido['nombre'],'productos' =>$productos_html,"email" => $dataUser['email'],
               'gran_total' => getFormatoPrecio($detalle_pedido['monto_compra']),'metodo_pago' =>$detalle_pedido['metodo_pago'],"status" => getStatusTransaccion($status_pago));
 
+              
               $TemplateemailModel    = new \Base\model\TemplateemailModel;
-              $SecciontransaccionalEntity    = new \Base\entity\SecciontransaccionalEntity;
-              $SecciontransaccionalEntity->friendly('cambio-status-pedido');
-              $TemplateemailModel->setOrdensql('id DESC');
-              $TemplateemailModel->getData([],$SecciontransaccionalEntity->getArrayCopy());
-
+              $TemplateemailEntity    = new \Base\entity\TemplateemailEntity;
+              $TemplateemailEntity->id(getCoreConfig('ecommerce/ventas/email-template-cambiostatus'));
+              $TemplateemailModel->getData($TemplateemailEntity->getArrayCopy());
               $registro  = $TemplateemailModel->getRows();
 
               sendEmail($campos,$registro);

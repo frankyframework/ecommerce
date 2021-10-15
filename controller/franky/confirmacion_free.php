@@ -129,15 +129,13 @@ if($MyPedido->save($MyPedidoEntity->getArrayCopy()) == REGISTRO_SUCCESS)
 
     $campos = array("orden" => $pedido,"nombre" =>$MySession->GetVar('nombre'),"email" =>$MySession->GetVar('email'),'productos' =>$productos_html,'subtotal' => getFormatoPrecio($productos_comprados['subtotal']),
     'iva' => getFormatoPrecio($productos_comprados['iva_total']),
-   'gran_total' => getFormatoPrecio($productos_comprados['gran_total']),'metodo_pago' =>'No requerido','status' => getStatusTransaccion($status_pago),'referencia' => $referencia);
+    'gran_total' => getFormatoPrecio($productos_comprados['gran_total']),'metodo_pago' =>'No requerido','status' => getStatusTransaccion($status_pago),'referencia' => $referencia);
 
 
     $TemplateemailModel    = new \Base\model\TemplateemailModel;
-    $SecciontransaccionalEntity    = new \Base\entity\SecciontransaccionalEntity;
-    $SecciontransaccionalEntity->friendly('nueva-orden-de-compra');
-    $TemplateemailModel->setOrdensql('id DESC');
-    $TemplateemailModel->getData([],$SecciontransaccionalEntity->getArrayCopy());
-
+    $TemplateemailEntity    = new \Base\entity\TemplateemailEntity;
+    $TemplateemailEntity->id(getCoreConfig('ecommerce/ventas/email-order-free'));
+    $TemplateemailModel->getData($TemplateemailEntity->getArrayCopy());
     $registro  = $TemplateemailModel->getRows();
 
     sendEmail($campos,$registro);

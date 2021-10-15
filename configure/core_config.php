@@ -1,39 +1,71 @@
 <?php
+
 return array(
-    'ecommerce-product' => array(
-        'menu' => "ECOMMERCE PRODUCTOS",
-        'title' => "Configuración de productos",
-        'config' =>  array(
-            array('path' => 'ecommerce/product/placeholder',
-                    'type' => 'file',
-                    'label' => 'Placeholder del producto',
-                    'validation' => array('image' => true),
-                    'value' => ''
-            ),
-       
-
-            array('path' => 'ecommerce/product/object',
-                    'type' => 'text',
-                    'label' => 'Clase del producto',
-                    'validation' => array('require' => true),
-                    'value' => ''
-                    )    ,
-
-            array('path' => 'ecommerce/product/path_images',
-                    'type' => 'text',
-                    'label' => 'Path base de imagenes del producto',
-                    'validation' => array('require' => true),
-                    'value' => ''
+        'ecommerce-product' => array(
+                'menu' => "ECOMMERCE PRODUCTOS",
+                'title' => "Configuración de productos",
+                'config' =>  array(
+                    array('path' => 'ecommerce/product/placeholder',
+                            'type' => 'file',
+                            'label' => 'Placeholder del producto',
+                            'validation' => array('image' => true),
+                            'value' => ''
                     ),
+               
+        
+                    array('path' => 'ecommerce/product/object',
+                            'type' => 'text',
+                            'label' => 'Clase del producto',
+                            'validation' => array('require' => true),
+                            'value' => ''
+                            )    ,
+        
+                    array('path' => 'ecommerce/product/path_images',
+                            'type' => 'text',
+                            'label' => 'Path base de imagenes del producto',
+                            'validation' => array('require' => true),
+                            'value' => ''
+                            ),
+        
+                    array('path' => 'ecommerce/product/url-detalle',
+                            'type' => 'text',
+                            'label' => 'Constante detalle',
+                            'validation' => array('require' => true),
+                            'value' => ''
+                            )   
+                    ), 
+        
+            ),
+        
+    'ecommerce-sales' => array(
+        'menu' => "ECOMMERCE VENTAS",
+        'title' => "Configuración de ventas",
+        'config' =>  array(
+                array('path' => 'ecommerce/ventas/email-template-cambiostatus',
+                'type' => 'select',
+                'label' => 'Template E-mail para cambio de status',
+                'validation' => array('required' => true),
+                'data' => getTemplatesEmail(),
+                'value' => '1'
+                ) ,
+                array('path' => 'ecommerce/ventas/email-order-free',
+                'type' => 'select',
+                'label' => 'Template E-mail para nueva orden gratuita',
+                'validation' => array('required' => true),
+                'data' => getTemplatesEmail(),
+                'value' => '1'
+                ),
+                array('path' => 'ecommerce/ventas/email-comprobante-pago',
+                'type' => 'select',
+                'label' => 'Template E-mail para subir comprobante de pago',
+                'validation' => array('required' => true),
+                'data' => getTemplatesEmail(),
+                'value' => '1'
+                )
 
-            array('path' => 'ecommerce/product/url-detalle',
-                    'type' => 'text',
-                    'label' => 'Constante detalle',
-                    'validation' => array('require' => true),
-                    'value' => ''
-                    )   
-            ), 
-
+           
+        ),
+          
     ),
     'ecommerce-cupones' => array(
         'menu' => "ECOMMERCE CUPONES",
@@ -224,12 +256,28 @@ return array(
                               ),
                               'multiple' => true
                             ),
-               array('path' => 'ecommerce/conekta/limitcards',
+                        array('path' => 'ecommerce/conekta/limitcards',
                             'type' => 'text',
                             'label' => 'Limite de tarjetas',
                             'validation' => array('required' => true,'numeric' => true),
                             'value' => '3'
-                          )
+                        ),
+                        array('path' => 'ecommerce/conekta/email-order-oxxo',
+                        'type' => 'select',
+                        'label' => 'Template E-mail para nueva orden oxxo',
+                        'validation' => array('required' => true),
+                        'data' => getTemplatesEmail(),
+                        'value' => ''
+                        ),
+                        array('path' => 'ecommerce/conekta/email-order-tarjeta',
+                                'type' => 'select',
+                                'label' => 'Template E-mail para nueva orden tarjeta',
+                                'validation' => array('required' => true),
+                                'data' => getTemplatesEmail(),
+                                'value' => ''
+                        )
+        
+
           )
   ),
   'ecommerce-paypal' => array(
@@ -274,6 +322,13 @@ return array(
                               'validation' => array('required' => false),
                               'value' => ''
                             ),
+                            array('path' => 'ecommerce/paypal/email-order',
+                                  'type' => 'select',
+                                  'label' => 'Template E-mail para nueva orden',
+                                  'validation' => array('required' => true),
+                                  'data' => getTemplatesEmail(),
+                                  'value' => ''
+                                  ),
              
           )
   ),
@@ -353,6 +408,20 @@ return array(
                                     'validation' => array('required' => false),
                                     'value' => ''
                                   ),
+                                  array('path' => 'ecommerce/openpay/email-order-establecimiento',
+                                  'type' => 'select',
+                                  'label' => 'Template E-mail para nueva orden establecimiento',
+                                  'validation' => array('required' => true),
+                                  'data' => getTemplatesEmail(),
+                                  'value' => ''
+                                  ),
+                                  array('path' => 'ecommerce/openpay/email-order-tarjeta',
+                                  'type' => 'select',
+                                  'label' => 'Template E-mail para nueva orden tarjeta',
+                                  'validation' => array('required' => true),
+                                  'data' => getTemplatesEmail(),
+                                  'value' => ''
+                                  ),
           )
   ),
   'ecommerce-sr-pago' => array(
@@ -407,7 +476,29 @@ return array(
                           'label' => 'Limite de tarjetas',
                           'validation' => array('required' => true,'numeric' => true),
                           'value' => '3'
-                        )
+                        ),
+
+                        array('path' => 'ecommerce/sr-pago/email-order-oxxo',
+                        'type' => 'select',
+                        'label' => 'Template E-mail para nueva orden oxxo',
+                        'validation' => array('required' => true),
+                        'data' => getTemplatesEmail(),
+                        'value' => ''
+                        ),
+                        array('path' => 'ecommerce/sr-pago/email-order-spei',
+                        'type' => 'select',
+                        'label' => 'Template E-mail para nueva orden spei',
+                        'validation' => array('required' => true),
+                        'data' => getTemplatesEmail(),
+                        'value' => ''
+                        ),
+                        array('path' => 'ecommerce/sr-pago/email-order-tarjeta',
+                        'type' => 'select',
+                        'label' => 'Template E-mail para nueva orden tarjeta',
+                        'validation' => array('required' => true),
+                        'data' => getTemplatesEmail(),
+                        'value' => ''
+                        ),
         )
 ),
 );

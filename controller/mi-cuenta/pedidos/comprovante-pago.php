@@ -99,11 +99,11 @@ if(!$error)
             'comprovante' => makeHTMLImg( $MyRequest->link(imageResize($MyConfigure->getUploadDir()."/ecommerce/pedidos/".$detalle_pedido['uid']."/".$detalle_pedido['id']."/".$newtestigo,500,500),false,true))
 );
 
-            $SecciontransaccionalEntity    = new \Base\entity\SecciontransaccionalEntity;
-            $SecciontransaccionalEntity->friendly('agregar-comprovante-de-pago');
-            $TemplateemailModel->setOrdensql('id DESC');
-            $TemplateemailModel->getData([],$SecciontransaccionalEntity->getArrayCopy());
-
+                    
+            $TemplateemailModel    = new \Base\model\TemplateemailModel;
+            $TemplateemailEntity    = new \Base\entity\TemplateemailEntity;
+            $TemplateemailEntity->id(getCoreConfig('ecommerce/ventas/email-comprobante-pago'));
+            $TemplateemailModel->getData($TemplateemailEntity->getArrayCopy());
             $registro  = $TemplateemailModel->getRows();
 
             sendEmail($campos,$registro);

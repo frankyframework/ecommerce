@@ -193,12 +193,11 @@ if($MyPedido->save($MyPedidoEntity->getArrayCopy()) == REGISTRO_SUCCESS)
            ['productos_comprados' =>$productos_comprados,'referencia' => $referencia['id'],'MyRequest' => $MyRequest,"code_referencia" => $order->charges[0]->payment_method->reference]);
 
     $TemplateemailModel    = new \Base\model\TemplateemailModel;
-    $SecciontransaccionalEntity    = new \Base\entity\SecciontransaccionalEntity;
-    $SecciontransaccionalEntity->friendly('nueva-orden-de-compra-oxxo');
-    $TemplateemailModel->setOrdensql('id DESC');
-    $TemplateemailModel->getData([],$SecciontransaccionalEntity->getArrayCopy());
-
+    $TemplateemailEntity    = new \Base\entity\TemplateemailEntity;
+    $TemplateemailEntity->id(getCoreConfig('ecommerce/conekta/email-order-oxxo'));
+    $TemplateemailModel->getData($TemplateemailEntity->getArrayCopy());
     $registro  = $TemplateemailModel->getRows();
+
 
     sendEmail($campos,$registro);
 

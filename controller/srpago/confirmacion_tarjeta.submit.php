@@ -408,13 +408,11 @@ if(!$error)
             'status' => getStatusTransaccion($status_pago));
 
 
-        $TemplateemailModel    = new \Base\model\TemplateemailModel;
-        $SecciontransaccionalEntity    = new \Base\entity\SecciontransaccionalEntity;
-        $SecciontransaccionalEntity->friendly('nueva-orden-de-compra');
-        $TemplateemailModel->setOrdensql('id DESC');
-        $TemplateemailModel->getData([],$SecciontransaccionalEntity->getArrayCopy());
-
-        $registro  = $TemplateemailModel->getRows();
+            $TemplateemailModel    = new \Base\model\TemplateemailModel;
+            $TemplateemailEntity    = new \Base\entity\TemplateemailEntity;
+            $TemplateemailEntity->id(getCoreConfig('ecommerce/sr-pago/email-order-tarjeta'));
+            $TemplateemailModel->getData($TemplateemailEntity->getArrayCopy());
+            $registro  = $TemplateemailModel->getRows();
 
         sendEmail($campos,$registro);
 

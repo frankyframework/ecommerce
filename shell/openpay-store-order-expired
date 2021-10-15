@@ -100,13 +100,11 @@ foreach($pedidos as $pedido)
                   'descuento' =>getFormatoPrecio($detalle_pedido['descuento']),
                   "status" => getStatusTransaccion($status_pago));
 
-              $TemplateemailModel    = new \Base\model\TemplateemailModel;
-              $SecciontransaccionalEntity    = new \Base\entity\SecciontransaccionalEntity;
-              $SecciontransaccionalEntity->friendly('cambio-status-pedido');
-              $TemplateemailModel->setOrdensql('id DESC');
-              $TemplateemailModel->getData([],$SecciontransaccionalEntity->getArrayCopy());
-
-              $registro  = $TemplateemailModel->getRows();
+                  $TemplateemailModel    = new \Base\model\TemplateemailModel;
+                  $TemplateemailEntity    = new \Base\entity\TemplateemailEntity;
+                  $TemplateemailEntity->id(getCoreConfig('ecommerce/ventas/email-template-cambiostatus'));
+                  $TemplateemailModel->getData($TemplateemailEntity->getArrayCopy());
+                  $registro  = $TemplateemailModel->getRows();
 
               sendEmail($campos,$registro);
 

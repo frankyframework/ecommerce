@@ -226,13 +226,12 @@ if($MyPedido->save($MyPedidoEntity->getArrayCopy()) == REGISTRO_SUCCESS)
 
         $campos['ticket_oxxo'] = $referencia['url'];
 
-    $TemplateemailModel    = new \Base\model\TemplateemailModel;
-    $SecciontransaccionalEntity    = new \Base\entity\SecciontransaccionalEntity;
-    $SecciontransaccionalEntity->friendly('nueva-orden-de-compra-oxxo');
-    $TemplateemailModel->setOrdensql('id DESC');
-    $TemplateemailModel->getData([],$SecciontransaccionalEntity->getArrayCopy());
-
-    $registro  = $TemplateemailModel->getRows();
+   
+        $TemplateemailModel    = new \Base\model\TemplateemailModel;
+        $TemplateemailEntity    = new \Base\entity\TemplateemailEntity;
+        $TemplateemailEntity->id(getCoreConfig('ecommerce/sr-pago/email-order-oxxo'));
+        $TemplateemailModel->getData($TemplateemailEntity->getArrayCopy());
+        $registro  = $TemplateemailModel->getRows();
     
     sendEmail($campos,$registro);
 
