@@ -18,7 +18,7 @@ class conektaForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'card[name]',
-                'label' => 'Nombre del tarjetahabiente:',
+                'label' => _ecommerce('Nombre del tarjetahabiente'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -33,7 +33,7 @@ class conektaForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'card[number]',
-                'label' => 'Número de tarjeta de credito:',
+                'label' => _ecommerce('Número de tarjeta de credito'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -48,7 +48,7 @@ class conektaForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'card[cvc]',
-                'label' => 'CVC:',
+                'label' => _ecommerce('CVC'),
                 'type'  => 'password',
                 'required'  => true,
                 'atributos' => array(
@@ -64,7 +64,7 @@ class conektaForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'card[exp_month]',
-                'label' => 'Mes de expiración (MM):',
+                'label' => _ecommerce('Mes de expiración (MM)'),
                 'type'  => 'select',
                 'required'  => true,
                 'atributos' => array(
@@ -93,7 +93,7 @@ class conektaForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'card[exp_year]',
-                'label' => 'Año de expiración (AAAA):',
+                'label' => _ecommerce('Año de expiración (AAAA)'),
                 'type'  => 'select',
                 'required'  => true,
                 'atributos' => array(
@@ -122,7 +122,7 @@ class conektaForm extends \Franky\Form\Form
                 'type'  => 'submit',
                 'atributos' => array(
                     'class'       => 'btn btn-primary btn-big float_right',
-                    'value' => "¡Pagar ahora!"
+                    'value' => _ecommerce("¡Pagar ahora!")
                  )
 
             )
@@ -138,7 +138,7 @@ class conektaForm extends \Franky\Form\Form
                 'label' => 'Guardar tarjeta:',
                 'type'  => 'checkbox',
                 'required'  => false,
-                'options' =>array("1" => "Guardar tarjeta")
+                'options' =>array("1" => _ecommerce("Guardar tarjeta"))
 
             )
         );
@@ -160,7 +160,7 @@ class conektaForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'card[address][street2]',
-                'label' => 'Colonia:',
+                'label' => _ecommerce('Colonia'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -175,7 +175,7 @@ class conektaForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'card[address][city]',
-                'label' => 'Ciudad:',
+                'label' => _ecommerce('Ciudad'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -190,7 +190,7 @@ class conektaForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'card[address][state]',
-                'label' => 'Estado:',
+                'label' => _ecommerce('Estado'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -205,7 +205,7 @@ class conektaForm extends \Franky\Form\Form
 
          $this->add(array(
                 'name' => 'card[address][zip]',
-                'label' => 'Código postal:',
+                'label' => _ecommerce('Código postal'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -220,7 +220,7 @@ class conektaForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'card[address][country]',
-                'label' => 'Pais:',
+                'label' => _ecommerce('Pais'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(

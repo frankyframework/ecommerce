@@ -16,7 +16,7 @@ class CuponesPromocionesForm extends \Franky\Form\Form
 
         $this->add(array(
                'name' => 'titulo',
-               'label' => 'Título',
+               'label' => _ecommerce('Título'),
                'type'  => 'text',
                'required'  => true,
                'atributos' => array(
@@ -31,7 +31,7 @@ class CuponesPromocionesForm extends \Franky\Form\Form
        
         $this->add(array(
                'name' => 'codigo_promocion',
-               'label' => 'Codigo cupón',
+               'label' => _ecommerce('Codigo cupón'),
                'type'  => 'text',
                'required'  => true,
                'atributos' => array(
@@ -46,7 +46,7 @@ class CuponesPromocionesForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'id_promocion',
-                'label' => 'Tipo de promoción',
+                'label' => _ecommerce('Tipo de promoción'),
                 'type'  => 'select',
                 'required'  => true,
 
@@ -63,7 +63,7 @@ class CuponesPromocionesForm extends \Franky\Form\Form
        
         $this->add(array(
                 'name' => 'fecha_inicio',
-                'label' => 'Fecha de inicio',
+                'label' => _ecommerce('Fecha de inicio'),
                 'type'  => 'date',
                 'required'  => false,
                 'atributos' => array(
@@ -80,7 +80,7 @@ class CuponesPromocionesForm extends \Franky\Form\Form
         
         $this->add(array(
                 'name' => 'fecha_fin',
-                'label' => 'Fecha de fin',
+                'label' => _ecommerce('Fecha de fin'),
                 'type'  => 'date',
                 'required'  => false,
                 'atributos' => array(
@@ -96,7 +96,7 @@ class CuponesPromocionesForm extends \Franky\Form\Form
         
         $this->add(array(
                'name' => 'numero_usos',
-               'label' => 'Numero usos',
+               'label' => _ecommerce('Numero usos'),
                'type'  => 'text',
                'required'  => true,
                'atributos' => array(
@@ -112,7 +112,7 @@ class CuponesPromocionesForm extends \Franky\Form\Form
         
         $this->add(array(
                'name' => 'numero_usos_usuario',
-               'label' => 'Numero usos por usuario',
+               'label' => _ecommerce('Numero usos por usuario'),
                'type'  => 'text',
                'required'  => true,
                'atributos' => array(
@@ -131,7 +131,7 @@ class CuponesPromocionesForm extends \Franky\Form\Form
                 'type'  => 'submit',
                 'atributos' => array(
                     'class'       => 'btn btn-primary btn-big float_right',
-                    'value' => "Guardar"
+                    'value' => _ecommerce("Guardar")
                  )
 
             )

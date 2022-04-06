@@ -46,12 +46,12 @@ if($MyDirecciones->getTotal() > 0)
 
 
 $MyFrankyMonster->setPHPFile(getVista("admin/template/grid.phtml"));
-$title_grid = "Mis direcciones de envio";
+$title_grid = _ecommerce("Mis direcciones de envio");
 $class_grid = "cont_direcciones";
-$error_grid = "No hay direcciones registradas";
+$error_grid = _ecommerce("No hay direcciones registradas");
 $deleteFunction = "EliminarDireccionEcommerce";
 $frm_constante_link = FRM_DIRECCIONES_ECOMMERCE;
-$titulo_columnas_grid = array("nombre" => "Nombre","calle" => "Direccion");
+$titulo_columnas_grid = array("nombre" => _ecommerce("Nombre"),"calle" => _ecommerce("Direccion"));
 $value_columnas_grid = array("nombre","calle");
 $css_columnas_grid = array("nombre" => 'w-xxxx-3',"calle" => "w-xxxx-6" );
 

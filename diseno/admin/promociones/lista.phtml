@@ -8,7 +8,7 @@
                 <?php echo $MyFiltrosForm->getAllRow(); ?>
                 <?php echo $MyFiltrosForm->endTag(); ?>
                 <?php if(!empty($frm_constante_link)): ?>
-                  <a href="<?php echo $MyRequest->url($frm_constante_link); ?>" class="_btn_new">Nuevo</a>
+                  <a href="<?php echo $MyRequest->url($frm_constante_link); ?>" class="_btn_new"><?=_ecommerce('Nuevo')?></a>
                 <?php endif; ?>
             </div>
         </div>
@@ -23,12 +23,12 @@
                         <?php endforeach; ?>
                         <div class="w-xxxx-1">
                               <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
-                                  Eliminar
+                                <?=_ecommerce('Eliminar')?>
                               <?php endif; ?>
                         </div>
                         <div class="w-xxxx-1">
                             <?php if(!empty($frm_constante_link)): ?>
-                              Editar
+                                <?=_ecommerce('Editar')?>
                             <?php endif; ?>
                             </div>
                     </div>

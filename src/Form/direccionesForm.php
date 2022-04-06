@@ -26,7 +26,7 @@ class direccionesForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'nombre',
-                'label' => 'Nombre:',
+                'label' => _ecommerce('Nombre'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -41,7 +41,7 @@ class direccionesForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'telefono',
-                'label' => 'Teléfono:',
+                'label' => _ecommerce('Teléfono'),
 
                 'type'  => 'text',
                 'required'  => true,
@@ -59,7 +59,7 @@ class direccionesForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'calle',
-                'label' => 'Calle:',
+                'label' => _ecommerce('Calle'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -74,7 +74,7 @@ class direccionesForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'numero',
-                'label' => 'Número:',
+                'label' => _ecommerce('Número'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -89,7 +89,7 @@ class direccionesForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'numeroi',
-                'label' => 'Número interior:',
+                'label' => _ecommerce('Número interior'),
                 'type'  => 'text',
                 'required'  => false,
                 'atributos' => array(
@@ -104,7 +104,7 @@ class direccionesForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'cp',
-                'label' => 'Código postal:',
+                'label' => _ecommerce('Código postal'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -119,7 +119,7 @@ class direccionesForm extends \Franky\Form\Form
 
          $this->add(array(
                 'name' => 'estado',
-                'label' => 'Estado:',
+                'label' => _ecommerce('Estado'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -135,7 +135,7 @@ class direccionesForm extends \Franky\Form\Form
 
           $this->add(array(
                 'name' => 'ciudad',
-                'label' => 'Ciudad:',
+                'label' => _ecommerce('Ciudad'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -150,7 +150,7 @@ class direccionesForm extends \Franky\Form\Form
 
            $this->add(array(
                 'name' => 'municipio',
-                'label' => 'Municipio:',
+                'label' => _ecommerce('Municipio'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -165,7 +165,7 @@ class direccionesForm extends \Franky\Form\Form
 
             $this->add(array(
                 'name' => 'colonia',
-                'label' => 'Colonia:',
+                'label' => _ecommerce('Colonia'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -190,7 +190,7 @@ class direccionesForm extends \Franky\Form\Form
                 'type'  => 'submit',
                 'atributos' => array(
                     'class'       => 'btn btn-primary btn-big float_right',
-                    'value' => "Guardar"
+                    'value' => _ecommerce("Guardar")
                  )
 
             )
@@ -211,7 +211,7 @@ class direccionesForm extends \Franky\Form\Form
     {
         $this->add(array(
                 'name' => 'rfc',
-                'label' => 'RFC:',
+                'label' => _ecommerce('RFC'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -230,7 +230,7 @@ class direccionesForm extends \Franky\Form\Form
     {
         $this->add(array(
                 'name' => 'telefono_otro',
-                'label' => 'Otro Telefono:',
+                'label' => _ecommerce('Otro Telefono'),
                 'type'  => 'text',
                 'required'  => false,
                 'atributos' => array(
@@ -249,7 +249,7 @@ class direccionesForm extends \Franky\Form\Form
     {
          $this->add(array(
                 'name' => 'entre_calle1',
-                'label' => 'Entre calles y referencias:',
+                'label' => _ecommerce('Entre calles y referencias'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -268,7 +268,7 @@ class direccionesForm extends \Franky\Form\Form
     {
          $this->add(array(
                 'name' => 'instrucciones',
-                'label' => 'Instrucciones:',
+                'label' => _ecommerce('Instrucciones'),
                 'type'  => 'textarea',
                 'required'  => false,
                 'atributos' => array(
@@ -290,7 +290,7 @@ class direccionesForm extends \Franky\Form\Form
                    'class'       => '',
 
                 ),
-               'options' =>  array("1" => "Este es un pick up point"),
+               'options' =>  array("1" => _ecommerce("Este es un pick up point")),
 
                'label_atributos' => array(
                    'class'       => 'desc_form_no_obligatorio',

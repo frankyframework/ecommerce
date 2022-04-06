@@ -50,12 +50,12 @@ if($EcommercetiendasModel->getTotal() > 0)
 
 
 $MyFrankyMonster->setPHPFile(getVista("admin/template/grid.phtml"));
-$title_grid = "Tiendas";
+$title_grid = _ecommerce("Tiendas");
 $class_grid = "cont_tiendas";
-$error_grid = "No hay tiendas registradas";
+$error_grid = _ecommerce("No hay tiendas registradas");
 $deleteFunction = "EliminarTiendaEcommerce";
 $frm_constante_link = FRM_TIENDAS_ECOMMERCE;
-$titulo_columnas_grid = array("nombre" => "Nombre","calle" => "Direccion");
+$titulo_columnas_grid = array("nombre" => _ecommerce("Nombre"),"calle" => _ecommerce("Direccion"));
 $value_columnas_grid = array("nombre","calle");
 
 

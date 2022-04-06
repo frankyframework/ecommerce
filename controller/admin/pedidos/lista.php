@@ -74,13 +74,13 @@ if($pedidosModel->getTotal() > 0)
     }
 }
 
-$titulo_columnas_grid = array("ecommerce_pedidos.fecha" => "Fecha","ecommerce_pedidos.id" => "#Orden","metodo_pago" => "Método de pago", "monto_compra" => "Total Compra","ecommerce_pedidos.status" => "Estatus");
+$titulo_columnas_grid = array("ecommerce_pedidos.fecha" => _ecommerce("Fecha"),"ecommerce_pedidos.id" => _ecommerce("#Orden"),"metodo_pago" => _ecommerce("Método de pago"), "monto_compra" => _ecommerce("Total Compra"),"ecommerce_pedidos.status" => _ecommerce("Estatus"));
 $value_columnas_grid = array("ecommerce_pedidos.fecha","ecommerce_pedidos.id","metodo_pago","monto_compra","ecommerce_pedidos.status");
 $css_columnas_grid = array("ecommerce_pedidos.fecha" => "w-xxxx-2" ,"ecommerce_pedidos.id" => "w-xxxx-2" , "metodo_pago" => "w-xxxx-2" , "monto_compra" => "w-xxxx-3","ecommerce_pedidos.status" => "w-xxxx-2");
 
 if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PEDIDOS))
 {
-    $titulo_columnas_grid['users.nombre'] = "Usuario";
+    $titulo_columnas_grid['users.nombre'] = _ecommerce("Usuario");
 		$value_columnas_grid[] ='users.nombre';
 		$css_columnas_grid['monto_compra'] = 'w-xxxx-2';
 		$css_columnas_grid['users.nombre'] = 'w-xxxx-1';

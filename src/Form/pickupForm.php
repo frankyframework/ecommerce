@@ -21,7 +21,7 @@ class pickupForm extends \Franky\Form\Form
     {
         $this->add(array(
                 'name' => 'id_pickup',
-                'label' => 'Pickup Point:',
+                'label' => _ecommerce('Pickup Point'),
                 'type'  => 'select',
                 'required'  => true,
 

@@ -44,8 +44,8 @@ class ComprovantePagoForm extends \Franky\Form\Form
              'name' => 'guardar',
              'type'  => 'submit',
              'atributos' => array(
-                 'class'       => 'btn btn-primary btn-big float_right',
-                 'value' => _("Guardar")
+                 'class' => 'btn btn-primary btn-big float_right',
+                 'value' => _ecommerce("Guardar")
               )
 
          )

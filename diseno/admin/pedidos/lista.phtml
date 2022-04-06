@@ -1,8 +1,8 @@
 <div class="content">
     <div class="w-xxxx-12"><?php echo breadcrumbs(); ?></div>
     <div class="w-xxxx-12 cont_global_admin">
-        <h1 class="titulo_seccion_admin">Resumen de compras</h1>
-        <p>En esta sección encontrarás todas las compras que has realizado y las que se encuentran pendiente de pago.</p>
+        <h1 class="titulo_seccion_admin"><?=_ecommerce('Resumen de compras')?></h1>
+        <p><?=_ecommerce('En esta sección encontrarás todas las compras que has realizado y las que se encuentran pendiente de pago.')?></p>
         <div class="w-xxxx-12 cont_header_panel _orders _calendar">
             <div class="form-group form-inline">
                 <?php echo $MyFiltrosForm->openTag(); ?>
@@ -18,7 +18,7 @@
                         <?php foreach($titulo_columnas_grid as $k =>$v): ?>
                         <div class="<?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>"><?php echo makeHTMLOrder( $k, $v);  ?></div>
                         <?php endforeach; ?>
-                        <div class="w-xxxx-1">Detalle</div> -
+                        <div class="w-xxxx-1"><?=_ecommerce('Detalle')?></div> -
                     </div>
                     <div class="contenedor_columnas_info"  >
                     <div class="w-xxxx-12 contenedor_columnas"  >

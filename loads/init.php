@@ -6,7 +6,7 @@ include 'lca.php';
 include 'util.php';
 include 'paypal.php';
 
-bindtextdomain("ecommerce", PROJECT_DIR .'/modulos/ecommerce/locale');
+__bindtextdomain("ecommerce",'ecommerce');
 
 
 if (function_exists('bind_textdomain_codeset'))

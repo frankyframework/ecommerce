@@ -24,7 +24,7 @@ class srpagoForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'holder_name',
-                'label' => 'Nombre del tarjetahabiente:',
+                'label' => _ecommerce('Nombre del tarjetahabiente'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -40,7 +40,7 @@ class srpagoForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'number',
-                'label' => 'Número de tarjeta de credito:',
+                'label' => _ecommerce('Número de tarjeta de credito'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -56,7 +56,7 @@ class srpagoForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'cvv',
-                'label' => 'CVC:',
+                'label' => _ecommerce('CVC'),
                 'type'  => 'password',
                 'required'  => true,
                 'atributos' => array(
@@ -72,7 +72,7 @@ class srpagoForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'month',
-                'label' => 'Mes de expiración (MM):',
+                'label' => _ecommerce('Mes de expiración (MM)'),
                 'type'  => 'select',
                 'required'  => true,
                 'atributos' => array(
@@ -101,7 +101,7 @@ class srpagoForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'year',
-                'label' => 'Año de expiración (AAAA):',
+                'label' => _ecommerce('Año de expiración (AAAA)'),
                 'type'  => 'select',
                 'required'  => true,
                 'atributos' => array(
@@ -130,7 +130,7 @@ class srpagoForm extends \Franky\Form\Form
                 'type'  => 'submit',
                 'atributos' => array(
                     'class'       => 'btn btn-primary btn-big float_right',
-                    'value' => "¡Pagar ahora!"
+                    'value' => _ecommerce("¡Pagar ahora!")
                  )
 
             )
@@ -143,10 +143,10 @@ class srpagoForm extends \Franky\Form\Form
     {
          $this->add(array(
                 'name' => 'save',
-                'label' => 'Guardar tarjeta:',
+                'label' => _ecommerce('Guardar tarjeta'),
                 'type'  => 'checkbox',
                 'required'  => false,
-                'options' =>array("1" => "Guardar tarjeta")
+                'options' =>array("1" => _ecommerce("Guardar tarjeta"))
 
             )
         );

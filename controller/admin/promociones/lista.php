@@ -66,13 +66,13 @@ if($EcommercepromocionesModel->getTotal() > 0)
         
 }
 
-$title_grid = "Administración de promociones";
+$title_grid = _ecommerce("Administración de promociones");
 $class_grid = "cont_promociones";
-$error_grid = "No hay promociones registradas";
+$error_grid = _ecommerce("No hay promociones registradas");
 $deleteFunction = "EliminarPromocionesEcommerce";
 $frm_constante_link = ADMIN_FRM_PROMOCIONES_ECOMMERCE;
 
-$titulo_columnas_grid = array("createdAt" => "Fecha","titulo" => "Titulo","nombre" => "Tipo");
+$titulo_columnas_grid = array("createdAt" => _ecommerce("Fecha"),"titulo" => _ecommerce("Titulo"),"nombre" => _ecommerce("Tipo"));
 $value_columnas_grid = array("createdAt" ,"titulo","nombre");
 $css_columnas_grid = array("createdAt" => 'w-xxxx-1',"titulo" => "w-xxxx-4" , "nombre" => "w-xxxx-3");
 

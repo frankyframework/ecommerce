@@ -25,7 +25,7 @@ class StatusPagoForm extends \Franky\Form\Form
 
         $this->add(array(
                'name' => 'status',
-               'label' => _('Status de pago'),
+               'label' => _ecommerce('Status de pago'),
                'type'  => 'select',
                'required'  => true,
               'required'  => true,
@@ -51,7 +51,7 @@ class StatusPagoForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'cantidad',
-                'label' => 'Cantidad a reenvolsar:',
+                'label' => _ecommerce('Cantidad a reenvolsar'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -68,7 +68,7 @@ class StatusPagoForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'nota',
-                'label' => 'Nota:',
+                'label' => _ecommerce('Nota'),
                 'type'  => 'textarea',
                 'required'  => true,
                 'atributos' => array(
@@ -88,7 +88,7 @@ class StatusPagoForm extends \Franky\Form\Form
                 'type'  => 'submit',
                 'atributos' => array(
                     'class'       => 'btn btn-primary btn-big float_right',
-                    'value' => "Cambiar status"
+                    'value' => _ecommerce("Cambiar status")
                  )
 
             )

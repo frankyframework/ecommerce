@@ -21,7 +21,7 @@ class checkoutForm extends \Franky\Form\Form
     {
         $this->add(array(
                 'name' => 'id_envio',
-                'label' => 'Dirección de envio:',
+                'label' => _ecommerce('Dirección de envio'),
                 'type'  => 'radio',
                 'required'  => true,
 
@@ -43,7 +43,7 @@ class checkoutForm extends \Franky\Form\Form
     {
         $this->add(array(
                 'name' => 'id_facturacion',
-                'label' => 'Dirección de facturación:',
+                'label' => _ecommerce('Dirección de facturación'),
                 'type'  => 'radio',
                 'required'  => false,
 
@@ -63,7 +63,7 @@ class checkoutForm extends \Franky\Form\Form
     {
         $this->add(array(
                 'name' => 'id_tarjeta',
-                'label' => 'Tarjeta:',
+                'label' => _ecommerce('Tarjeta'),
                 'type'  => 'radio',
                 'required'  => true,
 
@@ -117,7 +117,7 @@ class checkoutForm extends \Franky\Form\Form
 
                 'atributos' => array(
                     'class'       => 'btn btn-primary btn-big float_right',
-                    'value' => "Continuar"
+                    'value' => _ecommerce("Continuar")
                  )
 
             )

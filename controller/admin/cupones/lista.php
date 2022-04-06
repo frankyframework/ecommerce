@@ -69,13 +69,13 @@ if($EcommercecuponesModel->getTotal() > 0)
         
 }
 
-$title_grid = "Administración de cupones";
+$title_grid = _ecommerce("Administración de cupones");
 $class_grid = "cont_cupones";
-$error_grid = "No hay cupones registrados";
+$error_grid = _ecommerce("No hay cupones registrados");
 $deleteFunction = "EliminarCuponesEcommerce";
 $frm_constante_link = ADMIN_FRM_CUPONES_ECOMMERCE;
 
-$titulo_columnas_grid = array("createdAt" => "Fecha","titulo" => "Titulo","codigo_promocion" => "Cupon","nombre" => "Tipo");
+$titulo_columnas_grid = array("createdAt" => _ecommerce("Fecha"),"titulo" => _ecommerce("Titulo"),"codigo_promocion" => _ecommerce("Cupon"),"nombre" => _ecommerce("Tipo"));
 $value_columnas_grid = array("createdAt" ,"titulo","codigo_promocion","nombre");
 $css_columnas_grid = array("createdAt" => 'w-xxxx-1',"titulo" => "w-xxxx-4" ,"codigo_promocion" => "w-xxxx-2" , "nombre" => "w-xxxx-3");
 

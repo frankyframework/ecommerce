@@ -12,7 +12,7 @@ class DescuentoTarifaPlanaData implements \Ecommerce\interfaces\EcommercePromoci
         $input = array(
             array(
                'name' => 'minimo',
-               'label' => 'Minimo de compra',
+               'label' => _ecommerce('Minimo de compra'),
                'type'  => 'text',
                'required'  => true,
                'atributos' => array(
@@ -25,7 +25,7 @@ class DescuentoTarifaPlanaData implements \Ecommerce\interfaces\EcommercePromoci
            ),
               array(
                'name' => 'maximo',
-               'label' => 'Maximo de compra',
+               'label' => _ecommerce('Maximo de compra'),
                'type'  => 'text',
                'required'  => true,
                'atributos' => array(
@@ -38,7 +38,7 @@ class DescuentoTarifaPlanaData implements \Ecommerce\interfaces\EcommercePromoci
            ),
             array(
                'name' => 'tarifa',
-               'label' => 'Tarifa de descuento',
+               'label' => _ecommerce('Tarifa de descuento'),
                'type'  => 'text',
                'required'  => true,
                'atributos' => array(

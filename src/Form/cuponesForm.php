@@ -18,7 +18,7 @@ class cuponesForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'codigo',
-                'label' => 'Codigo cupón:',
+                'label' => _ecommerce('Codigo cupón'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(

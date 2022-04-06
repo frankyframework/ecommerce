@@ -16,7 +16,7 @@ class PromocionesForm extends \Franky\Form\Form
 
         $this->add(array(
                'name' => 'titulo',
-               'label' => 'Título',
+               'label' => _ecommerce('Título'),
                'type'  => 'text',
                'required'  => true,
                'atributos' => array(
@@ -33,7 +33,7 @@ class PromocionesForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'id_promocion',
-                'label' => 'Tipo de promoción',
+                'label' => _ecommerce('Tipo de promoción'),
                 'type'  => 'select',
                 'required'  => true,
 
@@ -50,7 +50,7 @@ class PromocionesForm extends \Franky\Form\Form
        
         $this->add(array(
                 'name' => 'fecha_inicio',
-                'label' => 'Fecha de inicio',
+                'label' => _ecommerce('Fecha de inicio'),
                 'type'  => 'date',
                 'required'  => false,
                 'atributos' => array(
@@ -67,7 +67,7 @@ class PromocionesForm extends \Franky\Form\Form
         
         $this->add(array(
                 'name' => 'fecha_fin',
-                'label' => 'Fecha de fin',
+                'label' => _ecommerce('Fecha de fin'),
                 'type'  => 'date',
                 'required'  => false,
                 'atributos' => array(
@@ -86,7 +86,7 @@ class PromocionesForm extends \Franky\Form\Form
                 'type'  => 'submit',
                 'atributos' => array(
                     'class'       => 'btn btn-primary btn-big float_right',
-                    'value' => "Guardar"
+                    'value' => _ecommerce("Guardar")
                  )
 
             )
