@@ -17,7 +17,7 @@ var paypalCheckout = function(sandbox,idsb,idlive,gran_total)
                 "payment_definitions": [
                     {
                         "amount": {
-                            "currency": 'MXN',
+                            "currency": '<?=DATA_STORE_CONFIG['abreviatura']?>',
                             "value": gran_total
                         },
                         name: 'Standard Plan',
@@ -29,7 +29,7 @@ var paypalCheckout = function(sandbox,idsb,idlive,gran_total)
                 ],
                  merchant_preferences: {
     setup_fee: {
-      currency: 'USD',
+      currency: '<?=DATA_STORE_CONFIG['abreviatura']?>',
       value: '1'
     },
     cancel_url: 'http://localhost:3000/cancel',
@@ -44,7 +44,7 @@ var paypalCheckout = function(sandbox,idsb,idlive,gran_total)
                         {
                             amount: {
                                 total: gran_total,
-                                currency: 'MXN'
+                                currency: '<?=DATA_STORE_CONFIG['abreviatura']?>'
                             }
                         }]
                 }

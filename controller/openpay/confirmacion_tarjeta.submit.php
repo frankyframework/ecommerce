@@ -159,7 +159,7 @@ if(!$error)
               'method' => 'card',
                'source_id' => $id_tarjeta,
                'amount' => $productos_comprados['gran_total'] + $data['monto_envio'] - (isset($productos_comprados['descuento']) ? $productos_comprados['descuento'] : 0),
-               'currency' => 'MXN',
+               'currency' => DATA_STORE_CONFIG['abreviatura'],
                'description' => 'Cargo a tarjeta',
                'order_id' => $order_id,
                'device_session_id' => $MyRequest->getRequest("device_session_id"),

@@ -75,7 +75,7 @@ Openpay::setProductionMode((getCoreConfig('ecommerce/openpay/sandbox') == 1 ? fa
       array(
         'method' => 'store',
          'amount' => $productos_comprados['gran_total']+$data['monto_envio'] - (isset($productos_comprados['descuento']) ? $productos_comprados['descuento'] : 0),
-         'currency' => 'MXN',
+         'currency' => DATA_STORE_CONFIG['abreviatura'],
          'description' => 'Cargo a establecimiento',
          'order_id' => $order_id,
          'due_date' => $limit[0].'T'.$limit[1],

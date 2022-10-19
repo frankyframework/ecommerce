@@ -151,7 +151,7 @@ if(!$error)
           $order = \Conekta\Order::create(
           array(
             "line_items" => $items,
-            "currency" => "MXN",
+            "currency" => DATA_STORE_CONFIG['abreviatura'],
             "customer_info" => array(
                     "customer_id" => getCustomerConekta($MySession->GetVar('id'))
             ),

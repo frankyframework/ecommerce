@@ -8,7 +8,7 @@ try {
         'description'=> 'Stogies',
         'reference_id'=> '9839-wolf_pack',
         'amount'=> 20000,
-        'currency'=>'MXN',
+        'currency'=>DATA_STORE_CONFIG['abreviatura'],
         'card'=> 'tok_test_visa_4242',
         //'monthly_installments'=> 3, //Meses
         'details'=> array(

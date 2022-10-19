@@ -137,12 +137,12 @@ class Charges extends Base {
 
         $paymentRQ['tip'] = array(
             'amount' => isset($parameters["tip"]) ? '' . $parameters["tip"] : "0.0",
-            'currency' => isset($parameters["currency"]) ? $parameters["currency"] : "MXN",
+            'currency' => isset($parameters["currency"]) ? $parameters["currency"] : DATA_STORE_CONFIG['abreviatura'],
         );
 
         $paymentRQ['total'] = array(
             'amount' => isset($parameters["amount"]) ? '' . $parameters["amount"] : "0.0",
-            'currency' => isset($parameters["currency"]) ? $parameters["currency"] : "MXN",
+            'currency' => isset($parameters["currency"]) ? $parameters["currency"] : DATA_STORE_CONFIG['abreviatura'],
         );
 
 
@@ -218,7 +218,7 @@ class Charges extends Base {
     private function mapToPrice($parameters) {
         $total = array(
             'amount' => isset($parameters["amount"]) ? $parameters["amount"] : "0",
-            'currency' => isset($parameters["currency"]) ? $parameters["currency"] : "MXN",
+            'currency' => isset($parameters["currency"]) ? $parameters["currency"] : DATA_STORE_CONFIG['abreviatura'],
         );
 
         return $total;
