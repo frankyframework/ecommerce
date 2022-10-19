@@ -127,9 +127,9 @@ if($MyPedido->save($MyPedidoEntity->getArrayCopy()) == REGISTRO_SUCCESS)
     $productos_html = render(PROJECT_DIR.'/modulos/ecommerce/diseno/email/productos.phtml',['items' =>$productos_comprados['productos']]);
 
 
-    $campos = array("orden" => $pedido,"nombre" =>$MySession->GetVar('nombre'),"email" =>$MySession->GetVar('email'),'productos' =>$productos_html,'subtotal' => getFormatoPrecio($productos_comprados['subtotal']),
-    'iva' => getFormatoPrecio($productos_comprados['iva_total']),
-    'gran_total' => getFormatoPrecio($productos_comprados['gran_total']),'metodo_pago' =>'No requerido','status' => getStatusTransaccion($status_pago),'referencia' => $referencia);
+    $campos = array("orden" => $pedido,"nombre" =>$MySession->GetVar('nombre'),"email" =>$MySession->GetVar('email'),'productos' =>$productos_html,'subtotal' => getFormatoPrecio($productos_comprados['subtotal'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+    'iva' => getFormatoPrecio($productos_comprados['iva_total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+    'gran_total' => getFormatoPrecio($productos_comprados['gran_total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),'metodo_pago' =>'No requerido','status' => getStatusTransaccion($status_pago),'referencia' => $referencia);
 
 
     $TemplateemailModel    = new \Base\model\TemplateemailModel;

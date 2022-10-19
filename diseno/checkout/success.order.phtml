@@ -62,7 +62,7 @@ $imagen = "";
 
     </div>
     <div class='_col_mycart_resume _cont_control_qty'><?php echo $producto['qty']; ?></div>
-    <div class="_col_mycart_resume subtotal_producto"><strong>Precio:</strong> <?php echo getFormatoPrecio($producto['precio']); ?></div>
+    <div class="_col_mycart_resume subtotal_producto"><strong>Precio:</strong> <?php echo getFormatoPrecio($producto['precio'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></div>
 
 
 </div>

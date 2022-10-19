@@ -22,7 +22,7 @@
             <div style="width: 55%;
           	float: right;">
                 <h3>Monto a pagar ID: <?php echo $referencia; ?></h3>
-                <h2 style="font-size: 16px; position: relative; top: -2px"><?php echo getFormatoPrecio($productos_comprados['gran_total']); ?></h2>
+                <h2 style="font-size: 16px; position: relative; top: -2px"><?php echo getFormatoPrecio($productos_comprados['gran_total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></h2>
                 <p style="font-size: 10px;
               	line-height: 14px;">OXXO cobrará una comisión adicional al momento de realizar el pago.</p>
             </div>
@@ -48,7 +48,7 @@
         foreach($productos_comprados['productos'] as $producto)
         {
             ?>
-            <?=$producto["nombre"]?> <?=getFormatoPrecio($producto["precio"])?> x <?=$producto["qty"]?><br />
+            <?=$producto["nombre"]?> <?=getFormatoPrecio($producto["precio"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura'])?> x <?=$producto["qty"]?><br />
             <?php
         }
         ?>

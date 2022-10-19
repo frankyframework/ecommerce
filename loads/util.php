@@ -208,7 +208,7 @@ function makeHTMLMetodosEnvio($id = null,$price=1, $time = 1)
                 {
                     if($price == 1 && $time == 1)
                     {
-                        $metodos_envio[$registro['id']] = sprintf($metodoenviohtml, getFormatoPrecio($tarifa['price']),getCoreConfig('ecommerce/'.$registro['path'].'/titulo'),$tarifa['days']);
+                        $metodos_envio[$registro['id']] = sprintf($metodoenviohtml, getFormatoPrecio($tarifa['price'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),getCoreConfig('ecommerce/'.$registro['path'].'/titulo'),$tarifa['days']);
                     }
                     if($price == 0 && $time == 1)
                     {
@@ -216,7 +216,7 @@ function makeHTMLMetodosEnvio($id = null,$price=1, $time = 1)
                     }
                     if($price == 1 && $time == 0)
                     {
-                        $metodos_envio[$registro['id']] = sprintf($metodoenviohtml, getFormatoPrecio($tarifa['price']),getCoreConfig('ecommerce/'.$registro['path'].'/titulo'));
+                        $metodos_envio[$registro['id']] = sprintf($metodoenviohtml, getFormatoPrecio($tarifa['price'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),getCoreConfig('ecommerce/'.$registro['path'].'/titulo'));
                     }
                     if($price == 0 && $time == 0)
                     {

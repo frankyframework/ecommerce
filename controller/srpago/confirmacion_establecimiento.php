@@ -217,12 +217,12 @@ if($MyPedido->save($MyPedidoEntity->getArrayCopy()) == REGISTRO_SUCCESS)
         "nombre" =>$MySession->GetVar('nombre'),
         "email" =>$MySession->GetVar('email'),
         'productos' =>$productos_html,
-        'subtotal' => getFormatoPrecio($productos_comprados['subtotal']),
-        'iva' => getFormatoPrecio($productos_comprados['iva_total']),
-        'envio' => getFormatoPrecio($data['monto_envio']),
+        'subtotal' => getFormatoPrecio($productos_comprados['subtotal'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+        'iva' => getFormatoPrecio($productos_comprados['iva_total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+        'envio' => getFormatoPrecio($data['monto_envio'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
         'metodo_envio' =>$envio_html,
-        'descuento' => getFormatoPrecio($productos_comprados['descuento']),
-        'gran_total' => getFormatoPrecio($productos_comprados['gran_total']+$data['monto_envio']-$productos_comprados['descuento']),'metodo_pago' =>'Pago en Establecimiento','status' => getStatusTransaccion($status_pago),'referencia' => $referencia);
+        'descuento' => getFormatoPrecio($productos_comprados['descuento'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+        'gran_total' => getFormatoPrecio($productos_comprados['gran_total']+$data['monto_envio']-$productos_comprados['descuento'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),'metodo_pago' =>'Pago en Establecimiento','status' => getStatusTransaccion($status_pago),'referencia' => $referencia);
 
         $campos['ticket_oxxo'] = $referencia['url'];
 

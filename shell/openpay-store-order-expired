@@ -94,10 +94,10 @@ foreach($pedidos as $pedido)
               $campos = array("orden" => $PedidosEntity->getId(),
                   "nombre" =>$detalle_pedido['nombre'],
                   'productos' =>$productos_html,"email" => $dataUser['email'],
-                  'gran_total' => getFormatoPrecio($detalle_pedido['monto_compra']),
+                  'gran_total' => getFormatoPrecio($detalle_pedido['monto_compra'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
                   'metodo_pago' =>$detalle_pedido['metodo_pago'],
-                  'monto_envio' =>getFormatoPrecio($detalle_pedido['monto_envio']),
-                  'descuento' =>getFormatoPrecio($detalle_pedido['descuento']),
+                  'monto_envio' =>getFormatoPrecio($detalle_pedido['monto_envio'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+                  'descuento' =>getFormatoPrecio($detalle_pedido['descuento'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
                   "status" => getStatusTransaccion($status_pago));
 
                   $TemplateemailModel    = new \Base\model\TemplateemailModel;

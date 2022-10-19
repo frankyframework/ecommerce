@@ -190,15 +190,7 @@ insert into `templates_email` ( `nombre`, `id_transaccional`, `Asunto`, `destina
   ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 
-  /*Table structure for table `ecommerce_monedas` */
 
-  DROP TABLE IF EXISTS `ecommerce_monedas`;
-
-  CREATE TABLE `ecommerce_monedas` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `nombre` varchar(50) NOT NULL,
-    PRIMARY KEY (`id`)
-  ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
   /*Table structure for table `ecommerce_pedidos` */
 
@@ -260,7 +252,7 @@ insert into `templates_email` ( `nombre`, `id_transaccional`, `Asunto`, `destina
     `incluye_iva` int(11) NOT NULL,
     PRIMARY KEY (`id`),
     KEY `id_moneda` (`id_moneda`),
-    CONSTRAINT `ecommerce_precios_ibfk_1` FOREIGN KEY (`id_moneda`) REFERENCES `ecommerce_monedas` (`id`)
+    CONSTRAINT `ecommerce_precios_ibfk_1` FOREIGN KEY (`id_moneda`) REFERENCES `catalog_monedas` (`id`)
   ) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8;
 
   /*Table structure for table `ecommerce_producto_pedido` */
@@ -283,9 +275,6 @@ insert into `templates_email` ( `nombre`, `id_transaccional`, `Asunto`, `destina
 
 insert  into `ecommerce_categorias_customers`(`id`,`categoria`,`status`,`fecha`) values (1,'Normal',1,NULL);
 
-/*Data for the table `ecommerce_monedas` */
-
-insert  into `ecommerce_monedas`(`id`,`nombre`) values (1,'MXN'),(2,'USD');
 
 
 /*Table structure for table `ecommerce_envios` */

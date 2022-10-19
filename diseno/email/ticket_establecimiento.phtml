@@ -37,7 +37,7 @@ border:#D8D8D8 1px solid;">
       	color:#FFF;
       	padding:40px 0 40px 40px; background-color:#f9b317;">
         	<h2>Total a pagar</h2>
-            <h1><?=getFormatoPrecio($referencia['amount'])?></h1>
+            <h1><?=getFormatoPrecio($referencia['amount'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura'])?></h1>
             <span class="note">La comisión por recepción del pago varía de acuerdo a los términos y condiciones que cada cadena comercial establece.</span>
         </div>
     </div>
@@ -72,7 +72,7 @@ border:#D8D8D8 1px solid;">
         foreach($productos_comprados['productos'] as $producto)
         {
             ?>
-            <?=$producto["nombre"]?> <?=getFormatoPrecio($producto["precio"])?> x <?=$producto["qty"]?><br />
+            <?=$producto["nombre"]?> <?=getFormatoPrecio($producto["precio"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura'])?> x <?=$producto["qty"]?><br />
             <?php
         }
 
@@ -132,7 +132,7 @@ border:#D8D8D8 1px solid;">
             <ol>
             	<li>Acude a cualquier tienda afiliada</li>
                 <li>Entrega al cajero el código de barras y menciona que realizarás un pago de servicio Paynet</li>
-                <li>Realizar el pago en efectivo por <?=getFormatoPrecio($referencia['amount'])?> </li>
+                <li>Realizar el pago en efectivo por <?=getFormatoPrecio($referencia['amount'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura'])?> </li>
                 <li>Conserva el ticket para cualquier aclaración</li>
             </ol>
             </div>

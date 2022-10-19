@@ -56,7 +56,7 @@ if($pedidosModel->getTotal() > 0)
     {
             $thisClass  = ((($iRow % 2) == 0) ? "formFieldDk" : "formFieldLt");
 
-            $registro['monto_compra'] = getFormatoPrecio($registro['monto_compra']+$registro['monto_envio']);
+            $registro['monto_compra'] = getFormatoPrecio($registro['monto_compra']+$registro['monto_envio'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
 
             $lista_admin_data[] = array_merge($registro,array(
               "id" => $Tokenizer->token('pedidos',$registro["id"]),

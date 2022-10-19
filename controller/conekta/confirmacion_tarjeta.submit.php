@@ -272,12 +272,12 @@ if(!$error)
             "nombre" =>$MySession->GetVar('nombre'),
             "email" =>$MySession->GetVar('email'),
             'productos' =>$productos_html,
-            'subtotal' => getFormatoPrecio($productos_comprados['subtotal']),
-            'descuento' => getFormatoPrecio($productos_comprados['descuento']),
-            'envio' => getFormatoPrecio($data['monto_envio']),
+            'subtotal' => getFormatoPrecio($productos_comprados['subtotal'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+            'descuento' => getFormatoPrecio($productos_comprados['descuento'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+            'envio' => getFormatoPrecio($data['monto_envio'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
             'metodo_envio' =>$envio_html,
-            'iva' => getFormatoPrecio($productos_comprados['iva_total']),
-            'gran_total' => getFormatoPrecio($productos_comprados['gran_total']+$data['monto_envio']-$productos_comprados['descuento']),'metodo_pago' =>'Pago con tarjeta','status' => getStatusTransaccion($status_pago));
+            'iva' => getFormatoPrecio($productos_comprados['iva_total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+            'gran_total' => getFormatoPrecio($productos_comprados['gran_total']+$data['monto_envio']-$productos_comprados['descuento'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),'metodo_pago' =>'Pago con tarjeta','status' => getStatusTransaccion($status_pago));
 
 
         

@@ -25,11 +25,11 @@
         <li><strong class="imprimible">Pedido:</strong> #<?php echo $detalle_pedido['id']; ?></li>
         <li><strong>Método de pago:</strong> <?php echo $detalle_pedido['metodo_pago']; ?></li>
         <li><strong>Estatus de pago:</strong> <span class='set-status'><?php echo getStatusTransaccion($detalle_pedido['status']); ?></span></li>
-        <li><strong>Monto envio:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_envio']); ?></li>
-        <li><strong>Descuento:</strong> <?php echo getFormatoPrecio($detalle_pedido['descuento']); ?></li>
-        <li><strong>Total productos:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_compra']); ?></li>
-        <li><strong>Total a pagar:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_compra']-$detalle_pedido['descuento']+$detalle_pedido['monto_envio']); ?></li>
-        <li class="_total"><strong>Monto pagado:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_pagado']); ?></li>
+        <li><strong>Monto envio:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_envio'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></li>
+        <li><strong>Descuento:</strong> <?php echo getFormatoPrecio($detalle_pedido['descuento'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></li>
+        <li><strong>Total productos:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_compra'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></li>
+        <li><strong>Total a pagar:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_compra']-$detalle_pedido['descuento']+$detalle_pedido['monto_envio'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></li>
+        <li class="_total"><strong>Monto pagado:</strong> <?php echo getFormatoPrecio($detalle_pedido['monto_pagado'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></li>
         
         
         
@@ -150,7 +150,7 @@ $imagen = "";
 
     </div>
     <div class='_col_mycart_resume _cont_control_qty'><?php echo $producto['qty']; ?></div>
-    <div class="_col_mycart_resume subtotal_producto"><strong>Precio:</strong> <?php echo getFormatoPrecio($producto['precio']); ?></div>
+    <div class="_col_mycart_resume subtotal_producto"><strong>Precio:</strong> <?php echo getFormatoPrecio($producto['precio'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></div>
 
 
 </div>
@@ -194,7 +194,7 @@ $imagen = "";
         <li>Fecha: <?=$status['fecha']?></li>
         <li>Status: <?=$status['status']?></li>
         <?php if(!empty($status['info']['monto'])): ?>
-        <li>Monto: <?=getFormatoPrecio($status['info']['monto'])?></li>
+        <li>Monto: <?=getFormatoPrecio($status['info']['monto'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura'])?></li>
       <?php endif;?>
       <?php if(!empty($status['info']['nota'])): ?>
         <li>Nota: <?=$status['info']['nota']?></li>

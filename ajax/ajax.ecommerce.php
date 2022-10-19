@@ -267,14 +267,14 @@ function getInfoCarrito()
 
             $respuesta["subtotal"] += $_registro["precio"] * $registro["qty"];
 
-            $respuesta["productos"][] = array("id" => $Tokenizer->token("productos",$registro["id"]), "id_producto" => $Tokenizer->token("productos",$registro["id_producto"]),"_id" => $registro['id'],"nombre" => $_registro["nombre"],"precio" => getFormatoPrecio($_registro["precio"]),"qty" =>  $registro["qty"],"img" => $imagen,"subtotal" => getFormatoPrecio($registro["qty"]*$_registro["precio"]),"caracteristicas" => json_decode($registro['caracteristicas'],true));
+            $respuesta["productos"][] = array("id" => $Tokenizer->token("productos",$registro["id"]), "id_producto" => $Tokenizer->token("productos",$registro["id_producto"]),"_id" => $registro['id'],"nombre" => $_registro["nombre"],"precio" => getFormatoPrecio($_registro["precio"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),"qty" =>  $registro["qty"],"img" => $imagen,"subtotal" => getFormatoPrecio($registro["qty"]*$_registro["precio"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),"caracteristicas" => json_decode($registro['caracteristicas'],true));
 
         }
 
         $parse_precio =  getCarrito();
-        $respuesta["total"] = getFormatoPrecio($parse_precio['gran_total']);
-        $respuesta["subtotal"] = getFormatoPrecio($parse_precio['subtotal']);
-        $respuesta["iva"] = getFormatoPrecio($parse_precio['iva_total']);
+        $respuesta["total"] = getFormatoPrecio($parse_precio['gran_total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+        $respuesta["subtotal"] = getFormatoPrecio($parse_precio['subtotal'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+        $respuesta["iva"] = getFormatoPrecio($parse_precio['iva_total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
         
 
     }
@@ -508,7 +508,7 @@ function setMetodoEnvioCheckout($id){
     $metodo_envio = getMetodosEnvio($id);
     $data = $MySession->GetVar('checkout');
     $data = array_merge($data,
-            array('id_metodo_envio' => $id,'monto_envio' => $metodo_envio,'monto_envio_html' => getFormatoPrecio($metodo_envio)));
+            array('id_metodo_envio' => $id,'monto_envio' => $metodo_envio,'monto_envio_html' => getFormatoPrecio($metodo_envio,true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura'])));
     $metodo_envio = makeHTMLMetodosEnvio($id);
     
     $data['resumen_metodo_envio'] =   render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/resumen.metodo_envio.phtml',['metodo_envio' =>$metodo_envio]);   
@@ -553,7 +553,7 @@ function setPickUpCheckout($id)
 
     $data['id_metodo_envio'] = $metodo_pickup['id'];
     $data['monto_envio'] = $metodo_envio;
-    $data['monto_envio_html'] = getFormatoPrecio($metodo_envio);
+    $data['monto_envio_html'] = getFormatoPrecio($metodo_envio,true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
     $data['pickup']  = true;
 
     $MySession->SetVar('checkout',$data);
@@ -677,7 +677,7 @@ function SetStatusPagoEcommerce($id,$status,$nota,$monto)
 
 
                 $campos = array("orden" => $Tokenizer->decode($id),"nombre" =>$detalle_pedido['nombre'],'productos' =>$productos_html,"email" => $dataUser['email'],
-                'gran_total' => getFormatoPrecio($detalle_pedido['monto_compra']),'metodo_pago' =>$detalle_pedido['metodo_pago'],"status" => getStatusTransaccion($status));
+                'gran_total' => getFormatoPrecio($detalle_pedido['monto_compra'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),'metodo_pago' =>$detalle_pedido['metodo_pago'],"status" => getStatusTransaccion($status));
 
 
                 $TemplateemailEntity    = new \Base\entity\TemplateemailEntity;
@@ -999,15 +999,15 @@ function getInfoTotalsCheckout()
     validaPromocionEcommerce();
     $parse_precio   =  getCarrito();
     $respuesta["total"] =$parse_precio['gran_total'];
-    $respuesta["subtotal"] = getFormatoPrecio($parse_precio['subtotal']);
-    $respuesta["iva"] = getFormatoPrecio($parse_precio['iva_total']);
+    $respuesta["subtotal"] = getFormatoPrecio($parse_precio['subtotal'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+    $respuesta["iva"] = getFormatoPrecio($parse_precio['iva_total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
     
     if($parse_precio['descuento'] > 0)
     {
         $respuesta["total"] = $respuesta['total']-$parse_precio['descuento'];
-        $respuesta['descuento'] = getFormatoPrecio($parse_precio['descuento']);
+        $respuesta['descuento'] = getFormatoPrecio($parse_precio['descuento'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
     }
-    $respuesta["total"] = getFormatoPrecio($respuesta['total']);
+    $respuesta["total"] = getFormatoPrecio($respuesta['total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
     return $respuesta;
 }
 
@@ -1037,19 +1037,19 @@ function getInfoTotalsCheckout2()
     if($productos_comprados['descuento'] > 0)
     {
         $respuesta['gran_total'] -= $productos_comprados['descuento']; 
-        $respuesta['descuento'] = getFormatoPrecio($productos_comprados['descuento']);
+        $respuesta['descuento'] = getFormatoPrecio($productos_comprados['descuento'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
     }
     
     if(isset($data['monto_envio']))
     {
         $respuesta['gran_total'] += $data['monto_envio']; 
-        $respuesta["monto_envio"] = getFormatoPrecio($data['monto_envio']);
+        $respuesta["monto_envio"] = getFormatoPrecio($data['monto_envio'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
         
     }
-    $respuesta['gran_total'] = getFormatoPrecio($respuesta['gran_total']); 
+    $respuesta['gran_total'] = getFormatoPrecio($respuesta['gran_total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); 
      
-    $respuesta["subtotal"] = getFormatoPrecio($productos_comprados['subtotal']);
-    $respuesta["iva"] = getFormatoPrecio($productos_comprados['iva_total']);
+    $respuesta["subtotal"] = getFormatoPrecio($productos_comprados['subtotal'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+    $respuesta["iva"] = getFormatoPrecio($productos_comprados['iva_total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
    
     
 

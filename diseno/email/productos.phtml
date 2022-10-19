@@ -22,7 +22,7 @@ $MyProducto =  new $productos();
       <?php endif; ?>
   </td>
   
-  <td><?php echo getFormatoPrecio($_registro['precio']); ?></td>
+  <td><?php echo getFormatoPrecio($_registro['precio'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></td>
   
   <td><?php echo $producto['qty']; ?></td>
 
