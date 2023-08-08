@@ -8,14 +8,6 @@ use Base\model\USERS;
 use Ecommerce\model\EcommercelogstatusModel;
 use Ecommerce\entity\EcommercelogstatusEntity;
 
-//include(PROJECT_DIR."/modulos/ecommerce/loads/init.php");
-
-if($MySession->getVar('nivel') != NIVEL_USERDEVELOPER)
-{
-    echo shellFontColor($MyMessageAlert->Message("sin_privilegios"),"rojo")."\n";
-    exit;
-}
-
 
 $ibd  = new Franky\Database\IBD(new \Franky\Database\configure,'conexion_bd',new \Franky\Database\Debug);
 

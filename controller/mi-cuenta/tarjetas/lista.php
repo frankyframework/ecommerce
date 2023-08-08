@@ -40,5 +40,5 @@ $error_grid = "No hay tarjetas registradas";
 $deleteFunction = "EliminarTarjetaEcommerce";
 $frm_constante_link = FRM_TARJETAS_ECOMMERCE;
 $value_columnas_grid = array("nombre","numero");
-$permisos_grid = ADMINISTRAR_TARJETAS_ECOMMERCE;
+$permisos_grid = "administrar_tarjetas_ecommerce";
 ?>

@@ -79,7 +79,7 @@ $titulo_columnas_grid = array("createdAt" => _ecommerce("Fecha"),"titulo" => _ec
 $value_columnas_grid = array("createdAt" ,"titulo","codigo_promocion","nombre");
 $css_columnas_grid = array("createdAt" => 'w-xxxx-1',"titulo" => "w-xxxx-4" ,"codigo_promocion" => "w-xxxx-2" , "nombre" => "w-xxxx-3");
 
-$permisos_grid = ADMINISTRAR_CUPONES_ECOMMERCE;
+$permisos_grid = "administrar_cupones_ecommerce";
 
 $MyFiltrosForm = new filtrosForm('paginar');
 $MyFiltrosForm->setMobile($Mobile_detect->isMobile());

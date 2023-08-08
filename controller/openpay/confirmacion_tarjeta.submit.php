@@ -51,7 +51,7 @@ if(empty($id_tarjeta))
   }
 
 
-  if(!$MyAccessList->MeDasChancePasar(ADMINISTRAR_TARJETAS_ECOMMERCE))
+  if(!$MyAccessList->MeDasChancePasar("administrar_tarjetas_ecommerce"))
   {
       $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("sin_privilegios"));
       $error = true;

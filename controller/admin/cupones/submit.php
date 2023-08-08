@@ -52,7 +52,7 @@ if(!$valid)
 
 
 
-if(!$MyAccessList->MeDasChancePasar(ADMINISTRAR_CUPONES_ECOMMERCE))
+if(!$MyAccessList->MeDasChancePasar("administrar_cupones_ecommerce"))
 {
     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("sin_privilegios"));
     $error = true;

@@ -12,7 +12,7 @@ $pedidosEntity             = new pedidosEntity();
 $error = false;
 
 
-if($MyAccessList->MeDasChancePasar(ADMINISTRAR_MIS_PEDIDOS))
+if($MyAccessList->MeDasChancePasar("administrar_mis_pedidos"))
 {
   $uid = $MySession->GetVar('id');
 }

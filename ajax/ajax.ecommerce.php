@@ -9,7 +9,7 @@ function EliminarDireccionEcommerce($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_DIRECCIONES_ECOMMERCE))
+    if($MyAccessList->MeDasChancePasar("administrar_direcciones_ecommerce"))
     {
         $MyDireccionEntity->setId(addslashes($id));
         $MyDireccionEntity->setStatus($status);
@@ -44,7 +44,7 @@ function EliminarTiendaEcommerce($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_TIENDAS_ECOMMERCE))
+    if($MyAccessList->MeDasChancePasar("administrar_tiendas_ecommerce"))
     {
         $EcommercetiendasEntity->setId(addslashes($Tokenizer->decode($id)));
         $EcommercetiendasEntity->setStatus($status);
@@ -79,7 +79,7 @@ function EliminarTarjetaEcommerce($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_TARJETAS_ECOMMERCE))
+    if($MyAccessList->MeDasChancePasar("administrar_tarjetas_ecommerce"))
     {
         $CardsEntity->id(addslashes($id));
         $CardsEntity->status($status);
@@ -137,7 +137,7 @@ function EliminarDireccionFacturacionEcommerce($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_DIRECCIONES_ECOMMERCE))
+    if($MyAccessList->MeDasChancePasar("administrar_direcciones_ecommerce"))
     {
         $MyDireccionEntity->setId(addslashes($id));
         $MyDireccionEntity->setStatus($status);
@@ -172,7 +172,7 @@ function eliminarProductoCarrito($id)
 
     $respuesta = array("error" => false);
 
-    if($MyAccessList->MeDasChancePasar(CARRITO_ECOMMERCE))
+    if($MyAccessList->MeDasChancePasar("carrito_ecommerce"))
     {
         if($MyCarritoProducto->delete(addslashes($Tokenizer->decode($id)),getMyIdCarrito()) == REGISTRO_SUCCESS)
         {
@@ -314,7 +314,7 @@ function addProductoCarrito($producto,$qty=1,$caracteristicas="{}")
         
         $respuesta = array("error" => false);
 
-        if($MyAccessList->MeDasChancePasar(CARRITO_ECOMMERCE))
+        if($MyAccessList->MeDasChancePasar("carrito_ecommerce"))
         {
             $id_carrito = getMyIdCarrito();
             if($id_carrito == 0)
@@ -379,7 +379,7 @@ function setQTYProductoCarrido($id,$qty)
         global $MySession;
         $respuesta = array("error" => false,"total" => 0, "iva" => 0, "subtotal" => 0);
 
-        if($MyAccessList->MeDasChancePasar(CARRITO_ECOMMERCE))
+        if($MyAccessList->MeDasChancePasar("carrito_ecommerce"))
         {
             $id_carrito = getMyIdCarrito();
             if($MyCarritoProducto->getData($Tokenizer->decode($id), $id_carrito) == REGISTRO_SUCCESS)
@@ -442,7 +442,7 @@ function setconfigPago($id_pago)
 
     $respuesta = array("error" => false);
 
-    if($MyAccessList->MeDasChancePasar(CARRITO_ECOMMERCE))
+    if($MyAccessList->MeDasChancePasar("carrito_ecommerce"))
     {
 
         if($MyCarritoModel->getData("", $MySession->GetVar("id") ) == REGISTRO_SUCCESS)
@@ -641,7 +641,7 @@ function SetStatusPagoEcommerce($id,$status,$nota,$monto)
 
     $respuesta = array("error" => false);
 
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PEDIDOS))
+    if($MyAccessList->MeDasChancePasar("administrar_pedidos"))
     {
         $pedidosEntity->setId($Tokenizer->decode($id));
 
@@ -895,7 +895,7 @@ function EliminarCuponesEcommerce($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_CUPONES_ECOMMERCE))
+    if($MyAccessList->MeDasChancePasar("administrar_cupones_ecommerce"))
     {
         $EcommercecuponesEntity->id(addslashes($Tokenizer->decode($id)));
         $EcommercecuponesEntity->status($status);
@@ -931,7 +931,7 @@ function EliminarPromocionEcommerce($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PROMOCIONES_ECOMMERCE))
+    if($MyAccessList->MeDasChancePasar("administrar_promociones_ecommerce"))
     {
         $EcommercepromocionesEntity->id(addslashes($Tokenizer->decode($id)));
         $EcommercepromocionesEntity->status($status);

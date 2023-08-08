@@ -27,7 +27,7 @@ if(!empty($id))
 }
 
 
-if(!$MyAccessList->MeDasChancePasar(ADMINISTRAR_DIRECCIONES_ECOMMERCE))
+if(!$MyAccessList->MeDasChancePasar("administrar_direcciones_ecommerce"))
 {
     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("sin_privilegios"));
     $error = true;

@@ -2,7 +2,6 @@
 use Franky\Core\ObserverManager;
 $ObserverManager = new ObserverManager;
 
-include 'lca.php';
 include 'util.php';
 include 'paypal.php';
 
@@ -21,8 +20,8 @@ if(getCoreConfig('ecommerce/conekta/enabled') == 1)
   \Conekta\Conekta::setApiVersion("2.0.0");
   include 'conekta.php';
   $ObserverManager->addObserver('register_new_user','checkCustomerConekta');
-  $ObserverManager->addObserver('login_user_'.NIVEL_USERSUSCRIPTOR,'checkCustomerConekta');
-  $ObserverManager->addObserver('login_user_'.NIVEL_USERSUSCRIPTOR,'updateCustomerConekta');
+  $ObserverManager->addObserver('login_user_'.getCoreConfig("base/user/default-role"),'checkCustomerConekta');
+  $ObserverManager->addObserver('login_user_'.getCoreConfig("base/user/default-role"),'updateCustomerConekta');
 
 }
 if(getCoreConfig('ecommerce/openpay/enabled') == 1)
@@ -33,18 +32,18 @@ if(getCoreConfig('ecommerce/openpay/enabled') == 1)
 
   include 'openpay.php';
   $ObserverManager->addObserver('register_new_user','checkCustomerOpenpay');
-  $ObserverManager->addObserver('login_user_'.NIVEL_USERSUSCRIPTOR,'checkCustomerOpenpay');
-  $ObserverManager->addObserver('login_user_'.NIVEL_USERSUSCRIPTOR,'updateCustomerOpenpay');
+  $ObserverManager->addObserver('login_user_'.getCoreConfig("base/user/default-role"),'checkCustomerOpenpay');
+  $ObserverManager->addObserver('login_user_'.getCoreConfig("base/user/default-role"),'updateCustomerOpenpay');
 }
 if(getCoreConfig('ecommerce/sr-pago/enabled') == 1)
 {
 
   include 'srpago.php';
   $ObserverManager->addObserver('register_new_user','checkCustomerSrpago');
-  $ObserverManager->addObserver('login_user_'.NIVEL_USERSUSCRIPTOR,'checkCustomerSrpago');
-  $ObserverManager->addObserver('login_user_'.NIVEL_USERSUSCRIPTOR,'updateCustomerSrpago');
+  $ObserverManager->addObserver('login_user_'.getCoreConfig("base/user/default-role"),'checkCustomerSrpago');
+  $ObserverManager->addObserver('login_user_'.getCoreConfig("base/user/default-role"),'updateCustomerSrpago');
 }
-$ObserverManager->addObserver('login_user_'.NIVEL_USERSUSCRIPTOR,'setCarritoUser');
+$ObserverManager->addObserver('login_user_'.getCoreConfig("base/user/default-role"),'setCarritoUser');
 $ObserverManager->addObserver('register_new_user','setCarritoUser');
 
 define("OBJETO_PRODUCTOS", getCoreConfig('ecommerce/product/object')); // \Catalog\model\CatalogproductsModel

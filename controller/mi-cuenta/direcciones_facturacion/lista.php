@@ -57,7 +57,7 @@ $titulo_columnas_grid = array("nombre" => _ecommerce("Nombre"),"calle" => _ecomm
 $value_columnas_grid = array("nombre" ,"calle");
 
 $css_columnas_grid = array("nombre" => 'w-xxxx-3',"calle" => "w-xxxx-6" );
-$permisos_grid = ADMINISTRAR_DIRECCIONES_ECOMMERCE;
+$permisos_grid = "administrar_direcciones_ecommerce";
 
 $MyFiltrosForm = new filtrosForm('paginar');
 $MyFiltrosForm->setMobile($Mobile_detect->isMobile());

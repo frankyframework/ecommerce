@@ -80,7 +80,7 @@ $css_columnas_grid = array("ecommerce_pedidos.fecha" => "w-xxxx-2" ,"ecommerce_p
 
 
 
-$permisos_grid = ADMINISTRAR_PEDIDOS;
+$permisos_grid = "administrar_pedidos";
 
 
 $MyFiltrosForm = new filtrosForm('paginar');

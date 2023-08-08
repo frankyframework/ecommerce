@@ -76,7 +76,7 @@ $titulo_columnas_grid = array("createdAt" => _ecommerce("Fecha"),"titulo" => _ec
 $value_columnas_grid = array("createdAt" ,"titulo","nombre");
 $css_columnas_grid = array("createdAt" => 'w-xxxx-1',"titulo" => "w-xxxx-4" , "nombre" => "w-xxxx-3");
 
-$permisos_grid = ADMINISTRAR_PROMOCIONES_ECOMMERCE;
+$permisos_grid = "administrar_promociones_ecommerce";
 
 $MyFiltrosForm = new filtrosForm('paginar');
 $MyFiltrosForm->setMobile($Mobile_detect->isMobile());

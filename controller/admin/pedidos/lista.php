@@ -33,7 +33,7 @@ if(empty($rango_inicial) && !empty($rango_final))
     $rango = ['1900-01-01',$rango_final];
 }
 
-if(!$MyAccessList->MeDasChancePasar(ADMINISTRAR_PEDIDOS))
+if(!$MyAccessList->MeDasChancePasar("administrar_pedidos"))
 {
     $uid = $MySession->GetVar('id');
 }
@@ -78,7 +78,7 @@ $titulo_columnas_grid = array("ecommerce_pedidos.fecha" => _ecommerce("Fecha"),"
 $value_columnas_grid = array("ecommerce_pedidos.fecha","ecommerce_pedidos.id","metodo_pago","monto_compra","ecommerce_pedidos.status");
 $css_columnas_grid = array("ecommerce_pedidos.fecha" => "w-xxxx-2" ,"ecommerce_pedidos.id" => "w-xxxx-2" , "metodo_pago" => "w-xxxx-2" , "monto_compra" => "w-xxxx-3","ecommerce_pedidos.status" => "w-xxxx-2");
 
-if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PEDIDOS))
+if($MyAccessList->MeDasChancePasar("administrar_pedidos"))
 {
     $titulo_columnas_grid['users.nombre'] = _ecommerce("Usuario");
 		$value_columnas_grid[] ='users.nombre';
@@ -89,7 +89,7 @@ if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PEDIDOS))
 
 
 
-$permisos_grid = ADMINISTRAR_PEDIDOS;
+$permisos_grid = "administrar_pedidos";
 
 
 $MyFiltrosForm = new filtrosForm('paginar');
