@@ -285,13 +285,16 @@ function getInfoCarrito()
 
 function addProductoCarrito($producto,$qty=1,$caracteristicas="{}")
 {
-        $MyCarritoEntity =  new \Ecommerce\entity\CarritoEntity;
-        $MyCarritoCompras =  new \Ecommerce\model\CarritoModel();
-        $MyCarritoProducto =  new \Ecommerce\model\CarritoProductoModel();
-        $MyCarritoProductoEntity =  new \Ecommerce\entity\CarritoProductoEntity();
+        
+        
         $productos =  OBJETO_PRODUCTOS;
         $MyProducto =  new $productos();
         $Tokenizer = new \Franky\Haxor\Tokenizer;
+        $MyCarritoCompras =  new \Ecommerce\model\CarritoModel();
+        $MyCarritoProducto =  new \Ecommerce\model\CarritoProductoModel();
+        $MyCarritoProductoEntity =  new \Ecommerce\entity\CarritoProductoEntity();
+        $MyCarritoEntity =  new \Ecommerce\entity\CarritoEntity;
+        
         global $MyAccessList;
         global $MyMessageAlert;
         global $MySession;

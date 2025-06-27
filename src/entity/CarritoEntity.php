@@ -1,10 +1,8 @@
 <?php
 namespace Ecommerce\entity;
 
-
- 
- class CarritoEntity
- {
+class CarritoEntity
+{
     private $id;
     private $uid;
     private $cookie_id;
