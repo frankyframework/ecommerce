@@ -1,7 +1,7 @@
 <?php
 namespace Ecommerce\model;
 
-class carrito  extends \Franky\Database\Mysql\objectOperations
+class carritoModel  extends \Franky\Database\Mysql\objectOperations
 {
 
   public function __construct()
@@ -9,9 +9,10 @@ class carrito  extends \Franky\Database\Mysql\objectOperations
     parent::__construct();
     $this->from()->addTable('ecommerce_carrito');
   }
-    function getData($id='',$uid='',$cookie_id='',$invoice='')
+    function getData($id='',$uid='',$cookie_id='')
     {
-        $campos = array("id","uid","id_envio","id_facturacion","id_cupon","id_pago","invoice");
+        $campos = array("id","uid","cookie_id","shipping_method","payment_method","shipping_address","invoice_address",
+        "name", "email", "guest","total","subtotal","tax","discount","coupon","promotion","created_at","update_at");
 
         if(!empty($id))
         {
@@ -19,8 +20,6 @@ class carrito  extends \Franky\Database\Mysql\objectOperations
             {
                  $this->where()->addAnd('id',$id,'=');
             }
-
-
         }
 
         if(!empty($uid))
@@ -33,17 +32,9 @@ class carrito  extends \Franky\Database\Mysql\objectOperations
           $this->where()->addAnd('cookie_id',$cookie_id,'=');
         }
 
-        if(!empty($invoice))
-        {
-          $this->where()->addAnd('invoice',$invoice,'=');
-        }
-
-
         return $this->getColeccion($campos);
 
     }
-
-
 
     private function optimizeEntity($array)
     {
@@ -59,8 +50,7 @@ class carrito  extends \Franky\Database\Mysql\objectOperations
     public function delete($id)
     {
         $this->where()->addAnd('id',$id,'=');
-            return $this->eliminarRegistro();
-
+        return $this->eliminarRegistro();
     }
 
 

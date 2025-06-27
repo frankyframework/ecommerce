@@ -54,7 +54,7 @@ class PreciosModel  extends \Franky\Database\Mysql\objectOperations
 
     }
 
-    public function updateByIdProdcuto($ecommerce_precios)
+    public function updateByIdProducto($ecommerce_precios)
     {
         $ecommerce_precios = $this->optimizeEntity($ecommerce_precios);
 

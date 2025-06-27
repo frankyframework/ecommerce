@@ -1,20 +1,15 @@
-insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('mi-cuenta/direcciones/form.php','','[\"validaciones.js\"]','[\"jquery-validate\"]','[3]','FRM_DIRECCIONES_ECOMMERCE','mi-cuenta/ecommerce/direcciones/form/','Formulario administracion direcciones','','1','0','ecommerce');
-insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('mi-cuenta/direcciones/lista.php','','','[]','[3]','ADMIN_LISTA_DIRECCIONES_ECOMMERCE','mi-cuenta/ecommerce/direcciones/','Administrar lista de direcciones','[\"base/ajax.admin.js\",\"ecommerce/ajax.admin.js\"]','1','0','ecommerce');
-insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('carrito/carrito.php','','[\"validaciones.js\"]','[\"jquery-validate\"]','','CARRITO_COMPRAS','ecommerce/carrito/','Carrito de compras','[\"base/ajax.admin.js\"]','1','0','ecommerce');
+
 insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('paypal/confirmacion.php','','','','[3]','CONFIRMACION_PAYPAL','ecommerce/paypal/confirmacion/','Confirmacion PAYPAL','','1','0','ecommerce');
+
+
 insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('mi-cuenta/tarjetas/lista.php','','','','[3]','ADMIN_LISTA_TARJETAS_ECOMMERCE','mi-cuenta/ecommerce/tarjetas/','Mis tarjetas','[\"base/ajax.admin.js\",\"ecommerce/ajax.admin.js\"]','1','0','ecommerce');
 insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('mi-cuenta/tarjetas/form.php','','','[\"jquery-validate\"]','[3]','FRM_TARJETAS_ECOMMERCE','mi-cuenta/ecommerce/tarjetas/form/','Nueva tarjeta','','1','0','ecommerce');
 insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('conekta/confirmacion_tarjeta.php','','','','[3]','CONFIRMACION_CONEKTA_TARJETA','ecommerce/tarjeta/confirmacion/','Confirmacion conekta tarjeta','','1','0','ecommerce');
 insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('conekta/confirmacion_oxxo.php','[\"oxxo.css\"]','','','[3]','CONFIRMACION_CONEKTA_OXXO','ecommerce/oxxo/confirmacion/','Confirmacion conekta oxxo','','1','0','ecommerce');
-insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('admin/pedidos/lista.php','','','','[1,3]','ADMIN_LISTA_PEDIDOS','admin/ecommerce/pedidos/','Lista de pedidos','[\"base/ajax.admin.js\",\"ecommerce/ajax.admin.js\"]','1','0','ecommerce');
-insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('admin/pedidos/detalle.php','','','[\"jquery-validate\"]','[1,3]','ADMIN_DETALLE_PEDIDOS','admin/ecommerce/pedidos/detalle/','Detalle de pedido','[\"base/ajax.admin.js\",\"ecommerce/ajax.admin.js\"]','1','1','ecommerce');
 insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('franky/confirmacion_free.php','','','','[3]','CONFIRMACION_PAY_FREE','ecommerce/free/confirmacion/','Confirmacion gratuita','','1','0','ecommerce');
 insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('openpay/confirmacion_tarjeta.php','','','','[3]','CONFIRMACION_OPENPAY_TARJETA','ecommerce/openpay/tarjeta/confirmacion/','Confirmacion openpay tarjeta','','1','0','ecommerce');
 insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('openpay/confirmacion_establecimiento.php','[\"openpay.css\"]','','','[3]','CONFIRMACION_OPENPAY_ESTABLECIMIENTO','ecommerce/openpay/est/confirmacion/','Confirmacion openpay establecimiento','','1','0','ecommerce');
-insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('admin/cupones/form.php','','','[\"jquery-validate\"]','[1]','ADMIN_FRM_CUPONES_ECOMMERCE','admin/ecommerce/cupones/form/','Alta y edicion de cupones','','1','0','ecommerce');
-insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('admin/cupones/lista.php','','','[]','[1]','ADMIN_LISTA_CUPONES_ECOMMERCE','admin/ecommerce/cupones/','Administrar cupones','[\"base/ajax.admin.js\",\"ecommerce/ajax.admin.js\"]','1','0','ecommerce');
 insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('admin/tiendas/form.php','','[\"validaciones.js\"]','[\"jquery-validate\"]','[3]','FRM_TIENDAS_ECOMMERCE','admin/ecommerce/tiendas/form/','Formulario administracion tiendas','','1','0','ecommerce');
-insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('admin/tiendas/lista.php','','','[]','[3]','ADMIN_LISTA_TIENDAS_ECOMMERCE','admin/ecommerce/tiendas/','Administrar lista de tiendas','[\"base/ajax.admin.js\",\"ecommerce/ajax.admin.js\"]','1','0','ecommerce');
 insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('srpago/confirmacion_tarjeta.php','','','','[3]','CONFIRMACION_SRPAGO_TARJETA','ecommerce/srpago/tarjeta/confirmacion/','Confirmacion sr pago tarjeta','','1','0','ecommerce');
 insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('srpago/confirmacion_establecimiento.php','[\"openpay.css\"]','','','[3]','CONFIRMACION_SRPAGO_ESTABLECIMIENTO','ecommerce/srpago/est/confirmacion/','Confirmacion sr pago establecimiento','','1','0','ecommerce');
 insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('srpago/confirmacion_spei.php','[\"openpay.css\"]','','','[3]','CONFIRMACION_SRPAGO_SPEI','ecommerce/srpago/spei/confirmacion/','Confirmacion sr pago SPEI','','1','0','ecommerce');
@@ -49,41 +44,6 @@ insert into `templates_email` ( `nombre`, `id_transaccional`, `Asunto`, `destina
     KEY `uid` (`uid`),
     CONSTRAINT `ecommerce_cards_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
   ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
-  /*Table structure for table `ecommerce_carrito` */
-
-  DROP TABLE IF EXISTS `ecommerce_carrito`;
-
-  CREATE TABLE `ecommerce_carrito` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `uid` int(11) DEFAULT NULL,
-    `cookie_id` varchar(100) NOT NULL,
-    `id_envio` int(11) DEFAULT NULL,
-    `id_facturacion` int(11) DEFAULT NULL,
-    `id_cupon` int(11) DEFAULT NULL,
-    `invoice` varchar(50) DEFAULT NULL,
-    `id_pago` varchar(30) DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    KEY `uid` (`uid`),
-    KEY `id_envio` (`id_envio`),
-    KEY `id_facturacion` (`id_facturacion`),
-    CONSTRAINT `ecommerce_carrito_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-  ) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8;
-
-  /*Table structure for table `ecommerce_carrito_producto` */
-
-  DROP TABLE IF EXISTS `ecommerce_carrito_producto`;
-
-  CREATE TABLE `ecommerce_carrito_producto` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `id_producto` int(11) NOT NULL,
-    `qty` int(11) NOT NULL,
-    `caracteristicas` text DEFAULT NULL,
-    `id_carrito` int(11) NOT NULL,
-    PRIMARY KEY (`id`),
-    KEY `id_carrito` (`id_carrito`),
-    CONSTRAINT `ecommerce_carrito_producto_ibfk_1` FOREIGN KEY (`id_carrito`) REFERENCES `ecommerce_carrito` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-  ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
   /*Table structure for table `ecommerce_categorias_customers` */
 

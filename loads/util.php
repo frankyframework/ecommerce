@@ -75,13 +75,14 @@ function getStatusTransaccion($status)
 function getMyIdCarrito()
 {
     global $MySession;
-    $MyCarritoCompras =  new \Ecommerce\model\carrito();
+    $MyCarritoCompras =  new \Ecommerce\model\CarritoModel();
+    $MyCarritoEntity =  new \Ecommerce\entity\CarritoEntity();
 
     if($MyCarritoCompras->getData("", ($MySession->LoggedIn() ? $MySession->GetVar("id") : ""),  session_id()) == REGISTRO_SUCCESS)
     {
         $registro = $MyCarritoCompras->getRows();
 
-        return $registro["id"];
+        return $MyCarritoEntity->exchangeArray($registro);
     }
     return 0;
 }

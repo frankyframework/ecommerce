@@ -285,10 +285,12 @@ function getInfoCarrito()
 
 function addProductoCarrito($producto,$qty=1,$caracteristicas="{}")
 {
-        $MyCarritoEntity =  new \Ecommerce\entity\carrito();
-        $MyCarritoCompras =  new \Ecommerce\model\carrito();
-        $MyCarritoProducto =  new \Ecommerce\model\carrito_producto();
-        $MyCarritoProductoEntity =  new \Ecommerce\entity\carrito_producto();
+        $MyCarritoEntity =  new \Ecommerce\entity\CarritoEntity;
+        $MyCarritoCompras =  new \Ecommerce\model\CarritoModel();
+        $MyCarritoProducto =  new \Ecommerce\model\CarritoProductoModel();
+        $MyCarritoProductoEntity =  new \Ecommerce\entity\CarritoProductoEntity();
+        $productos =  OBJETO_PRODUCTOS;
+        $MyProducto =  new $productos();
         $Tokenizer = new \Franky\Haxor\Tokenizer;
         global $MyAccessList;
         global $MyMessageAlert;
@@ -296,6 +298,12 @@ function addProductoCarrito($producto,$qty=1,$caracteristicas="{}")
         global $MyRequest;
 
 
+        $MyProducto->getInfoProducto($Tokenizer->decode($producto));
+        $productData = $MyProducto->getRows();
+        print_r($productData);
+        $price = parsePrecio($productData['precio'],$productData['iva'],$productData['incluye_iva']);
+        print_r($price);
+        die;
         $caracteristicas = json_decode($caracteristicas,true);
 
         if(!empty($caracteristicas))
@@ -316,17 +324,23 @@ function addProductoCarrito($producto,$qty=1,$caracteristicas="{}")
 
         if($MyAccessList->MeDasChancePasar("carrito_ecommerce"))
         {
-            $id_carrito = getMyIdCarrito();
-            if($id_carrito == 0)
+            
+            if($carritoData == 0)
             {
-                $MyCarritoEntity->setCookie_id(session_id());
+                $MyCarritoEntity->setCookieId(session_id());
                 if($MySession->LoggedIn())
                 {
                     $MyCarritoEntity->setUid($MySession->GetVar("id"));
 
                 }
+                $MyCarritoEntity->setCratedAt(date('Y-m-d'));
                 $MyCarritoCompras->save($MyCarritoEntity->getArrayCopy());
                 $id_carrito = $MyCarritoCompras->getUltimoID();
+            } else {
+                $MyCarritoEntity = $carritoData;
+                $MyCarritoEntity->setUpdateAt(date('Y-m-d'));
+                $MyCarritoCompras->save($MyCarritoEntity->getArrayCopy());
+                $id_carrito = $carritoData->getId();
             }
             //echo $id_carrito;
             if($MyCarritoProducto->getData("", $id_carrito,$Tokenizer->decode($producto),$caracteristicas) == REGISTRO_SUCCESS)
@@ -335,17 +349,19 @@ function addProductoCarrito($producto,$qty=1,$caracteristicas="{}")
 
                 $qty += $registro["qty"];
                 $MyCarritoProductoEntity->setId($registro["id"]);
-
+                $MyCarritoProductoEntity->setUpdateAt(date('Y-m-d H:i:s'));
 
             }
 
             $ObserverManager = new \Franky\Core\ObserverManager;
             $ObserverManager->dispatch('prepara_producto_carrito',['id' => $Tokenizer->decode($producto),'qty' => $qty]);
 
-            $MyCarritoProductoEntity->setId_producto($Tokenizer->decode($producto));
+            $MyCarritoProductoEntity->setIdProduct($Tokenizer->decode($producto));
             $MyCarritoProductoEntity->setQty($qty);
-            $MyCarritoProductoEntity->setCaracteristicas($caracteristicas);
-            $MyCarritoProductoEntity->setId_carrito($id_carrito);
+            $MyCarritoProductoEntity->setData($caracteristicas);
+            $MyCarritoProductoEntity->setQuoteId($id_carrito);
+            $MyCarritoProductoEntity->setPrice($productData['price']);
+            $MyCarritoProductoEntity->setTax($productData['price']);
 
             if($MyCarritoProducto->save($MyCarritoProductoEntity->getArrayCopy()) == REGISTRO_SUCCESS)
             {
@@ -371,7 +387,7 @@ function addProductoCarrito($producto,$qty=1,$caracteristicas="{}")
 
 function setQTYProductoCarrido($id,$qty)
 {
-        $MyCarritoProdcutoEntity =  new \Ecommerce\entity\carrito_producto();
+        $MyCarritoProductoEntity =  new \Ecommerce\entity\carrito_producto();
 	       $MyCarritoProducto =  new \Ecommerce\model\carrito_producto();
          $Tokenizer = new \Franky\Haxor\Tokenizer;
         global $MyAccessList;
@@ -389,11 +405,11 @@ function setQTYProductoCarrido($id,$qty)
                 
                 $ObserverManager->dispatch('prepara_producto_carrito',['id' => $registro['id_producto'],'qty' => $qty]);
     
-                $MyCarritoProdcutoEntity->setId($Tokenizer->decode($id));
-                $MyCarritoProdcutoEntity->setQty($qty);
-                $MyCarritoProdcutoEntity->setId_carrito($id_carrito);
+                $MyCarritoProductoEntity->setId($Tokenizer->decode($id));
+                $MyCarritoProductoEntity->setQty($qty);
+                $MyCarritoProductoEntity->setId_carrito($id_carrito);
 
-                if($MyCarritoProducto->save($MyCarritoProdcutoEntity->getArrayCopy())  == REGISTRO_SUCCESS)
+                if($MyCarritoProducto->save($MyCarritoProductoEntity->getArrayCopy())  == REGISTRO_SUCCESS)
                 {
 
                     $respuesta = getInfoCarrito();

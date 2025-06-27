@@ -14,11 +14,11 @@ return array(
          "etiqueta" => _ecommerce("Mis direcciones de facturacion")
         ),
 
-        array(
+      /*  array(
          "permiso" =>   "administrar_tarjetas_ecommerce",
          "url" => $MyRequest->url(ADMIN_LISTA_TARJETAS_ECOMMERCE),
          "etiqueta" => _ecommerce("Mis tarjetas")
-        ),
+        ),*/
         array(
          "permiso" =>   "administrar_mis_pedidos",
          "url" => $MyRequest->url(MICUENTA_LISTA_PEDIDOS),

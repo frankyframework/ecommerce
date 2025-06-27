@@ -1,7 +1,7 @@
 <?php
 namespace Ecommerce\model;
 
-class carrito_producto  extends \Franky\Database\Mysql\objectOperations
+class CarritoProductoModel  extends \Franky\Database\Mysql\objectOperations
 {
 
   public function __construct()
@@ -10,9 +10,9 @@ class carrito_producto  extends \Franky\Database\Mysql\objectOperations
     $this->from()->addTable('ecommerce_carrito_producto');
   }
 
-    function getData($id='',$carrito='',$producto='',$caracteristicas='')
+    function getData($id='',$carrito='',$producto='', $data='')
     {
-        $campos = array("id","id_carrito","id_producto","qty","caracteristicas");
+        $campos = array("id","quote_id","id_product","qty","data","price","tax","discount","custom_price","created_at","update_at");
 
         if(!empty($id))
         {
@@ -24,16 +24,17 @@ class carrito_producto  extends \Franky\Database\Mysql\objectOperations
 
         if($carrito !== "")
         {
-          $this->where()->addAnd('id_carrito',$carrito,'=');
+          $this->where()->addAnd('quote_id',$carrito,'=');
         }
         if(!empty($producto))
         {
-          $this->where()->addAnd('id_producto',$producto,'=');
+          $this->where()->addAnd('id_product',$producto,'=');
         }
-        if(!empty($caracteristicas))
+        if(!empty($data))
         {
-          $this->where()->addAnd('caracteristicas',$caracteristicas,'=');
+          $this->where()->addAnd('data',$data,'=');
         }
+      
 
         return $this->getColeccion($campos);
 
@@ -55,24 +56,24 @@ class carrito_producto  extends \Franky\Database\Mysql\objectOperations
     public function delete($id,$carrito)
     {
         $this->where()->addAnd('id',$id,'=');
-        $this->where()->addAnd('id_carrito',$carrito,'=');
+        $this->where()->addAnd('quote_id',$carrito,'=');
         return $this->eliminarRegistro();
 
     }
 
-    public function save($carrito_prodcuto)
+    public function save($carrito_producto)
     {
-        $carrito_prodcuto = $this->optimizeEntity($carrito_prodcuto);
+        $carrito_producto = $this->optimizeEntity($carrito_producto);
 
 
-    	if (isset($carrito_prodcuto['id']))
+    	if (isset($carrito_producto['id']))
     	{
-          $this->where()->addAnd('id',$carrito_prodcuto['id'],'=');
-            return $this->editarRegistro($carrito_prodcuto);
+          $this->where()->addAnd('id',$carrito_producto['id'],'=');
+            return $this->editarRegistro($carrito_producto);
     	}
     	else {
 
-            return $this->guardarRegistro($carrito_prodcuto);
+            return $this->guardarRegistro($carrito_producto);
     	}
 
     }
