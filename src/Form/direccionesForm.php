@@ -25,39 +25,6 @@ class direccionesForm extends \Franky\Form\Form
 
 
         $this->add(array(
-                'name' => 'nombre',
-                'label' => _ecommerce('Nombre'),
-                'type'  => 'text',
-                'required'  => true,
-                'atributos' => array(
-                    'class' => 'required',
-                    'maxlength' => 200
-                 ),
-                'label_atributos' => array(
-                    'class'       => 'desc_form_obligatorio'
-                 )
-            )
-        );
-
-        $this->add(array(
-                'name' => 'telefono',
-                'label' => _ecommerce('Teléfono'),
-
-                'type'  => 'text',
-                'required'  => true,
-                'atributos' => array(
-                    'class' => 'required',
-                    'maxlength' => 21
-                 ),
-                'label_atributos' => array(
-                    'class'       => 'desc_form_obligatorio'
-                 )
-            )
-        );
-
-
-
-        $this->add(array(
                 'name' => 'calle',
                 'label' => _ecommerce('Calle'),
                 'type'  => 'text',
@@ -178,6 +145,38 @@ class direccionesForm extends \Franky\Form\Form
             )
         );
 
+        $this->add(array(
+            'name' => 'telefono',
+            'label' => _ecommerce('Teléfono celular'),
+
+            'type'  => 'text',
+            'required'  => true,
+            'atributos' => array(
+                'class' => 'required',
+                'maxlength' => 10,
+                'type_mobile'  => 'tel',
+             ),
+            'label_atributos' => array(
+                'class'       => 'desc_form_obligatorio'
+             )
+            )
+        );
+        $this->add(array(
+            'name' => 'telefono_fijo',
+            'label' => _ecommerce('Teléfono fijo'),
+
+            'type'  => 'text',
+            'required'  => false,
+            'atributos' => array(
+                'class' => '',
+                'maxlength' => 10,
+                'type_mobile'  => 'tel'
+            ),
+            'label_atributos' => array(
+                'class'       => 'desc_form_no_obligatorio'
+            )
+            )
+        );
 
 
 
@@ -226,19 +225,19 @@ class direccionesForm extends \Franky\Form\Form
     }
 
 
-    public function addOtroTelefono()
+    public function addName()
     {
         $this->add(array(
-                'name' => 'telefono_otro',
-                'label' => _ecommerce('Otro Telefono'),
+                'name' => 'nombre',
+                'label' => _ecommerce('Nombre completo'),
                 'type'  => 'text',
-                'required'  => false,
+                'required'  => true,
                 'atributos' => array(
-
-                    'maxlength' => 21
+                  'class' => 'required',
+                    'maxlength' => 255
                  ),
                 'label_atributos' => array(
-                    'class'       => 'desc_form_no_obligatorio'
+                    'class'       => 'desc_form_obligatorio'
                  )
             )
         );
@@ -264,22 +263,7 @@ class direccionesForm extends \Franky\Form\Form
 
      
     }
-    public function addInstrucciones()
-    {
-         $this->add(array(
-                'name' => 'instrucciones',
-                'label' => _ecommerce('Instrucciones'),
-                'type'  => 'textarea',
-                'required'  => false,
-                'atributos' => array(
 
-                 ),
-                'label_atributos' => array(
-                    'class'       => 'desc_form_no_obligatorio'
-                 )
-            )
-        );
-    }
     public function addPickupPoint()
     {
         $this->add(array(

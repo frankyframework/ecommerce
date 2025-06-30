@@ -22,7 +22,7 @@
                 "null":0
             },
             {
-                "name":"shipment_method",
+                "name":"shipping_method",
                 "type":"varchar",
                 "length":255,
                 "null":1
@@ -94,6 +94,24 @@
             {
                 "name":"promotion",
                 "type":"int",
+                "length":11,
+                "null":1
+            },
+            {
+                "name":"shipping_price",
+                "type":"float",
+                "length":11,
+                "null":1
+            },
+            {
+                "name":"shipping_subtotal",
+                "type":"float",
+                "length":11,
+                "null":1
+            },
+            {
+                "name":"shipping_tax",
+                "type":"float",
                 "length":11,
                 "null":1
             },

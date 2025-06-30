@@ -61,7 +61,7 @@
             "css":"",
             "js":[],
             "jquery":["jquery-validate"],
-            "resource":"Carrito",
+            "resource":"",
             "constante":"CHECKOUT_ECOMMERCE",
             "url":"ecommerce/checkout/",
             "nombre":"Checkout",

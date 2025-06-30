@@ -29,6 +29,30 @@
             },
             {
                 "name":"data",
+                "type":"text",
+                "length":255,
+                "null":0
+            },
+            {
+                "name":"sku",
+                "type":"varchar",
+                "length":255,
+                "null":0
+            },
+            {
+                "name":"url",
+                "type":"varchar",
+                "length":255,
+                "null":0
+            },
+            {
+                "name":"name",
+                "type":"varchar",
+                "length":255,
+                "null":0
+            },
+            {
+                "name":"image",
                 "type":"varchar",
                 "length":255,
                 "null":0
@@ -46,15 +70,33 @@
                 "null":0
             },
             {
-                "name":"tax",
+                "name":"total_custom_price",
                 "type":"float",
                 "length":11,
                 "null":0
             },
             {
-                "name":"discount",
+                "name":"price_discount",
                 "type":"float",
                 "length":11,
+                "null":0
+            },
+            {
+                "name":"total",
+                "type":"float",
+                "length":11,
+                "null":0
+            },
+            {
+                "name":"total_discount",
+                "type":"float",
+                "length":11,
+                "null":0
+            },
+            {
+                "name":"envio_requerido",
+                "type":"int",
+                "length":1,
                 "null":0
             },
             {

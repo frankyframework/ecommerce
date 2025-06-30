@@ -6,7 +6,7 @@ class CarritoEntity
     private $id;
     private $uid;
     private $cookie_id;
-    private $shipment_method;
+    private $shipping_method;
     private $payment_method;
     private $shipping_address;
     private $invoice_address;
@@ -19,6 +19,9 @@ class CarritoEntity
     private $discount;
     private $coupon;
     private $promotion;
+    private $shipping_price;
+    private $shipping_subtotal;
+    private $shipping_tax;
     private $created_at;
     private $update_at;
    
@@ -35,7 +38,7 @@ class CarritoEntity
         $this->id                   = (isset($data['id']))                  ? $data['id']                   : null;
         $this->uid                  = (isset($data['uid']))                 ? $data['uid']                  : null;
         $this->cookie_id            = (isset($data['cookie_id']))           ? $data['cookie_id']            : null;
-        $this->shipment_method      = (isset($data['shipment_method']))     ? $data['shipment_method']      : null;
+        $this->shipping_method      = (isset($data['shipping_method']))     ? $data['shipping_method']      : null;
         $this->payment_method       = (isset($data['payment_method']))      ? $data['payment_method']       : null;
         $this->shipping_address     = (isset($data['shipping_address']))    ? $data['shipping_address']     : null;
         $this->invoice_address      = (isset($data['invoice_address']))     ? $data['invoice_address']      : null;
@@ -48,8 +51,11 @@ class CarritoEntity
         $this->discount             = (isset($data['discount']))            ? $data['discount']             : null;
         $this->coupon               = (isset($data['coupon']))              ? $data['coupon']               : null;
         $this->promotion            = (isset($data['promotion']))           ? $data['promotion']            : null;
-        $this->created_at           = (isset($data['created_at']))          ? $data['created_at']            : null;
-        $this->update_at           = (isset($data['update_at']))          ? $data['update_at']            : null;
+        $this->shipping_price     = (isset($data['shipping_price']))    ? $data['shipping_price']           : null;
+        $this->shipping_subtotal     = (isset($data['shipping_subtotal']))    ? $data['shipping_subtotal']  : null;
+        $this->shipping_tax     = (isset($data['shipping_tax']))    ? $data['shipping_tax']  : null;
+        $this->created_at           = (isset($data['created_at']))          ? $data['created_at']           : null;
+        $this->update_at           = (isset($data['update_at']))          ? $data['update_at']              : null;
     }
     
     public function getArrayCopy()
@@ -98,12 +104,12 @@ class CarritoEntity
  
     public function getShipmentMethod()
     {
-        return $this->shipment_method;
+        return $this->shipping_method;
     }
 
-    public function setShipmentMethod($shipment_method)
+    public function setShippingMethod($shipping_method)
     {
-        $this->shipment_method = $shipment_method;
+        $this->shipping_method = $shipping_method;
     }
 
     public function getPaymentMethod()
@@ -245,6 +251,37 @@ class CarritoEntity
     {
         $this->update_at = $update_at;
     }
+
+    public function getShippingPrice()
+    {
+        return $this->shipping_price;
+    }
+
+    public function setShippingPrice($shippingPrice)
+    {
+        $this->shipping_price = $shippingPrice;
+    }
+
+    public function getShippingSubtotal()
+    {
+        return $this->shipping_subtotal;
+    }
+
+    public function setShippingsubtotal($shippingSubtotal)
+    {
+        $this->shipping_subtotal = $shippingSubtotal;
+    }
+
+    public function getShippingTax()
+    {
+        return $this->shipping_tax;
+    }
+
+    public function setShippingTax($shippingTax)
+    {
+        $this->shipping_tax = $shippingTax;
+    }
+
    
  }
 

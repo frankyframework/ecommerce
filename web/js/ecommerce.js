@@ -1,7 +1,20 @@
-var changeShippingAddress = function(){
+var changeCustomerData = function(){
 
     $("._sisi").removeClass("_sisi");
     $("._active").addClass("._nono").removeClass('_active').next("div").hide();
+    $(".datos_customer").addClass("_nono").addClass('_active').next("div").show();
+    $("#resumen_datos_customer").empty();   
+    $("#resumen_checkout_envio").empty();
+    $("#resumen_checkout_facturacion").empty();
+    $("#resumen_metodo_envio").empty();
+}
+
+var changeShippingAddress = function(){
+
+    if($(".datos_customer").length == 0) {
+        $("._sisi").removeClass("_sisi");
+        $("._active").addClass("._nono").removeClass('_active').next("div").hide();
+    }
     $(".direccion_entrega").addClass("_nono").addClass('_active').next("div").show();
     $("#resumen_checkout_envio").empty();
     $("#resumen_checkout_facturacion").empty();

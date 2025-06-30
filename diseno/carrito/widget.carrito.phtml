@@ -8,10 +8,7 @@
         <div class="w-xxxx-12">
             <div class="w-xxxx-6 w-x-6"><a class="_minicart _mycart" href="<?php echo $MyRequest->url(CARRITO_COMPRAS); ?>">Mi carrito</a></div>
             <?php
-            $action = $MyRequest->link(LOGIN)."?callback=".$MyRequest->link("/setCarritoUser.php");
-            if($MySession->LoggedIn()):
                 $action = $MyRequest->url(CHECKOUT_ECOMMERCE);
-            endif;
             ?>
             <div class="w-xxxx-6 w-x-6"><a class="_minicart _checkout" href="<?php echo $action; ?>">Pagar</a></div>
         </div>

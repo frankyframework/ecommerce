@@ -75,7 +75,6 @@ function eliminarProductoCarritoHTML(response,id)
 
             $(".contenedor_producto_"+id).fadeOut('fast',function(){
                 $(this).remove();
-                setQTYProductoCarridoHTML(response);
                 addProductoCarritoHTML(response,1);
                 getInfoTotalsCheckout();
             });
@@ -136,8 +135,11 @@ function addProductoCarritoHTML(response,show)
                                         "<h3>"+
                                             respuesta["productos"][i]["nombre"]+
                                         "</h3>"+
-                                        "</div><div class='_x_qty'> x <span>"+respuesta["productos"][i]["qty"]+
-                                        "</span> <span class='_x_qty'> = <span> <span class='_unit_price'>"+respuesta["productos"][i]["precio"]+
+                                        "<p>SKU: "+
+                                            respuesta["productos"][i]["sku"]+
+                                        "</p>"+
+                                        "</div><div class='_x_qty'> QTY: <span>"+respuesta["productos"][i]["qty"]+
+                                        "</span> <span class='_unit_price'>"+respuesta["productos"][i]["precio"]+
                                 "</span></div>\
                                 </div>\
                                 <div class='w-xxxx-1 w-x-1 _minicart_delete'>\
@@ -211,7 +213,7 @@ function setQTYProductoCarridoHTML(response,id)
             {
                 for(var i=0; i < respuesta["productos"].length; i++)
                 {
-                    $(".contenedor_producto_"+respuesta["productos"][i]["id"]).find('.subtotal_producto').html(respuesta["productos"][i]["subtotal"]);
+                    $(".contenedor_producto_"+respuesta["productos"][i]["id"]).find('.subtotal_producto').html(respuesta["productos"][i]["total"]);
                     $(".contenedor_producto_"+respuesta["productos"][i]["id"]).find('.precio_producto').html(respuesta["productos"][i]["precio"]);
                 }
                 getInfoTotalsCheckout();
@@ -449,6 +451,47 @@ function setDireccionCheckoutHTML(response)
     }
     return true;
 }
+
+
+
+function setCustomerDataCheckout()
+{
+    var name = $("form[name=frmcustomer]").find("input[name=nombre]").val();
+    var email = $("form[name=frmcustomer]").find("input[name=email]").val();
+
+    var var_query = {
+        function: "setCustomerDataCheckout",
+        vars_ajax:[name,email]
+    };
+    var var_function = [];
+    pasarelaAjax('POST',var_query,"setCustomerDataCheckoutHTML",var_function);
+}
+
+
+function setCustomerDataCheckoutHTML(response)
+{
+    var respuesta = null;
+    if(response != "null")
+    {
+        respuesta = JSON.parse(response);
+
+        if(!respuesta.error)
+        {
+            $(".datos_customer").next("div").hide();
+            $(".datos_customer").toggleClass("_nono").toggleClass("_sisi").toggleClass('_active');
+            $(".direccion_entrega").toggleClass('_active').next("div").show();
+            $("#resumen_datos_customer").html(respuesta.resumen_customer);
+        }
+        else
+        {
+            _alert(respuesta["message"],"Error")
+        }
+
+    }
+    return true;
+}
+
+
 
 
 function loadMetodosEnvio()
@@ -757,10 +800,13 @@ function getInfoTotalsCheckoutHTML(response)
     if(response != "null")
     {
         respuesta = JSON.parse(response);
+        if(respuesta.total == 0) {
+            window.location.reload();
+        }
         $(".resumen_page_carrito .subtotal").html(respuesta.subtotal);
         $(".resumen_page_carrito .iva").html(respuesta.iva);
         $(".resumen_page_carrito .total").html(respuesta.total);
-        if(respuesta.descuento){
+        if(respuesta.descuentoPlain > 0){
             $(".resumen_page_carrito .descuento").html(respuesta.descuento);
             $(".resumen_page_carrito ._descuento").show();
         }

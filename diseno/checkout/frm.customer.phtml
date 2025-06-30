@@ -1,0 +1,23 @@
+<div class="w-xxxx-12 cont_login_admin">
+    <div class="content">
+    <div class="_cont_customer">
+            <div class="w-xxxx-12">
+                <?php echo $customerForm->openTag(); ?>
+                <?php echo $customerForm->getAllRow(); ?>
+                <?php echo $customerForm->endTag(); ?>
+               
+            </div>
+    </div>
+    </div>
+</div>
+<script>
+$(document).ready(function(){
+    $( "#frmcustomer" ).validate({
+        submitHandler: function(form)
+        {
+            setCustomerDataCheckout();
+            return false;
+        }
+    });
+});
+</script>

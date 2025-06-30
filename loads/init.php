@@ -43,8 +43,11 @@ if(getCoreConfig('ecommerce/sr-pago/enabled') == 1)
   $ObserverManager->addObserver('login_user_'.getCoreConfig("base/user/default-role"),'checkCustomerSrpago');
   $ObserverManager->addObserver('login_user_'.getCoreConfig("base/user/default-role"),'updateCustomerSrpago');
 }
-$ObserverManager->addObserver('login_user_'.getCoreConfig("base/user/default-role"),'setCarritoUser');
+
+$ObserverManager->addObserver('login_user','setCarritoUser');
 $ObserverManager->addObserver('register_new_user','setCarritoUser');
+$ObserverManager->addObserver('change_quote','getUpdateCarrito');
+
 
 define("OBJETO_PRODUCTOS", getCoreConfig('ecommerce/product/object')); // \Catalog\model\CatalogproductsModel
 define("DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE", getCoreConfig('ecommerce/product/path_images')); // catalog/products/

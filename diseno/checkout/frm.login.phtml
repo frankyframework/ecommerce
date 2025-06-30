@@ -1,0 +1,28 @@
+<div class="w-xxxx-12 cont_login_admin">
+    <div class="content">
+    <div class="_cont_login_register_acount">
+            <div class="w-xxxx-12">
+                <?php  $loginForm->setAtributoInput("callback","value",$MyRequest->url(CHECKOUT_ECOMMERCE)); ?>
+                <?php echo $loginForm->openTag(); ?>
+                <?php echo $loginForm->getAllRow(); ?>
+                <?php echo $loginForm->endTag(); ?>
+                <div class="_tag_center">
+                    <a class="align_center" href="<?php echo $MyRequest->url(FORGOT); ?>">¿Olvidaste tu contraseña?</a>
+                </div>
+            </div>
+            <?php if(defined('REGISTRO')): ?> 	
+                <div class="w-xxxx-12 _space_border">
+                    <h2 class="align_center">¿Aún no tienes una cuenta?</h2>
+                    <div class="_tag_center">
+                        <a class="_btn _secondary" href="<?php echo $MyRequest->url(REGISTRO); ?>">Regístrate</a>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function(){
+    $("#autentificacion").validate();
+});
+</script>

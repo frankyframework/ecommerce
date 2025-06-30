@@ -1,11 +1,12 @@
 <?php
 use Ecommerce\Form\checkoutForm;
 use Ecommerce\Form\direccionesForm;
+use Ecommerce\Form\CustomerForm;
 
 $productos =  OBJETO_PRODUCTOS;
 $MyProducto =  new $productos();
 
-$productos_comprados = getCarrito();
+$productos_comprados = getInfoCarrito();
 if(empty($productos_comprados['productos']))
 {
     $MyRequest->redirect($MyRequest->url(CARRITO_COMPRAS));
@@ -21,36 +22,29 @@ $DireccionCheckoutForm->setAtributoInput("id_facturacion", "value", "no_requiere
 $DireccionCheckoutForm->addSubmit();
 
 
-$direcciones_envio = makeHTMLDireccion("envio",$MySession->GetVar("id"));
+if ($MySession->LoggedIn()) {
+  $direcciones_envio = makeHTMLDireccion("envio",$MySession->GetVar("id"));
+  if(!empty($direcciones_envio))
+  {
+    $direcciones_envio["otra"] = 'Nueva dirección';
+    $DireccionEnvioCheckoutForm = new checkoutForm("frm_direccion_envio");
+    $DireccionEnvioCheckoutForm->addDirecionEnvio($direcciones_envio);
+    $DireccionEnvioCheckoutForm->addSubmit();
 
-
-
-if(!empty($direcciones_envio))
-{
-  $direcciones_envio["otra"] = 'Nueva dirección';
-  $DireccionEnvioCheckoutForm = new checkoutForm("frm_direccion_envio");
-  $DireccionEnvioCheckoutForm->addDirecionEnvio($direcciones_envio);
-  $DireccionEnvioCheckoutForm->addSubmit();
-
+  }
 }
 
 
 $direccionesForm = new direccionesForm("frmdirecciones");
-$direccionesForm->addOtroTelefono();
 $direccionesForm->addEntrecalles();
-$direccionesForm->addInstrucciones();
 $direccionesForm->addSubmit();
+$direccionesForm->setAtributoInput("guardar","value","Siguiente");
+
 
 $direccionesFacturacionForm = new direccionesForm("frmdirecciones_facturacion");
+$direccionesFacturacionForm->addName();
 $direccionesFacturacionForm->addRFC();
 $direccionesFacturacionForm->addSubmit();
-$MySession->UnsetVar('checkout');
-$cupon = $MySession->GetVar('cupon_checkout');
-if($cupon != false)
-{
-    $valida_cupo = validaCuponEcommerce($cupon['cupon']);
-    if($valida_cupo['error'] == true){
-        $MySession->UnsetVar('cupon_checkout');
-    }
-}
+$direccionesFacturacionForm->setAtributoInput("guardar","value","Siguiente");
+$customerForm = new CustomerForm("frmcustomer");
 ?>

@@ -165,119 +165,32 @@ function EliminarDireccionFacturacionEcommerce($id,$status)
 function eliminarProductoCarrito($id)
 {
     global $MySession;
-    $MyCarritoProducto =  new \Ecommerce\model\carrito_producto();
+    $MyCarritoProducto =  new \Ecommerce\model\CarritoProductoModel();
+    $MyCarritoModel =  new \Ecommerce\model\CarritoModel();
     $Tokenizer = new \Franky\Haxor\Tokenizer;
+    $ObserverManager = new \Franky\Core\ObserverManager;
     global $MyAccessList;
     global $MyMessageAlert;
 
     $respuesta = array("error" => false);
-
-    if($MyAccessList->MeDasChancePasar("carrito_ecommerce"))
+    $MyCarritoEntity = getMyIdCarrito();
+   
+    if($MyCarritoProducto->getData(addslashes($Tokenizer->decode($id)),$MyCarritoEntity->getId()) == REGISTRO_SUCCESS)
     {
-        if($MyCarritoProducto->delete(addslashes($Tokenizer->decode($id)),getMyIdCarrito()) == REGISTRO_SUCCESS)
-        {
-               $respuesta = getInfoCarrito();
-               $cupon = $MySession->GetVar('cupon_checkout');
-                if($cupon != false)
-                {
-                    $valida_cupo = validaCuponEcommerce($cupon['cupon']);
-                    
-                    if($valida_cupo['error'] == true){
-                        ecommerce_removeCupon();
-                    }
-                }
-                validaPromocionEcommerce();
-        }
-        else
-        {
-              $respuesta["message"] = $MyMessageAlert->Message("ecommerce_carrito_error_delete");
-              $respuesta["error"] = true;
-        }
+        $registro = $MyCarritoProducto->getRows();   
+
+        $MyCarritoProducto->delete(addslashes($Tokenizer->decode($id)),$MyCarritoEntity->getId());
+
+        $ObserverManager->dispatch('change_quote',[]);
+
+        $respuesta = getInfoCarrito();
     }
     else
     {
-         $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
-         $respuesta["error"] = true;
+        $respuesta["message"] = $MyMessageAlert->Message("ecommerce_carrito_error_delete");
+        $respuesta["error"] = true;
     }
-
-    return $respuesta;
-}
-
-
-function getInfoCarrito()
-{
-    $MyCarritoProducto =  new \Ecommerce\model\carrito_producto();
-    $MyCarritoCompras =  new \Ecommerce\model\carrito();
-    $Tokenizer = new \Franky\Haxor\Tokenizer;
-    global $MyConfigure;
-
-    $productos =  OBJETO_PRODUCTOS;
-    $MyProducto =  new $productos();
-
-
-    $registro = $MyCarritoCompras->getRows();
-    $id_carrito = getMyIdCarrito();
-
-
-    $respuesta = array("qty" => 0,"subtotal" => 0,"total"=> 0);
-    $MyCarritoProducto->setTampag(100);
-    if($MyCarritoProducto->getData("", $id_carrito) == REGISTRO_SUCCESS)
-    {
-
-        while($registro = $MyCarritoProducto->getRows())
-        {
-
-            $MyProducto->getInfoProducto($registro["id_producto"]);
-            $_registro = $MyProducto->getRows();
-
-            $imagen = "";
-            $_img = getCoreConfig('ecommerce/product/placeholder');
-            if($_img != "" && file_exists(PROJECT_DIR.$_img))
-            {
-              $imagen = imageResize($_img,50,50, true);
-            }
-           
-            if(!empty($_registro["imagen"]))
-            {
-                $_imagen = json_decode($_registro["imagen"],true);
-                
-                if(is_array($_imagen))
-                {
-                    if(!empty($_imagen)){
-                    
-                        foreach($_imagen as $foto)
-                        {
-                           
-                            if($foto['principal'] == 1)
-                            {
-                                if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE.'/'.$registro["id_producto"].'/'.$foto['img']))
-                                {
-                                    $imagen = imageResize($MyConfigure->getUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE."/".$registro["id_producto"].'/'.$foto['img'],50,50, true);  
-                                }
-                            }
-                        }
-                    }
-                }
-                else{
-                    $imagen = imageResize($MyConfigure->getUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE."/".$registro["id_producto"].'/'.$_registro['imagen'],50,50, true);
-                }
-            }
-
-            $respuesta["qty"] += $registro["qty"];
-
-            $respuesta["subtotal"] += $_registro["precio"] * $registro["qty"];
-
-            $respuesta["productos"][] = array("id" => $Tokenizer->token("productos",$registro["id"]), "id_producto" => $Tokenizer->token("productos",$registro["id_producto"]),"_id" => $registro['id'],"nombre" => $_registro["nombre"],"precio" => getFormatoPrecio($_registro["precio"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),"qty" =>  $registro["qty"],"img" => $imagen,"subtotal" => getFormatoPrecio($registro["qty"]*$_registro["precio"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),"caracteristicas" => json_decode($registro['caracteristicas'],true));
-
-        }
-
-        $parse_precio =  getCarrito();
-        $respuesta["total"] = getFormatoPrecio($parse_precio['gran_total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
-        $respuesta["subtotal"] = getFormatoPrecio($parse_precio['subtotal'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
-        $respuesta["iva"] = getFormatoPrecio($parse_precio['iva_total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
-        
-
-    }
+    
 
     return $respuesta;
 }
@@ -285,8 +198,6 @@ function getInfoCarrito()
 
 function addProductoCarrito($producto,$qty=1,$caracteristicas="{}")
 {
-        
-        
         $productos =  OBJETO_PRODUCTOS;
         $MyProducto =  new $productos();
         $Tokenizer = new \Franky\Haxor\Tokenizer;
@@ -294,19 +205,16 @@ function addProductoCarrito($producto,$qty=1,$caracteristicas="{}")
         $MyCarritoProducto =  new \Ecommerce\model\CarritoProductoModel();
         $MyCarritoProductoEntity =  new \Ecommerce\entity\CarritoProductoEntity();
         $MyCarritoEntity =  new \Ecommerce\entity\CarritoEntity;
-        
+
         global $MyAccessList;
         global $MyMessageAlert;
         global $MySession;
         global $MyRequest;
-
+        global $MyConfigure;
 
         $MyProducto->getInfoProducto($Tokenizer->decode($producto));
         $productData = $MyProducto->getRows();
-        print_r($productData);
-        $price = parsePrecio($productData['precio'],$productData['iva'],$productData['incluye_iva']);
-        print_r($price);
-        die;
+    
         $caracteristicas = json_decode($caracteristicas,true);
 
         if(!empty($caracteristicas))
@@ -322,110 +230,156 @@ function addProductoCarrito($producto,$qty=1,$caracteristicas="{}")
         }
         $caracteristicas = json_encode($caracteristicas);
 
-        
         $respuesta = array("error" => false);
 
-        if($MyAccessList->MeDasChancePasar("carrito_ecommerce"))
+        
+        $ObserverManager = new \Franky\Core\ObserverManager;
+        $ObserverManager->dispatch('prepara_producto_carrito',['id' => $Tokenizer->decode($producto),'n' => $qty]);
+
+        $carritoData = getMyIdCarrito();
+        if($carritoData == 0)
         {
+            $MyCarritoEntity->setCookieId(session_id());
+   
+            $MyCarritoEntity->setCreatedAt(date('Y-m-d'));
             
-            if($carritoData == 0)
-            {
-                $MyCarritoEntity->setCookieId(session_id());
-                if($MySession->LoggedIn())
-                {
-                    $MyCarritoEntity->setUid($MySession->GetVar("id"));
+        
+            $MyCarritoCompras->save($MyCarritoEntity->getArrayCopy());
+            $id_carrito = $MyCarritoCompras->getUltimoID();
+        } else {
+            $MyCarritoEntity = $carritoData;
+            $MyCarritoEntity->setUpdateAt(date('Y-m-d'));
+            $MyCarritoCompras->save($MyCarritoEntity->getArrayCopy());
+            $id_carrito = $carritoData->getId();
+        }
+        //echo $id_carrito;
+        if($MyCarritoProducto->getData("", $id_carrito,$Tokenizer->decode($producto),$caracteristicas) == REGISTRO_SUCCESS)
+        {
+            $registro = $MyCarritoProducto->getRows();
 
+            $qty += $registro["qty"];
+            $MyCarritoProductoEntity->setId($registro["id"]);
+            
+            $MyCarritoProductoEntity->setUpdateAt(date('Y-m-d H:i:s'));
+
+        } else {
+            $MyCarritoProductoEntity->setCreatedAt(date('Y-m-d'));
+        }
+
+        $imagen = "";
+        $_img = getCoreConfig('ecommerce/product/placeholder');
+        if($_img != "" && file_exists(PROJECT_DIR.$_img))
+        {
+            $imagen = imageResize($_img,50,50, true);
+        }
+        
+        if(!empty($productData["imagen"]))
+        {
+            $_imagen = json_decode($productData["imagen"],true);
+         
+            if(is_array($_imagen))
+            {
+                if(!empty($_imagen)){
+                
+                    foreach($_imagen as $foto)
+                    {
+                        
+                        if($foto['principal'] == 1)
+                        {
+                           if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE.'/'.$Tokenizer->decode($producto).'/'.$foto['img']))
+                            {
+                                $imagen = imageResize($MyConfigure->getUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE."/".$Tokenizer->decode($producto).'/'.$foto['img'],50,50, true);  
+                            }
+                        }
+                    }
                 }
-                $MyCarritoEntity->setCratedAt(date('Y-m-d'));
-                $MyCarritoCompras->save($MyCarritoEntity->getArrayCopy());
-                $id_carrito = $MyCarritoCompras->getUltimoID();
-            } else {
-                $MyCarritoEntity = $carritoData;
-                $MyCarritoEntity->setUpdateAt(date('Y-m-d'));
-                $MyCarritoCompras->save($MyCarritoEntity->getArrayCopy());
-                $id_carrito = $carritoData->getId();
             }
-            //echo $id_carrito;
-            if($MyCarritoProducto->getData("", $id_carrito,$Tokenizer->decode($producto),$caracteristicas) == REGISTRO_SUCCESS)
-            {
-                $registro = $MyCarritoProducto->getRows();
-
-                $qty += $registro["qty"];
-                $MyCarritoProductoEntity->setId($registro["id"]);
-                $MyCarritoProductoEntity->setUpdateAt(date('Y-m-d H:i:s'));
-
+            else{
+                $imagen = imageResize($MyConfigure->getUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE."/".$Tokenizer->decode($producto).'/'.$_imagen,50,50, true);
             }
+        }
+        $iva = DATA_STORE_CONFIG['iva'];
+        $price = parsePrecio($productData['price']*$qty,$iva,$productData['incluye_iva']);
+        
+        
+        $link = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $productData['url_key']]);
+        $MyCarritoProductoEntity->setIdProduct($Tokenizer->decode($producto));
+        $MyCarritoProductoEntity->setQty($qty);
+        $MyCarritoProductoEntity->setPrice($productData['price']);
+        $MyCarritoProductoEntity->setTotal($price['total']);
+        $MyCarritoProductoEntity->setData($caracteristicas);
+        $MyCarritoProductoEntity->setQuoteId($id_carrito);
+        $MyCarritoProductoEntity->setSku($productData['sku']);
+        $MyCarritoProductoEntity->setPriceDiscount(0);
+        $MyCarritoProductoEntity->setTotalDiscount(0);
+        $MyCarritoProductoEntity->setName($productData['nombre']);
+        $MyCarritoProductoEntity->setEnvioRequerido($productData['envio_requerido']);
+        $MyCarritoProductoEntity->setUrl($link);
+        $MyCarritoProductoEntity->setImage($imagen);
+        if(!empty($MyCarritoProductoEntity->getCustomPrice())) {
+            $customPrice = parsePrecio($MyCarritoProductoEntity->getCustomPrice()*$qty,$iva,$productData['incluye_iva']);
+            $MyCarritoProductoEntity->setTotalCustomPrice($customPrice['total']);
+        }
+        if($MyCarritoProducto->save($MyCarritoProductoEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+        {
+            $ObserverManager->dispatch('change_quote',[]);
 
-            $ObserverManager = new \Franky\Core\ObserverManager;
-            $ObserverManager->dispatch('prepara_producto_carrito',['id' => $Tokenizer->decode($producto),'qty' => $qty]);
+            $respuesta = getInfoCarrito();
 
-            $MyCarritoProductoEntity->setIdProduct($Tokenizer->decode($producto));
-            $MyCarritoProductoEntity->setQty($qty);
-            $MyCarritoProductoEntity->setData($caracteristicas);
-            $MyCarritoProductoEntity->setQuoteId($id_carrito);
-            $MyCarritoProductoEntity->setPrice($productData['price']);
-            $MyCarritoProductoEntity->setTax($productData['price']);
-
-            if($MyCarritoProducto->save($MyCarritoProductoEntity->getArrayCopy()) == REGISTRO_SUCCESS)
-            {
-
-                $respuesta = getInfoCarrito();
-
-            }
-            else
-            {
-                $respuesta["message"] = $MyMessageAlert->Message("ecommerce_carrito_error_add");
-                $respuesta["error"] = true;
-
-            }
         }
         else
         {
-             $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
-             $respuesta["error"] = true;
+            $respuesta["message"] = $MyMessageAlert->Message("ecommerce_carrito_error_add");
+            $respuesta["error"] = true;
+
         }
+    
 
 	return $respuesta;
 }
 
 function setQTYProductoCarrido($id,$qty)
 {
-        $MyCarritoProductoEntity =  new \Ecommerce\entity\carrito_producto();
-	       $MyCarritoProducto =  new \Ecommerce\model\carrito_producto();
-         $Tokenizer = new \Franky\Haxor\Tokenizer;
-        global $MyAccessList;
+        $MyCarritoProductoEntity =  new \Ecommerce\entity\CarritoProductoEntity();
+	    $MyCarritoProducto =  new \Ecommerce\model\CarritoProductoModel();
+        $Tokenizer = new \Franky\Haxor\Tokenizer;
+        $productos =  OBJETO_PRODUCTOS;
+        $MyProducto =  new $productos();
         global $MyMessageAlert;
-        global $MySession;
-        $respuesta = array("error" => false,"total" => 0, "iva" => 0, "subtotal" => 0);
 
-        if($MyAccessList->MeDasChancePasar("carrito_ecommerce"))
-        {
-            $id_carrito = getMyIdCarrito();
-            if($MyCarritoProducto->getData($Tokenizer->decode($id), $id_carrito) == REGISTRO_SUCCESS)
+
+        $respuesta = array("error" => false,"total" => 0, "iva" => 0, "subtotal" => 0);
+        
+  
+            $MyCarritoEntity = getMyIdCarrito();
+            if($MyCarritoProducto->getData($Tokenizer->decode($id), $MyCarritoEntity->getId()) == REGISTRO_SUCCESS)
             {
                 $registro = $MyCarritoProducto->getRows();
                 $ObserverManager = new \Franky\Core\ObserverManager;
                 
-                $ObserverManager->dispatch('prepara_producto_carrito',['id' => $registro['id_producto'],'qty' => $qty]);
-    
+                $MyProducto->getInfoProducto($registro['id_product']);
+                $productData = $MyProducto->getRows();
+                $ObserverManager->dispatch('prepara_producto_carrito',['id' => $registro['id_product'],'n' => $qty]);
+                $iva = DATA_STORE_CONFIG['iva'];
+                $price = parsePrecio($productData['price']*$qty,$iva,$productData['incluye_iva']);
                 $MyCarritoProductoEntity->setId($Tokenizer->decode($id));
                 $MyCarritoProductoEntity->setQty($qty);
-                $MyCarritoProductoEntity->setId_carrito($id_carrito);
+                $MyCarritoProductoEntity->setQuoteId($MyCarritoEntity->getId());
+                $MyCarritoProductoEntity->setPrice($productData['price']);
+                $MyCarritoProductoEntity->setEnvioRequerido($productData['envio_requerido']);
+                $MyCarritoProductoEntity->setTotal($price['total']);
+                $MyCarritoProductoEntity->setTotalDiscount(0);
+                $MyCarritoProductoEntity->setPriceDiscount(0);
+                if(!empty($MyCarritoProductoEntity->getCustomPrice())) {
+                    $customPrice = parsePrecio($MyCarritoProductoEntity->getCustomPrice()*$qty,$iva,$productData['incluye_iva']);
+                    $MyCarritoProductoEntity->setTotalCustomPrice($customPrice['total']);
+                }
 
                 if($MyCarritoProducto->save($MyCarritoProductoEntity->getArrayCopy())  == REGISTRO_SUCCESS)
                 {
-
+                    $ObserverManager->dispatch('change_quote',[]);
                     $respuesta = getInfoCarrito();
-                    $cupon = $MySession->GetVar('cupon_checkout');
-                    if($cupon != false)
-                    {
-                        $valida_cupo = validaCuponEcommerce($cupon['cupon']);
-                        
-                        if($valida_cupo['error'] == true){
-                            ecommerce_removeCupon();
-                        }
-                    }
-                    validaPromocionEcommerce();
+                  
                 }
                 else
                 {
@@ -437,12 +391,7 @@ function setQTYProductoCarrido($id,$qty)
                 $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
                 $respuesta["error"] = true;
             }
-        }
-        else
-        {
-            $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
-            $respuesta["error"] = true;
-        }
+ 
 
 	return $respuesta;
 }
@@ -489,38 +438,42 @@ function setconfigPago($id_pago)
 function setDireccionCheckout($id_envio)
 {
     global $MySession;
-    
-    $data = array('id_envio' => $id_envio,'direccion_envio' => '');
-    
-    
-    
+    $data = ['resumen_envio' => ""];
     $MyDireccion = new Ecommerce\model\direcciones();
-
-    $MyDireccion->setTampag(1000);
+    $CarritoModel = new Ecommerce\model\CarritoModel();
+    $MyDireccion->setTampag(1);
     $MyDireccion->setOrdensql("fecha ASC");
-    $MyDireccion->getData("",$MySession->GetVar('id'));
+    $MyDireccion->getData($id_envio,$MySession->GetVar('id'));
     $total	= $MyDireccion->getTotal();
-
-
 
     if($total > 0)
     {
-
-        while($direccion_envio = $MyDireccion->getRows())
-        {
-            $data['direccion_envio'] = $direccion_envio;
-            if($direccion_envio['id'] == $id_envio)
-            {
-
-                  $data['resumen_envio'] =   render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/resumen.envio.phtml',['direccion_envio' =>$direccion_envio]);
-            }
-
-        }
+        $data = $MyDireccion->getRows();
+        $MyCarritoEntity = getMyIdCarrito();
+        $MyCarritoEntity->setShippingAddres($data);
+        $CarritoModel->save($MyCarritoEntity->getArrayCopy());
+        $data['resumen_envio'] =   render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/resumen.envio.phtml',['direccion_envio' => $data]);
+            
     }
-    $MySession->SetVar('checkout',$data);
 
     return $data;
 }
+
+
+function setCustomerDataCheckout($nombre, $email)
+{
+    global $MySession;
+    $MyCarritoModel = new \Ecommerce\model\CarritoModel;
+    $MyCarritoEntity = getMyIdCarrito();
+    $MyCarritoEntity->setName($nombre);
+    $MyCarritoEntity->setEmail($email);
+    $MyCarritoModel->save($MyCarritoEntity->getArrayCopy());
+    $data['resumen_customer'] =   render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/resumen.customer.phtml',['nombre' => $nombre, 'email' => $email]);
+      
+
+    return $data;
+}
+
 
 function setMetodoEnvioCheckout($id){
     global $MySession;
@@ -539,17 +492,20 @@ function setMetodoEnvioCheckout($id){
 function setNuevaDireccionCheckout($data)
 {
     global $MySession;
+    $MyCarritoModel = new \Ecommerce\model\CarritoModel;
+    $MyCarritoEntity = getMyIdCarrito();
+    
+
     $data2 = array();
     $data = json_decode($data,true);
     foreach($data as $node){
         $data2[$node["name"]] = $node["value"];
     }
-
+    $MyCarritoEntity->setShippingAddres(json_encode($data2));
+    $MyCarritoModel->save($MyCarritoEntity->getArrayCopy());
     $data =array("direccion_envio" => $data2,
         'resumen_envio' =>   render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/resumen.envio.phtml',['direccion_envio' =>$data2])
     );
-    
-    $MySession->SetVar('checkout',$data);
 
     return $data;
 }
@@ -585,42 +541,30 @@ function setPickUpCheckout($id)
 function setFacturacionCheckout($id_facturacion)
 {
     global $MySession;
-
-    $data = $MySession->GetVar('checkout');
-    $data['direccion_facturacion'] = $id_facturacion;
-    $data['direccion_facturacion'] = '';
     $MyDireccion = new Ecommerce\model\direcciones_facturacion();
-
+    $CarritoModel = new Ecommerce\model\CarritoModel();
+    $MyCarritoEntity = getMyIdCarrito();
+    $data = ['resumen_facturacion' => ""];
     $MyDireccion->setTampag(1000);
     $MyDireccion->setOrdensql("fecha ASC");
-    $MyDireccion->getData("",$MySession->GetVar('id'));
+    $MyDireccion->getData($id_facturacion,$MySession->GetVar('id'));
     $total	= $MyDireccion->getTotal();
-
-
 
     if($total > 0)
     {
-
-        while($direccion_facturacion = $MyDireccion->getRows())
-        {
-            $data['direccion_facturacion'] = $direccion_facturacion;
-            if($direccion_facturacion['id'] == $id_facturacion)
-            {
-
-                  $data['resumen_facturacion'] =   render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/resumen.facturacion.phtml',['direccion_facturacion' =>$direccion_facturacion]);
-            }
-
-        }
+        $data = $MyDireccion->getRows();
+        
+        $MyCarritoEntity->setInvoiceAddres($data);
+        $data['resumen_facturacion'] =   render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/resumen.facturacion.phtml',['direccion_facturacion' =>$data]);
+        
     }
     if($id_facturacion == 'no_requiere')
     {
+        $MyCarritoEntity->setInvoiceAddres("");
          $data['resumen_facturacion'] =   render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/resumen.nofacturacion.phtml');
 
     }
-
-
-    $MySession->SetVar('checkout',$data);
-
+    $CarritoModel->save($MyCarritoEntity->getArrayCopy());
     return $data;
 }
 
@@ -628,19 +572,19 @@ function setFacturacionCheckout($id_facturacion)
 function setNuevaFacturacionCheckout($data)
 {
     global $MySession;
-    $data2 = $MySession->GetVar('checkout');
+    $MyCarritoModel = new \Ecommerce\model\CarritoModel;
+    $MyCarritoEntity = getMyIdCarrito();
+    
     $data = json_decode($data,true);
-    $data3 = array();
-    $data2["direccion_facturacion"] = '';
+    $data2 = [];
     foreach($data as $node){
-        $data3[$node["name"]] = $node["value"];
+        $data2[$node["name"]] = $node["value"];
     }
+    $MyCarritoEntity->setInvoiceAddres(json_encode($data2));
+    $MyCarritoModel->save($MyCarritoEntity->getArrayCopy());
+    $data['resumen_facturacion'] =   render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/resumen.facturacion.phtml',['direccion_facturacion' =>$data2]);
 
-    $data2["direccion_facturacion"] = $data3;
-    $data2['resumen_facturacion'] =   render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/resumen.facturacion.phtml',['direccion_facturacion' =>$data3]);
-    $MySession->SetVar('checkout',$data2);
-
-    return $data2;
+    return $data;
 }
 
 function SetStatusPagoEcommerce($id,$status,$nota,$monto)
@@ -753,14 +697,14 @@ function pay_free()
 }
 
 function loadMetodosEnvio(){
-    global $MySession;
-    $metodos_envio = makeHTMLMetodosEnvio();
-    $carrito = getCarrito();
-    $data = $MySession->GetVar('checkout');
-  
-    $data['gran_total'] = $carrito['gran_total'];
-    $MySession->SetVar('checkout',$data);
-  
+    $shippingMethodsHTML = makeHTMLMetodosEnvio();
+    print_r($shippingMethodsHTML); die;
+    $carrito = getInfoCarrito();
+    if($carrito['envio_requerido'] != 1)
+    {
+        return array('envio_requerido' => 0,'html' => '');
+    }
+    /*
     if(getCoreConfig('ecommerce/pick-up/enabled') == 1)
     {
         $direcciones_envio["pick-up"] = getCoreConfig('ecommerce/pick-up/titulo');
@@ -770,17 +714,12 @@ function loadMetodosEnvio(){
         $pickupForm->addSubmit();
     }
 
+    */
 
-    if($carrito['envio_requerido'] == 1)
-    {
-        $MetodoEnvioCheckoutForm = new \Ecommerce\Form\checkoutForm("frm_metodo_envio");
-        $MetodoEnvioCheckoutForm->addMetodoEnvio($metodos_envio);
-        $MetodoEnvioCheckoutForm->addSubmit();
-        return array('labelpickup' =>getCoreConfig('ecommerce/pick-up/titulo'),'envio_requerido' => 1,'html' => render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/frm.metodos_envio.phtml',['MetodoEnvioCheckoutForm' => $MetodoEnvioCheckoutForm,'pickupForm' => $pickupForm]));
-    }
-    
-    return array('envio_requerido' => 0,'html' => '');
-    
+    $MetodoEnvioCheckoutForm = new \Ecommerce\Form\checkoutForm("frm_metodo_envio");
+    $MetodoEnvioCheckoutForm->addMetodoEnvio($shippingMethodsHTML['codes']);
+    $MetodoEnvioCheckoutForm->addSubmit();
+    return array('html' => render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/frm.metodos_envio.phtml',['MetodoEnvioCheckoutForm' => $MetodoEnvioCheckoutForm,'shippingMethodsHTML' => $shippingMethodsHTML]));
 }
 
 function loadMetodosPago(){
@@ -1006,27 +945,13 @@ function getInfoTotalsCheckout()
     global $MySession;
     $respuesta = null;
     
-    $cupon = $MySession->GetVar('cupon_checkout');
-    if($cupon != false)
-    {
-        $valida_cupo = validaCuponEcommerce($cupon['cupon']);
-        
-        if($valida_cupo['error'] == true){
-            ecommerce_removeCupon();
-        }
-    }
-    validaPromocionEcommerce();
-    $parse_precio   =  getCarrito();
-    $respuesta["total"] =$parse_precio['gran_total'];
-    $respuesta["subtotal"] = getFormatoPrecio($parse_precio['subtotal'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
-    $respuesta["iva"] = getFormatoPrecio($parse_precio['iva_total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
-    
-    if($parse_precio['descuento'] > 0)
-    {
-        $respuesta["total"] = $respuesta['total']-$parse_precio['descuento'];
-        $respuesta['descuento'] = getFormatoPrecio($parse_precio['descuento'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
-    }
-    $respuesta["total"] = getFormatoPrecio($respuesta['total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+    $parse_precio   =  getInfoCarrito();
+    $respuesta["total"] =$parse_precio['total'];
+    $respuesta["totalPlain"] =$parse_precio['totalPlain'];
+    $respuesta["subtotal"] = $parse_precio['subtotal'];
+    $respuesta["iva"] = $parse_precio['iva'];
+    $respuesta['descuento'] = $parse_precio['discount'];
+    $respuesta['descuentoPlain'] = $parse_precio['discountPlain'];
     return $respuesta;
 }
 
@@ -1101,4 +1026,5 @@ $MyAjax->register("getInfoTotalsCheckout2");
 $MyAjax->register("EliminarTiendaEcommerce");
 $MyAjax->register("setPickUpCheckout");
 $MyAjax->register("EliminarPromocionEcommerce");
+$MyAjax->register("setCustomerDataCheckout");
 ?>

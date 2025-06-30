@@ -12,7 +12,8 @@ class CarritoProductoModel  extends \Franky\Database\Mysql\objectOperations
 
     function getData($id='',$carrito='',$producto='', $data='')
     {
-        $campos = array("id","quote_id","id_product","qty","data","price","tax","discount","custom_price","created_at","update_at");
+        $campos = array("id","quote_id","id_product","qty","data","url","price","total_discount","price_discount","custom_price",
+        "total","total_custom_price","created_at","update_at","sku","name","image","envio_requerido");
 
         if(!empty($id))
         {
