@@ -112,33 +112,7 @@ function makeHTMLCards($uid = "")
 
     return $cards;
 }
-function getPickUpPoints(){
-    
-    $EcommercetiendasModel = new Ecommerce\model\EcommercetiendasModel();
-    $direccion = "%s: calle %s #%s, Colonia %s, municipio %s,%s C.P. %d";
-  
-    $EcommercetiendasModel->setTampag(1000);
-    $EcommercetiendasModel->setOrdensql("fecha ASC");
-    $EcommercetiendasModel->pickup(1);
-    $EcommercetiendasModel->getData("","1");
-    $total	= $EcommercetiendasModel->getTotal();
-    $data = array();
 
-
-    if($total > 0)
-    {
-
-        while($registro = $EcommercetiendasModel->getRows())
-        {
-          
-            $data[$registro['id']] = sprintf($direccion,$registro["nombre"],$registro["calle"],$registro["numero"],$registro["colonia"],$registro["municipio"],$registro["estado"],$registro["cp"]);
-            
-	}
-    }
-
-
-    return $data;
-}
 function makeHTMLDireccion($type="envio",$uid = "")
 {
     global $MySession;
@@ -185,10 +159,10 @@ function makeHTMLDireccion($type="envio",$uid = "")
 }
 
 
-function makeHTMLMetodosEnvio()
+function makeHTMLMetodosEnvio($id = null)
 {
     $shippingMethods = ["codes" => []];
-    $modulos = getdir("DESC");
+    $modulos = getModulos("DESC");
 
     if(!empty($modulos))
     {
@@ -196,11 +170,25 @@ function makeHTMLMetodosEnvio()
         {
             if(file_exists(PROJECT_DIR."/modulos/$modulo/configure/shipping.php"))
             {
-                $shippingMethod = include(PROJECT_DIR."/modulos/$modulo/configure/alias.php");
-                $shippingMethods["codes"][] = $shippingMethod['code'];
-                $shippingMethods[$shippingMethod['code']] = $shippingMethod['data'];
+                $shippingMethod = include(PROJECT_DIR."/modulos/$modulo/configure/shipping.php");
+                foreach ($shippingMethod as $k => $v) {
+
+                    if(!$v['data']['enabled']) {
+                        continue;
+                    } 
+                    $shippingMethods["codes"][$v['code']] = $v['data']['name']." (".getFormatoPrecio($v['data']['price'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']).")";
+                
+                
+                    $shippingMethods[$v['code']] = $v['data'];
+                    if(!is_null($id) && $id == $v['code']) {
+                        return $v['data'];
+                    }
+                }
             }
         }
+    }
+    if(!is_null($id)) {
+        return [];
     }
 
     return $shippingMethods;
@@ -233,34 +221,6 @@ function getMetodosEnvio($id)
     return false;
 }
 
-function getMetodoEnvioPickup()
-{
-    $EcommerceenviosModel = new Ecommerce\model\EcommerceenviosModel();
-    $EcommerceenviosEntity = new Ecommerce\entity\EcommerceenviosEntity();
-    
-    $EcommerceenviosEntity->path('pick-up');
-    $EcommerceenviosModel->getData($EcommerceenviosEntity->getArrayCopy());
-    
-    return $EcommerceenviosModel->getRows();
-      
-}
-
-/*
-function getCustomer($id)
-{
-    $CustomerModel = new \Ecommerce\model\CustomersModel();
-    $CustomerEntity = new \Ecommerce\entity\CustomersEntity();
-    $CustomerEntity->id_user($id);
-
-    if($CustomerModel->getData($CustomerEntity->getArrayCopy()) == REGISTRO_SUCCESS)
-    {
-        $registro = $CustomerModel->getRows();
-
-        return $registro["id"];
-    }
-    return false;
-}
-*/
 function getInfoCarrito()
 {
     $MyCarritoProducto =  new \Ecommerce\model\CarritoProductoModel();
@@ -362,21 +322,42 @@ function getUpdateCarrito()
         /*
             Descuentos y promociones se validaran aqui.
         */
+       
+       
+        
+
 
         $total -= $MyCarritoEntity->getDiscount();
         $iva = DATA_STORE_CONFIG['iva'];
         $price = parsePrecio($total,$iva,1);
         
-        $price['total'] += $MyCarritoEntity->getShippingPrice();
-        $price['subtotal'] += $MyCarritoEntity->getShippingSubtotal();
-        $price['iva'] += $MyCarritoEntity->getShippingTax();
-
-        
-        
         $MyCarritoEntity->setTotal($price['total']);
         $MyCarritoEntity->setSubtotal($price['subtotal']);
         $MyCarritoEntity->setTax($price['iva']);
         $MyCarritoCompras->save($MyCarritoEntity->getArrayCopy());
+
+        if(!empty($MyCarritoEntity->getShipmentMethod())) {
+            $metodo_envio = makeHTMLMetodosEnvio($MyCarritoEntity->getShipmentMethod());
+     
+            $shippingData = json_decode($MyCarritoEntity->getShippingData(),true);
+            if(empty($metodo_envio) || $shippingData['price'] != $metodo_envio['price']) {
+                $MyCarritoEntity->setShippingMethod("");
+                $MyCarritoEntity->setShippingData("");
+                $MyCarritoEntity->setShippingPrice(0);
+                $MyCarritoEntity->setShippingSubtotal(0);
+                $MyCarritoEntity->setShippingTax(0);
+            }
+
+            $price['total'] += $MyCarritoEntity->getShippingPrice();
+            $price['subtotal'] += $MyCarritoEntity->getShippingSubtotal();
+            $price['iva'] += $MyCarritoEntity->getShippingTax();
+            
+            
+            $MyCarritoEntity->setTotal($price['total']);
+            $MyCarritoEntity->setSubtotal($price['subtotal']);
+            $MyCarritoEntity->setTax($price['iva']);
+            $MyCarritoCompras->save($MyCarritoEntity->getArrayCopy());
+        }
 
     }
 }
@@ -724,5 +705,13 @@ function validaPromocionEcommerce()
     return $respuesta;
 }
 
-
+function getShippingPlainPrice() {
+    $tipo = getCoreConfig("ecommerce/plain-price/tipo");
+    $price = getCoreConfig("ecommerce/plain-price/price");
+    $MyCarrito = getMyIdCarrito();
+    if($tipo == "porcentaje") {
+        return $MyCarrito->getTotal() * ($price/100);
+    }
+    return $price;
+}
 ?>

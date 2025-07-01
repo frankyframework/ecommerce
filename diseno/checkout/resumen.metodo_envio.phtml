@@ -1,6 +1,6 @@
 <div class="w-xxxx-12">
     <div class="w-xxxx-10">
-        <?=$metodo_envio?>
+        <?=$metodo_envio['name']?> <?=getFormatoPrecio($metodo_envio['price'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura'])?> <?=$metodo_envio['time']?>
     </div>
     <div class="w-xxxx-2">
         <a href="javascript:void(0)" onclick="changeMetodoEnvio();"><i class="icon icon-editar"></i> Cambiar</a>

@@ -476,17 +476,18 @@ function setCustomerDataCheckout($nombre, $email)
 
 
 function setMetodoEnvioCheckout($id){
-    global $MySession;
-    $metodo_envio = getMetodosEnvio($id);
-    $data = $MySession->GetVar('checkout');
-    $data = array_merge($data,
-            array('id_metodo_envio' => $id,'monto_envio' => $metodo_envio,'monto_envio_html' => getFormatoPrecio($metodo_envio,true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura'])));
+    
+    $MyCarritoModel = new \Ecommerce\model\CarritoModel;
+    $MyCarrito = getMyIdCarrito();
     $metodo_envio = makeHTMLMetodosEnvio($id);
-    
+    $MyCarrito->setShippingMethod($id);
+    $MyCarrito->setShippingData(json_encode($metodo_envio));
+    $price = parsePrecio($metodo_envio['price'],$metodo_envio['iva'],1);
+    $MyCarrito->setShippingPrice($price['total']);
+    $MyCarrito->setShippingSubtotal($price['subtotal']);
+    $MyCarrito->setShippingTax($price['total']-$price['subtotal']);
+    $MyCarritoModel->save($MyCarrito->getArrayCopy());
     $data['resumen_metodo_envio'] =   render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/resumen.metodo_envio.phtml',['metodo_envio' =>$metodo_envio]);   
-    
-    $MySession->SetVar('checkout',$data);
-    
     return $data;
 }
 function setNuevaDireccionCheckout($data)
@@ -506,33 +507,6 @@ function setNuevaDireccionCheckout($data)
     $data =array("direccion_envio" => $data2,
         'resumen_envio' =>   render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/resumen.envio.phtml',['direccion_envio' =>$data2])
     );
-
-    return $data;
-}
-function setPickUpCheckout($id)
-{
-    global $MySession;
-
-    $EcommercetiendasModel = new Ecommerce\model\EcommercetiendasModel();
-    $EcommercetiendasEntity = new Ecommerce\entity\EcommercetiendasEntity();
-   
-    $EcommercetiendasModel->getData($id);
-    $registro = $EcommercetiendasModel->getRows();
-    $registro['horario'] = json_decode($registro['horario'],true);
-    $EcommercetiendasEntity->exchangeArray($registro);
-    $data = $MySession->GetVar('checkout');
-    $data = array_merge($data,array("pickup" => $id,'direccion_pickup' => $EcommercetiendasEntity->getArrayCopy()));
-    
-    $metodo_pickup = getMetodoEnvioPickup();
-    $metodo_envio = getMetodosEnvio($metodo_pickup['id']);
-
-    $data['id_metodo_envio'] = $metodo_pickup['id'];
-    $data['monto_envio'] = $metodo_envio;
-    $data['monto_envio_html'] = getFormatoPrecio($metodo_envio,true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
-    $data['pickup']  = true;
-
-    $MySession->SetVar('checkout',$data);
-    $data['resumen_envio'] =   render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/resumen.pickup.phtml',['pickup' =>$registro]);
 
     return $data;
 }
@@ -698,28 +672,17 @@ function pay_free()
 
 function loadMetodosEnvio(){
     $shippingMethodsHTML = makeHTMLMetodosEnvio();
-    print_r($shippingMethodsHTML); die;
+    
     $carrito = getInfoCarrito();
     if($carrito['envio_requerido'] != 1)
     {
         return array('envio_requerido' => 0,'html' => '');
     }
-    /*
-    if(getCoreConfig('ecommerce/pick-up/enabled') == 1)
-    {
-        $direcciones_envio["pick-up"] = getCoreConfig('ecommerce/pick-up/titulo');
-        $pickupForm = new \Ecommerce\Form\pickupForm("frmpickup");
-        $pickuppoints = getPickUpPoints();
-        $pickupForm->addPickuppoints($pickuppoints);
-        $pickupForm->addSubmit();
-    }
-
-    */
 
     $MetodoEnvioCheckoutForm = new \Ecommerce\Form\checkoutForm("frm_metodo_envio");
     $MetodoEnvioCheckoutForm->addMetodoEnvio($shippingMethodsHTML['codes']);
     $MetodoEnvioCheckoutForm->addSubmit();
-    return array('html' => render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/frm.metodos_envio.phtml',['MetodoEnvioCheckoutForm' => $MetodoEnvioCheckoutForm,'shippingMethodsHTML' => $shippingMethodsHTML]));
+    return array('envio_requerido' => $carrito['envio_requerido'],'html' => render(PROJECT_DIR.'/modulos/ecommerce/diseno/checkout/frm.metodos_envio.phtml',['MetodoEnvioCheckoutForm' => $MetodoEnvioCheckoutForm,'shippingMethodsHTML' => $shippingMethodsHTML]));
 }
 
 function loadMetodosPago(){

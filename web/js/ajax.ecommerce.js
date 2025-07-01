@@ -522,31 +522,6 @@ function loadMetodosEnvioHTML(response)
                      return false;
                 }
             });
-            $( "#frmpickup" ).validate({
-                submitHandler: function(form)
-                {
-                     setPickUpCheckout();
-                     return false;
-                }
-            });
-
-            
-            $("input[name=id_metodo_envio]").change(function()
-            {
-                if($(this).parent().find('.envio_name').text() == respuesta.labelpickup)
-                {
-                    
-                     $("#form_pick-up").show();
-                    $("form[name=frm_metodo_envio] input[name=continuar]").hide();
-                }
-                else
-                {
-                    $("#form_pick-up").hide();
-                    $("#frm_metodo_envio").show();
-                    $("form[name=frm_metodo_envio] input[name=continuar]").show();
-                }
-            });
-
 
         }
         else{

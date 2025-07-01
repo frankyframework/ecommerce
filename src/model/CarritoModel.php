@@ -13,7 +13,7 @@ class CarritoModel  extends \Franky\Database\Mysql\objectOperations
     {
         $campos = array("id","uid","cookie_id","shipping_method","payment_method","shipping_address","invoice_address",
         "name", "email", "guest","total","subtotal","tax","discount","coupon","promotion","created_at","update_at",
-      "shipping_price","shipping_subtotal", "shipping_tax");
+      "shipping_price","shipping_subtotal", "shipping_tax","shipping_data");
 
         if(!empty($id))
         {

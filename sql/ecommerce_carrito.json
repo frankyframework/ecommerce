@@ -110,6 +110,11 @@
                 "null":1
             },
             {
+                "name":"shipping_data",
+                "type":"text",
+                "null":1
+            },
+            {
                 "name":"shipping_tax",
                 "type":"float",
                 "length":11,

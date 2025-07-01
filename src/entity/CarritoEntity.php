@@ -9,6 +9,7 @@ class CarritoEntity
     private $shipping_method;
     private $payment_method;
     private $shipping_address;
+    private $shipping_data;
     private $invoice_address;
     private $guest;
     private $name;
@@ -41,6 +42,7 @@ class CarritoEntity
         $this->shipping_method      = (isset($data['shipping_method']))     ? $data['shipping_method']      : null;
         $this->payment_method       = (isset($data['payment_method']))      ? $data['payment_method']       : null;
         $this->shipping_address     = (isset($data['shipping_address']))    ? $data['shipping_address']     : null;
+        $this->shipping_data         = (isset($data['shipping_data']))    ? $data['shipping_data']     : null;
         $this->invoice_address      = (isset($data['invoice_address']))     ? $data['invoice_address']      : null;
         $this->guest                = (isset($data['guest']))               ? $data['guest']                : null;
         $this->name                 = (isset($data['name']))                ? $data['name']                 : null;
@@ -267,7 +269,7 @@ class CarritoEntity
         return $this->shipping_subtotal;
     }
 
-    public function setShippingsubtotal($shippingSubtotal)
+    public function setShippingSubtotal($shippingSubtotal)
     {
         $this->shipping_subtotal = $shippingSubtotal;
     }
@@ -280,6 +282,16 @@ class CarritoEntity
     public function setShippingTax($shippingTax)
     {
         $this->shipping_tax = $shippingTax;
+    }
+
+    public function getShippingData()
+    {
+        return $this->shipping_data;
+    }
+
+    public function setShippingData($shippingData)
+    {
+        $this->shipping_data = $shippingData;
     }
 
    
