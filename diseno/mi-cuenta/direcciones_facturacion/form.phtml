@@ -1,4 +1,29 @@
-<?php echo render("admin/template/form.phtml"); ?>
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?></div>
+    <div class="w-xxxx-12">
+         <div class="w-xxxx-4 m-l-xxxx-1">
+             <h1><?php echo $title_form; ?></h1>
+             <?=$adminForm->openTag(); ?>
+            <?php if(!empty($id)): ?>
+             <?=$adminForm->getRow('id')?>
+            <?php endif; ?>
+            <?=$adminForm->getRow('nombre')?>
+            <?=$adminForm->getRow('rfc')?>
+            <?=$adminForm->getRow('calle')?>
+            <?=$adminForm->getRow('numero')?>
+            <?=$adminForm->getRow('numeroi')?>
+            <?=$adminForm->getRow('cp')?>
+            <?=$adminForm->getRow('estado')?>
+            <?=$adminForm->getRow('ciudad')?>
+            <?=$adminForm->getRow('municipio')?>
+            <?=$adminForm->getRow('colonia')?>
+            <?=$adminForm->getRow('guardar')?>
+            <?=$adminForm->endTag(); ?>
+       </div>
+    </div>
+</div>
+
+
 <script >
 <!--
 $(document).ready(function()

@@ -5,13 +5,13 @@ class DescuentoPorcentajeData implements \Ecommerce\interfaces\EcommercePromocio
 {
     private $data;
     private $user;    
-    private $carrito;
+    private $total;
     
     public function getForm()
     {
         $input = array(
             array(
-               'name' => 'minimo',
+               'name' => 'minimo_compra',
                'label' => _ecommerce('Minimo de compra'),
                'type'  => 'text',
                'required'  => true,
@@ -24,8 +24,8 @@ class DescuentoPorcentajeData implements \Ecommerce\interfaces\EcommercePromocio
                 )
            ),
               array(
-               'name' => 'maximo',
-               'label' => _ecommerce('Maximo de compra'),
+               'name' => 'descuento_maximo',
+               'label' => _ecommerce('Descuento maximo'),
                'type'  => 'text',
                'required'  => true,
                'atributos' => array(
@@ -57,24 +57,22 @@ class DescuentoPorcentajeData implements \Ecommerce\interfaces\EcommercePromocio
     public function getDiscount()
     {
         
-        $total = $this->carrito['gran_total'];
-        if( $this->data['minimo'] > 0)
+        $total = $this->total;
+        if( $this->data['minimo_compra'] > 0)
         {
-            if($total < $this->data['minimo'])
+            if($total < $this->data['minimo_compra'])
             {
                 return false;
             }
         }
-        if( $this->data['maximo'] > 0)
-        {
-            if($total > $this->data['maximo'])
-            {
-                return false;
-            }
-        }
-        
         $descuento = ($total * ($this->data['porcentaje']/100));
-        
+        if( $this->data['descuento_maximo'] > 0)
+        {
+            if($descuento > $this->data['descuento_maximo'])
+            {
+                $this->data['descuento_maximo'];
+            }
+        }
         return $descuento;
     }
     
@@ -86,8 +84,8 @@ class DescuentoPorcentajeData implements \Ecommerce\interfaces\EcommercePromocio
         $this->user=$user;
     }
     
-    public function setCarrito($carrito){
-        $this->carrito = $carrito;
+    public function setTotalProducts($total){
+        $this->total = $total;
     }
 }
 

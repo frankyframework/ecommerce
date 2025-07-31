@@ -41,6 +41,18 @@ return array(
         'menu' => "ECOMMERCE VENTAS",
         'title' => "Configuración de ventas",
         'config' =>  array(
+                array('path' => 'ecommerce/ventas/address-format',
+                'type' => 'text',
+                'label' => 'Formato de direccion',
+                'validation' => array('required' => true),
+                'value' => 'Calle %s #%s, Colonia %s, municipio %s,%s C.P. %d'
+                ),
+                array('path' => 'ecommerce/ventas/addressf-format',
+                'type' => 'text',
+                'label' => 'Formato de direccion',
+                'validation' => array('required' => true),
+                'value' => 'Nombre: %s, RFC: %s,Calle %s #%s, Colonia %s, municipio %s,%s C.P. %d'
+                ),
                 array('path' => 'ecommerce/ventas/email-template-cambiostatus',
                 'type' => 'select',
                 'label' => 'Template E-mail para cambio de status',
@@ -48,22 +60,13 @@ return array(
                 'data' => getTemplatesEmail(),
                 'value' => '1'
                 ) ,
-                array('path' => 'ecommerce/ventas/email-order-free',
+                array('path' => 'ecommerce/ventas/email-sales',
                 'type' => 'select',
-                'label' => 'Template E-mail para nueva orden gratuita',
-                'validation' => array('required' => true),
-                'data' => getTemplatesEmail(),
-                'value' => '1'
-                ),
-                array('path' => 'ecommerce/ventas/email-comprobante-pago',
-                'type' => 'select',
-                'label' => 'Template E-mail para subir comprobante de pago',
+                'label' => 'Template E-mail para nueva orden',
                 'validation' => array('required' => true),
                 'data' => getTemplatesEmail(),
                 'value' => '1'
                 )
-
-           
         ),
           
     ),
@@ -146,114 +149,33 @@ return array(
                     )
             )
     ),
-    'ecommerce-pick-up' => array(
-        'menu' => "ECOMMERCE RECOGER EN TIENDA",
-        'title' => "Configuración de pick up",
-        'config' =>  array(
-         
-            array('path' => 'ecommerce/pick-up/enabled',
-                            'type' => 'select',
-                            'label' => 'Habilitar pick up',
-                            'validation' => array('required' => true),
-                            'data' => ['0' => 'No','1' => 'Sí'],
-                            'value' => '0'
-                          ),
-            array('path' => 'ecommerce/pick-up/titulo',
-                    'type' => 'text',
-                    'label' => 'Titulo metodo de envio',
-                    'validation' => array('required' => true),
-                    'value' => ''
-                    ),
-            array('path' => 'ecommerce/pick-up/precio',
-                    'type' => 'text',
-                    'label' => 'Precio',
-                    'validation' => array('required' => true),
-                    'value' => ''
-                ),
-                array('path' => 'ecommerce/pick-up/dias',
-                    'type' => 'text',
-                    'label' => 'Tiempo estimado',
-                    'validation' => array('required' => true),
-                    'value' => ''
-                    )
-            )
-    ),
-  'ecommerce-conekta' => array(
-          'menu' => "ECOMMERCE API CONEKTA",
-          'title' => "Configuración de conekta",
-          'config' =>  array(
-                    array('path' => 'ecommerce/conekta/enabled',
-                            'type' => 'select',
-                            'label' => 'Habilitar metodo de pago',
-                            'validation' => array('required' => true),
-                            'data' => ['0' => 'No','1' => 'Sí'],
-                            'value' => '0'
-                          ),
-                      array('path' => 'ecommerce/conekta/sandbox',
-                              'type' => 'select',
-                              'label' => 'SANDBOX',
-                              'validation' => array('required' => true),
-                              'data' => ['0' => 'No','1' => 'Sí'],
-                              'value' => '1'
-                            ),
-                      array('path' => 'ecommerce/conekta/key',
-                              'type' => 'text',
-                              'label' => 'API KEY',
-                              'validation' => array('required' => false),
-                              'value' => ''
-                            ),
-                      array('path' => 'ecommerce/conekta/public',
-                              'type' => 'text',
-                              'label' => 'Public KEY',
-                              'validation' => array('required' => false),
-                              'value' => ''
-                        ),
-                      array('path' => 'ecommerce/conekta/keysandbox',
-                              'type' => 'text',
-                              'label' => 'API KEY SANDBOX',
-                              'validation' => array('required' => false),
-                              'value' => ''
-                            ),
-                      array('path' => 'ecommerce/conekta/publicsandbox',
-                              'type' => 'text',
-                              'label' => 'Public KEY SANDBOX',
-                              'validation' => array('required' => false),
-                              'value' => ''
-                            ),
-                      array('path' => 'ecommerce/conekta/methods',
-                              'type' => 'select',
-                              'label' => 'Metodos de pago',
-                              'validation' => array('required' => false),
-                              'value' => ['conekta_tarjeta','conekta_oxxo'],
-                              'data' => array('conekta_tarjeta' => 'Tarjeta credito/debito',
-                                              'conekta_oxxo' => 'OXXO'
-                              ),
-                              'multiple' => true
-                            ),
-                        array('path' => 'ecommerce/conekta/limitcards',
-                            'type' => 'text',
-                            'label' => 'Limite de tarjetas',
-                            'validation' => array('required' => true,'numeric' => true),
-                            'value' => '3'
-                        ),
-                        array('path' => 'ecommerce/conekta/email-order-oxxo',
-                        'type' => 'select',
-                        'label' => 'Template E-mail para nueva orden oxxo',
-                        'validation' => array('required' => true),
-                        'data' => getTemplatesEmail(),
-                        'value' => ''
-                        ),
-                        array('path' => 'ecommerce/conekta/email-order-tarjeta',
-                                'type' => 'select',
-                                'label' => 'Template E-mail para nueva orden tarjeta',
-                                'validation' => array('required' => true),
-                                'data' => getTemplatesEmail(),
-                                'value' => ''
-                        )
-        
 
+  'ecommerce-free-pay' => array(
+          'menu' => "ECOMMERCE FREE ORDER",
+          'title' => "Configuración de orden gratuita",
+          'config' =>  array(
+                array('path' => 'ecommerce/free_pay/name',
+                        'type' => 'text',
+                        'label' => 'Nombre del metodo de pago',
+                        'validation' => array('required' => true),
+                        'value' => 'Pedido gratuito'
+                        ),
+                array('path' => 'ecommerce/free_pay/enabled',
+                        'type' => 'select',
+                        'label' => 'Habilitar metodo de pago',
+                        'validation' => array('required' => true),
+                        'data' => ['0' => 'No','1' => 'Sí'],
+                        'value' => '0'
+                        ),
+                array('path' => 'ecommerce/free_pay/email-order',
+                'type' => 'select',
+                'label' => 'Template E-mail orden',
+                'validation' => array('required' => true),
+                'data' => getTemplatesEmail(),
+                'value' => ''
+                )
           )
-  ),
+  ),/*
   'ecommerce-paypal' => array(
           'menu' => "ECOMMERCE API PAYPAL",
           'title' => "Configuración de paypal",
@@ -305,176 +227,7 @@ return array(
                                   ),
              
           )
-  ),
-  'ecommerce-openpay' => array(
-          'menu' => "ECOMMERCE API OPEPAY",
-          'title' => "Configuración de openpay",
-          'config' =>  array(
-                    array('path' => 'ecommerce/openpay/enabled',
-                            'type' => 'select',
-                            'label' => 'Habilitar metodo de pago',
-                            'validation' => array('required' => true),
-                            'data' => ['0' => 'No','1' => 'Sí'],
-                            'value' => '0'
-                          ),
-                      array('path' => 'ecommerce/openpay/sandbox',
-                              'type' => 'select',
-                              'label' => 'SANDBOX',
-                              'validation' => array('required' => true),
-                              'data' => ['0' => 'No','1' => 'Sí'],
-                              'value' => '1'
-                            ),
-                      array('path' => 'ecommerce/openpay/id',
-                              'type' => 'text',
-                              'label' => 'ID',
-                              'validation' => array('required' => false),
-                              'value' => ''
-                            ),
-                      array('path' => 'ecommerce/openpay/public',
-                              'type' => 'text',
-                              'label' => 'Public KEY',
-                              'validation' => array('required' => false),
-                              'value' => ''
-                        ),
-                        array('path' => 'ecommerce/openpay/secret',
-                                'type' => 'text',
-                                'label' => 'Secret KEY',
-                                'validation' => array('required' => false),
-                                'value' => ''
-                          ),
-                      array('path' => 'ecommerce/openpay/idsandbox',
-                              'type' => 'text',
-                              'label' => 'ID SANDBOX',
-                              'validation' => array('required' => false),
-                              'value' => ''
-                            ),
-                      array('path' => 'ecommerce/openpay/publicsandbox',
-                              'type' => 'text',
-                              'label' => 'Public KEY SANDBOX',
-                              'validation' => array('required' => false),
-                              'value' => ''
-                            ),
-                            array('path' => 'ecommerce/openpay/secretsandbox',
-                                    'type' => 'text',
-                                    'label' => 'Secret KEY SANDBOX',
-                                    'validation' => array('required' => false),
-                                    'value' => ''
-                                  ),
-                      array('path' => 'ecommerce/openpay/methods',
-                              'type' => 'select',
-                              'label' => 'Metodos de pago',
-                              'validation' => array('required' => false),
-                              'value' => ['openpay_tarjeta','openpay_establecimiento'],
-                              'data' => array('openpay_tarjeta' => 'Tarjeta credito/debito',
-                                              'openpay_establecimiento' => 'Establecimientos'
-                              ),
-                              'multiple' => true
-                            ),
-                            array('path' => 'ecommerce/openpay/limitcards',
-                            'type' => 'text',
-                            'label' => 'Limite de tarjetas',
-                            'validation' => array('required' => true,'numeric' => true),
-                            'value' => '3'
-                          ),
-               array('path' => 'ecommerce/openpay/codewebhook',
-                                    'type' => 'text',
-                                    'label' => 'Codigo activación WebHook',
-                                    'validation' => array('required' => false),
-                                    'value' => ''
-                                  ),
-                                  array('path' => 'ecommerce/openpay/email-order-establecimiento',
-                                  'type' => 'select',
-                                  'label' => 'Template E-mail para nueva orden establecimiento',
-                                  'validation' => array('required' => true),
-                                  'data' => getTemplatesEmail(),
-                                  'value' => ''
-                                  ),
-                                  array('path' => 'ecommerce/openpay/email-order-tarjeta',
-                                  'type' => 'select',
-                                  'label' => 'Template E-mail para nueva orden tarjeta',
-                                  'validation' => array('required' => true),
-                                  'data' => getTemplatesEmail(),
-                                  'value' => ''
-                                  ),
-          )
-  ),
-  'ecommerce-sr-pago' => array(
-        'menu' => "ECOMMERCE API SR. PAGO",
-        'title' => "Configuración de Sr. pago",
-        'config' =>  array(
-                  array('path' => 'ecommerce/sr-pago/enabled',
-                          'type' => 'select',
-                          'label' => 'Habilitar metodo de pago',
-                          'validation' => array('required' => true),
-                          'data' => ['0' => 'No','1' => 'Sí'],
-                          'value' => '0'
-                        ),
-                    array('path' => 'ecommerce/sr-pago/sandbox',
-                            'type' => 'select',
-                            'label' => 'SANDBOX',
-                            'validation' => array('required' => true),
-                            'data' => ['0' => 'No','1' => 'Sí'],
-                            'value' => '1'
-                          ),
-                    array('path' => 'ecommerce/sr-pago/key',
-                            'type' => 'text',
-                            'label' => 'API KEY',
-                            'validation' => array('required' => false),
-                            'value' => ''
-                      ),
-                      array('path' => 'ecommerce/sr-pago/secret',
-                              'type' => 'text',
-                              'label' => 'Secret KEY',
-                              'validation' => array('required' => false),
-                              'value' => ''
-                        ),
-                        array('path' => 'ecommerce/sr-pago/public',
-                        'type' => 'text',
-                        'label' => 'Public KEY',
-                        'validation' => array('required' => false),
-                        'value' => ''
-                  ),
-                        array('path' => 'ecommerce/sr-pago/methods',
-                            'type' => 'select',
-                            'label' => 'Metodos de pago',
-                            'validation' => array('required' => false),
-                            'value' => ['srpago_tarjeta','srpago_oxxo','srpago_spei'],
-                            'data' => array('srpago_tarjeta' => 'Tarjeta credito/debito',
-                                            'srpago_oxxo' => 'OXXO',
-                                            'srpago_spei' => 'SPEI'
-                            ),
-                            'multiple' => true
-                          ),
-                          array('path' => 'ecommerce/sr-pago/limitcards',
-                          'type' => 'text',
-                          'label' => 'Limite de tarjetas',
-                          'validation' => array('required' => true,'numeric' => true),
-                          'value' => '3'
-                        ),
-
-                        array('path' => 'ecommerce/sr-pago/email-order-oxxo',
-                        'type' => 'select',
-                        'label' => 'Template E-mail para nueva orden oxxo',
-                        'validation' => array('required' => true),
-                        'data' => getTemplatesEmail(),
-                        'value' => ''
-                        ),
-                        array('path' => 'ecommerce/sr-pago/email-order-spei',
-                        'type' => 'select',
-                        'label' => 'Template E-mail para nueva orden spei',
-                        'validation' => array('required' => true),
-                        'data' => getTemplatesEmail(),
-                        'value' => ''
-                        ),
-                        array('path' => 'ecommerce/sr-pago/email-order-tarjeta',
-                        'type' => 'select',
-                        'label' => 'Template E-mail para nueva orden tarjeta',
-                        'validation' => array('required' => true),
-                        'data' => getTemplatesEmail(),
-                        'value' => ''
-                        ),
-        )
-),
+  ),*/
 );
 
 ?>

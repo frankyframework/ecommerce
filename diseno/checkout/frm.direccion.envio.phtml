@@ -1,0 +1,21 @@
+<div class="w-xxxx-12">
+    <?=$direccionesForm->openTag(); ?>
+    <?=$direccionesForm->getRow('calle')?>
+    <?=$direccionesForm->getRow('numero')?>
+    <?=$direccionesForm->getRow('numeroi')?>
+    <?=$direccionesForm->getRow('cp')?>
+    <?=$direccionesForm->getRow('estado')?>
+    <?=$direccionesForm->getRow('ciudad')?>
+    <?=$direccionesForm->getRow('municipio')?>
+    <?=$direccionesForm->getRow('colonia')?>
+    <?=$direccionesForm->getRow('telefono')?>
+    <?=$direccionesForm->getRow('telefono_otro')?>
+    <?=$direccionesForm->getRow('entre_calle1')?>
+    <?php 
+    if ($MySession->LoggedIn()) {
+        echo $direccionesForm->getRow('save_address');
+    }
+    ?>
+    <?=$direccionesForm->getRow('guardar')?>
+    <?=$direccionesForm->endTag(); ?>
+</div>

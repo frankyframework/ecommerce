@@ -1,6 +1,6 @@
 <div class="content_cupon_activo">
-    <?php if($MySession->GetVar('cupon_checkout')): ?>
-        <?=render('carrito/cupon.phtml',$MySession->GetVar('cupon_checkout'))?>
+    <?php if(!empty($parse_precio['cupon'])): ?>
+        <?=render('carrito/cupon.phtml',["cupon" => $parse_precio['cupon']])?>
         <script>
         $('.content_cupon_activo').find('a.remove').click(function(e){
                 e.preventDefault();
@@ -9,7 +9,7 @@
         </script>
     <?php endif; ?>
 </div>
-<div class="content_form_cupon" <?=(!$MySession->GetVar('cupon_checkout') ? '' : 'style="display:none;"')?>>
+<div class="content_form_cupon" <?=(empty($parse_precio['cupon']) ? '' : 'style="display:none;"')?>>
     <form name="frmcupon"  id="frmcupon" action="" method="post" >
         <h3>¿Tienes un cupon? </h3>
         <div class="_cont_cupon">

@@ -1,15 +1,18 @@
 <?php
 use Base\Form\filtrosForm;
 use Franky\Core\paginacion;
-use Ecommerce\model\EcommercepromocionesModel;
-use Ecommerce\entity\EcommercepromocionesEntity;
+use Ecommerce\model\EcommercePromocionesModel;
+use Ecommerce\entity\EcommercePromocionesEntity;
 use Franky\Haxor\Tokenizer;
 
 
 $Tokenizer = new Tokenizer();
-$EcommercepromocionesModel             = new EcommercepromocionesModel();
-$EcommercepromocionesEntity            = new EcommercepromocionesEntity();
+$EcommercePromocionesModel             = new EcommercePromocionesModel();
+$EcommercePromocionesEntity            = new EcommercePromocionesEntity();
 $MyPaginacion = new paginacion();
+
+
+
 
 
 $MyPaginacion->setPage($MyRequest->getRequest('page',1));
@@ -28,27 +31,27 @@ else{
     $orden = $MyPaginacion->getCampoOrden();
 }
 
-$EcommercepromocionesModel->setPage($MyPaginacion->getPage());
-$EcommercepromocionesModel->setTampag($MyPaginacion->getTampageDefault());
-$EcommercepromocionesModel->setOrdensql($orden." ".$MyPaginacion->getOrden());
+$EcommercePromocionesModel->setPage($MyPaginacion->getPage());
+$EcommercePromocionesModel->setTampag($MyPaginacion->getTampageDefault());
+$EcommercePromocionesModel->setOrdensql($orden." ".$MyPaginacion->getOrden());
 
 
-if(getCoreConfig('ecommerce/promociones/showdelete') == 0){
-    $EcommercepromocionesEntity->status(1);
+if(getCoreConfig('ecommerce/cupones/showdelete') == 0){
+    $EcommercePromocionesEntity->status(1);
 }
 
 
-$result	 		= $EcommercepromocionesModel->getData($EcommercepromocionesEntity->getArrayCopy());
-$MyPaginacion->setTotal($EcommercepromocionesModel->getTotal());
+$result	 		= $EcommercePromocionesModel->getData($EcommercePromocionesEntity->getArrayCopy());
+$MyPaginacion->setTotal($EcommercePromocionesModel->getTotal());
 $lista_admin_data = array();
 
 
-if($EcommercepromocionesModel->getTotal() > 0)
+if($EcommercePromocionesModel->getTotal() > 0)
 {
 	
 	$iRow = 0;	
 
-	while($registro = $EcommercepromocionesModel->getRows())
+	while($registro = $EcommercePromocionesModel->getRows())
 	{
 		$thisClass  = ((($iRow % 2) == 0) ? "formFieldDk" : "formFieldLt");
                 
@@ -57,8 +60,8 @@ if($EcommercepromocionesModel->getTotal() > 0)
                     "createdAt"        => getFechaUI($registro["createdAt"]),
                     "thisClass"     => $thisClass,
                     "nuevo_estado"  =>($registro["status"] == 1 ?"desactivar" : "activar"),
-                    "id" => $Tokenizer->token('promociones',$registro["id"]),
-                    "callback" => $Tokenizer->token('promociones',$MyRequest->getURI()),
+                    "id" => $Tokenizer->token('cupones',$registro["id"]),
+                    "callback" => $Tokenizer->token('cupones',$MyRequest->getURI()),
                 ));
                 
                 $iRow++;
@@ -66,15 +69,15 @@ if($EcommercepromocionesModel->getTotal() > 0)
         
 }
 
-$title_grid = _ecommerce("Administración de promociones");
+$title_grid = _ecommerce("Administrar promociones");
 $class_grid = "cont_promociones";
 $error_grid = _ecommerce("No hay promociones registradas");
-$deleteFunction = "EliminarPromocionesEcommerce";
+$deleteFunction = "EliminarCuponesEcommerce";
 $frm_constante_link = ADMIN_FRM_PROMOCIONES_ECOMMERCE;
 
-$titulo_columnas_grid = array("createdAt" => _ecommerce("Fecha"),"titulo" => _ecommerce("Titulo"),"nombre" => _ecommerce("Tipo"));
-$value_columnas_grid = array("createdAt" ,"titulo","nombre");
-$css_columnas_grid = array("createdAt" => 'w-xxxx-1',"titulo" => "w-xxxx-4" , "nombre" => "w-xxxx-3");
+$titulo_columnas_grid = array("createdAt" => _ecommerce("Fecha"),"titulo" => _ecommerce("Titulo"),"codigo_promocion" => _ecommerce("Cupon"),"nombre" => _ecommerce("Tipo"));
+$value_columnas_grid = array("createdAt" ,"titulo","codigo_promocion","nombre");
+$css_columnas_grid = array("createdAt" => 'w-xxxx-1',"titulo" => "w-xxxx-4" ,"codigo_promocion" => "w-xxxx-2" , "nombre" => "w-xxxx-3");
 
 $permisos_grid = "administrar_promociones_ecommerce";
 

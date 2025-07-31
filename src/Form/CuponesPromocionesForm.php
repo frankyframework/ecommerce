@@ -10,7 +10,7 @@ class CuponesPromocionesForm extends \Franky\Form\Form
      
        $this->setAtributos(array(
             'name' => $name,
-            'action' => "/ecommerce/admin/cupones/submit.php",
+            'action' => "/ecommerce/admin/promociones/submit.php",
             'method' => 'post'
         ));
 

@@ -48,9 +48,7 @@
                         <?php echo $DireccionEnvioCheckoutForm->endTag(); ?>
                       <?php endif; ?>
                         <div id="form_direccion_envio" style="display:<?= (isset($DireccionEnvioCheckoutForm) ? 'none' : ''); ?>;">
-                            <?php echo $direccionesForm->openTag(); ?>
-                            <?php echo $direccionesForm->getAllRow(); ?>
-                            <?php echo $direccionesForm->endTag(); ?>
+                            <?=render("checkout/frm.direccion.envio.phtml")?>
                         </div>
                        
 
@@ -98,14 +96,6 @@
                        
                     </div>
                 </div>
-
-
-
-                <div class="_mycart_step fifth">
-                    <h2 class='paga_ahora _tab_step _nono'>Paga tu pedido</h2>
-                    <div id="contenedor_frm_pago">
-                    </div>
-                </div>
             </div>
 
             <div class="w-xxxx-3 _checkout_resume">                     
@@ -118,12 +108,12 @@
                     </ul>
                     <?php endforeach; ?>
                     <?=render('carrito/frm.cupon.checkout.phtml')?>
-                    <div class="_cont_resume_checkout">
-                        <div class="_coin _checkout_subtotal"><strong>Subtotal</strong>: <span class="price"><?=$productos_comprados['subtotal']?></span></div>
-                        <div class="_coin _checkout_iva"><strong>IVA</strong>: <span class="price"><?=$productos_comprados['iva']?></span></div>
-                        <div class="_coin _checkout_envio" style="display:none;"><strong>Envio</strong>: <span class="price"></span></div>
-                        <div class="_coin _checkout_descuento" <?=($productos_comprados['descuento'] > 0 ? '' : 'style="display:none;"')?>><strong>Descuento:</strong>: <span class="price"><?=$productos_comprados['descuento']?></span></div>
-                        <div class="_coin _checkout_total"><strong>Total</strong>: <span class="price"><?=$productos_comprados['total']?></span></div>
+                    <div class="resumen_page_carrito">
+                        <div class="_coin _subtotal"><strong>Subtotal</strong>: <span class="price"><?=$productos_comprados['subtotal']?></span></div>
+                        <div class="_coin _iva"><strong>IVA</strong>: <span class="price"><?=$productos_comprados['iva']?></span></div>
+                        <div class="_coin _envio" style="display:none;"><strong>Envio</strong>: <span class="price"></span></div>
+                        <div class="_coin _descuento" <?=($productos_comprados['discountPlain'] > 0 ? '' : 'style="display:none;"')?>><strong>Descuento:</strong>: <span class="price"><?=$productos_comprados['discount']?></span></div>
+                        <div class="_coin _total"><strong>Total</strong>: <span class="price"><?=$productos_comprados['total']?></span></div>
                    </div>
             </div>
 

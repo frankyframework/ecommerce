@@ -5,27 +5,14 @@ class DescuentoTarifaPlanaData implements \Ecommerce\interfaces\EcommercePromoci
 {
     private $data;
     private $user;    
-    private $carrito;
+    private $total;
     
     public function getForm()
     {
         $input = array(
             array(
-               'name' => 'minimo',
+               'name' => 'minimo_compra',
                'label' => _ecommerce('Minimo de compra'),
-               'type'  => 'text',
-               'required'  => true,
-               'atributos' => array(
-                   'maxlength' => 10,
-                   'class' => 'required'
-                ),
-               'label_atributos' => array(
-                   'class'       => 'desc_form_obligatorio'
-                )
-           ),
-              array(
-               'name' => 'maximo',
-               'label' => _ecommerce('Maximo de compra'),
                'type'  => 'text',
                'required'  => true,
                'atributos' => array(
@@ -57,22 +44,14 @@ class DescuentoTarifaPlanaData implements \Ecommerce\interfaces\EcommercePromoci
     public function getDiscount()
     {
         
-        $total = $this->carrito['gran_total'];
-        if( $this->data['minimo'] > 0)
+        $total = $this->total;
+        if( $this->data['minimo_compra'] > 0)
         {
-            if($total < $this->data['minimo'])
+            if($total < $this->data['minimo_compra'])
             {
                 return false;
             }
         }
-        if( $this->data['maximo'] > 0)
-        {
-            if($total > $this->data['maximo'])
-            {
-                return false;
-            }
-        }
-        
         $descuento = $this->data['tarifa'];
         
         return $descuento;
@@ -86,8 +65,8 @@ class DescuentoTarifaPlanaData implements \Ecommerce\interfaces\EcommercePromoci
         $this->user=$user;
     }
     
-    public function setCarrito($carrito){
-        $this->carrito = $carrito;
+    public function setTotalProducts($total){
+        $this->total = $total;
     }
 }
 

@@ -377,43 +377,6 @@ function setNuevaDireccionCheckoutHTML(response)
 }
 
 
-function setPickUpCheckout()
-{
-    var var_query = {
-        function: "setPickUpCheckout",
-        vars_ajax:[$("form[name=frmpickup]").find('select[name=id_pickup]').val()]
-    };
-    var var_function = [];
-    pasarelaAjax('GET',var_query,"setPickUpCheckoutHTML",var_function);
-}
-
-
-
-function setPickUpCheckoutHTML(response)
-{
-    var respuesta = null;
-    if(response != "null")
-    {
-        respuesta = JSON.parse(response);
-
-        if(!respuesta.error)
-        {
-            $(".metodo_envio").next("div").hide();
-            $(".metodo_envio").toggleClass("_nono").toggleClass("_sisi").toggleClass('_active');
-            $(".metodo_pago").toggleClass('_active').next("div").show();
-            $("#resumen_metodo_envio").html(respuesta.resumen_envio);
-            getInfoTotalsCheckout2();
-            loadMetodosPago();
-        }
-        else
-        {
-            _alert(respuesta["message"],"Error")
-        }
-
-    }
-    return true;
-}
-
 
 
 function setDireccionCheckout()
@@ -562,7 +525,7 @@ function setMetodoEnvioCheckoutHTML(response)
             $(".metodo_envio").toggleClass("_nono").toggleClass("_sisi").toggleClass('_active');
             $(".metodo_pago").toggleClass('_active').next("div").show();
             $("#resumen_metodo_envio").html(respuesta.resumen_metodo_envio);
-            getInfoTotalsCheckout2();
+            getInfoTotalsCheckout();
             loadMetodosPago();
         }
         else
@@ -595,13 +558,7 @@ function loadMetodosPagoHTML(response)
 
 
         $("#content_metodo_pago").html(respuesta.html);
-        $( "#frm_pago" ).validate({
-                submitHandler: function(form)
-                {
-                     setconfigPago();
-                     return false;
-                }
-        });
+        
         $('input[name=id_pago]').each(function(index,val){
           $(this).next('span').addClass($(this).val());
         });
@@ -641,51 +598,8 @@ function setconfigPagoHTML(response,id_pago)
 
         if(!respuesta.error)
         {
-            $(".paga_ahora").next("div").show();
+      
             $(".metodo_pago").toggleClass("_nono").toggleClass("_sisi").toggleClass('_active');
-            $(".metodo_pago").next("div").hide();
-            $(".paga_ahora").toggleClass('_active');
-            getFrmPago(id_pago)
-        }
-        else
-        {
-            _alert(respuesta["message"],"Error")
-        }
-
-    }
-    return true;
-}
-
-function getFrmPago(id_pago)
-{
-
-        var var_query = {
-              "function": id_pago
-        };
-
-        var var_function = [];
-
-        pasarelaAjax('GET',var_query,"getFrmPagoHTML",var_function);
-
-
-}
-
-
-function getFrmPagoHTML(response)
-{
-    var respuesta = null;
-    if(response != "null")
-    {
-        respuesta = JSON.parse(response);
-
-        if(!respuesta.error)
-        {
-
-            $("#contenedor_frm_pago").html(respuesta.html);
-            if(respuesta.js)
-            {
-                eval(respuesta.js)
-            }
         }
         else
         {
@@ -753,8 +667,6 @@ function ecommerce_removeCupon(){
 
 function ecommerce_removeCuponHTML(response)
 {
-    $('.content_cupon_activo').empty();
-    $('.content_form_cupon').show();
     getInfoTotalsCheckout();
 }
 
@@ -778,17 +690,28 @@ function getInfoTotalsCheckoutHTML(response)
         if(respuesta.total == 0) {
             window.location.reload();
         }
-        $(".resumen_page_carrito .subtotal").html(respuesta.subtotal);
-        $(".resumen_page_carrito .iva").html(respuesta.iva);
-        $(".resumen_page_carrito .total").html(respuesta.total);
+        $(".resumen_page_carrito ._subtotal").children('.price').html(respuesta.subtotal);
+        $(".resumen_page_carrito ._iva").children('.price').html(respuesta.iva);
+        $(".resumen_page_carrito ._total").children('.price').html(respuesta.total);
         if(respuesta.descuentoPlain > 0){
-            $(".resumen_page_carrito .descuento").html(respuesta.descuento);
+            $(".resumen_page_carrito ._descuento").children('.price').html(respuesta.descuento);
             $(".resumen_page_carrito ._descuento").show();
         }
         else{
-            $(".resumen_page_carrito .descuento").html('');
+            $('.content_cupon_activo').empty();
+            $('.content_form_cupon').show();
+            $(".resumen_page_carrito ._descuento").children('.price').empty();
             $(".resumen_page_carrito ._descuento").hide();
         }
+        if(respuesta.monto_envioPlain > 0){
+            $(".resumen_page_carrito ._envio").children('.price').html(respuesta.monto_envio);
+            $(".resumen_page_carrito ._envio").show();
+        }
+        else{
+            $(".resumen_page_carrito ._envio").children('.price').empty();
+            $(".resumen_page_carrito ._envio").hide();
+        }
+        
     }
 }
 
@@ -825,7 +748,7 @@ function ecommerce_setCuponCheckoutHTML(response,cupon)
             });
 
 
-            getInfoTotalsCheckout2();
+            getInfoTotalsCheckout();
 
         }
         else
@@ -853,20 +776,19 @@ function ecommerce_removeCuponCheckoutHTML(response)
 {
     $('.content_cupon_activo').empty();
     $('.content_form_cupon').show();
-    getInfoTotalsCheckout2();
+    getInfoTotalsCheckout();
 }
 
-function getInfoTotalsCheckout2(){
+function placeOrder(){
     var var_query = {
-              function: "getInfoTotalsCheckout2",
+              function: "placeOrder",
               vars_ajax:[]
     };
-
-    pasarelaAjax('GET',var_query,"getInfoTotalsCheckout2HTML",[]);
+    pasarelaAjax('GET',var_query,"placeOrderHTML",[]);
 }
 
 
-function getInfoTotalsCheckout2HTML(response)
+function placeOrderHTML(response)
 {
     var respuesta = null;
 
@@ -874,26 +796,9 @@ function getInfoTotalsCheckout2HTML(response)
     {
         respuesta = JSON.parse(response);
 
-
-        $("._checkout_subtotal").children('.price').html(respuesta.subtotal);
-        $("._checkout_iva").children('.price').html(respuesta.iva_html);
-        $("._checkout_total").children('.price').html(respuesta.gran_total);
-
-         if(respuesta.monto_envio){
-            $("._checkout_envio").children('.price').html(respuesta.monto_envio);
-            $("._checkout_envio").show();
-        }
-        else{
-            $("._checkout_envio").children('.price').empty();
-            $("._checkout_envio").hide();
-        }
-        if(respuesta.descuento){
-            $("._checkout_descuento").children('.price').html(respuesta.descuento);
-            $("._checkout_descuento").show();
-        }
-        else{
-            $("._checkout_descuento").children('.price').empty();
-            $("._checkout_descuento").hide();
+        if(!respuesta.error)
+        {
+            window.location = respuesta.callback;
         }
     }
 }

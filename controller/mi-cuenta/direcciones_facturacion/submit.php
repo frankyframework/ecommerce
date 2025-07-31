@@ -1,17 +1,18 @@
 <?php
 use Franky\Core\validaciones; 
-use Ecommerce\model\direcciones_facturacion;
-use Ecommerce\entity\direcciones_facturacion as direccionesEntity;
+use Ecommerce\model\EcommerceDireccionesFacturacionModel;
+use Ecommerce\entity\EcommerceDireccionesFacturacionEntity;
 
-$MyDirecciones             = new direcciones_facturacion();
-$MyDireccionesEntity       = new direccionesEntity($MyRequest->getRequest());
+$MyDirecciones             = new EcommerceDireccionesFacturacionModel();
+$MyDireccionesEntity       = new EcommerceDireccionesFacturacionEntity($MyRequest->getRequest());
 $id = $MyDireccionesEntity->getId(); 
+$MyDireccionesEntity->setTelefono("+52"); 
 $callback = $MyRequest->getRequest("callback");
 $error = false;
 
 
 $validaciones =  new validaciones();
-$valid = $validaciones->validRules($MyDireccionesEntity->setValidationFacturacion());
+$valid = $validaciones->validRules($MyDireccionesEntity->setValidation());
 if(!$valid)
 {
     $MyFlashMessage->setMsg("error",$validaciones->getMsg());
@@ -41,9 +42,12 @@ if(!$error)
 
     if(empty($id))
     {
-        $MyDireccionesEntity->setFecha(date('Y-m-d H:i:s'));
+        $MyDireccionesEntity->setCreatedAt(date('Y-m-d H:i:s'));
         $MyDireccionesEntity->setUid($MySession->GetVar('id'));
         $MyDireccionesEntity->setStatus(1);
+    } else {
+        $MyDireccionesEntity->setUid($MySession->GetVar('id'));
+        $MyDireccionesEntity->setUpdateAt(date('Y-m-d H:i:s'));
     }
     
     $result = $MyDirecciones->save($MyDireccionesEntity->getArrayCopy());

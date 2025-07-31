@@ -1,5 +1,22 @@
  <?php echo $PagoCheckoutForm->openTag(); ?>
 <?php echo $PagoCheckoutForm->getRow("id_pago"); ?>
- <label for="id_pago" class="error" style="display:none;"></label>
-<?php echo $PagoCheckoutForm->getRow("continuar"); ?>
+<label for="id_pago" class="error" style="display:none;"></label>
+<?php 
+unset($paymentMethodsHTML['codes']);
+foreach($paymentMethodsHTML as $code => $payment) {
+?>
+    <div id="payment_<?=$code?>" class="payment_html" style="display:none;">
+        <?=$payment["html"]?>
+    </div>
+<? 
+}
+?>
 <?php echo $PagoCheckoutForm->endTag(); ?>
+
+<script>
+$("input[name=id_pago]").change(function(){
+    setconfigPago();
+    $(".payment_html").hide();
+    $('#payment_'+$(this).val()).show();
+});
+</script>

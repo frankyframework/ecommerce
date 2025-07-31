@@ -1,29 +1,30 @@
 <?php
-use Ecommerce\Form\PromocionesForm;
-use Ecommerce\model\EcommercepromocionesModel;
-use Ecommerce\entity\EcommercepromocionesEntity;
+use Ecommerce\Form\CuponesPromocionesForm;
+use Ecommerce\model\EcommercePromocionesModel;
+use Ecommerce\entity\EcommercePromocionesEntity;
 use Franky\Haxor\Tokenizer;
 
 
 $Tokenizer = new Tokenizer();
-$EcommercepromocionesModel             = new EcommercepromocionesModel();
-$EcommercepromocionesEntity             = new EcommercepromocionesEntity();
+$EcommercePromocionesModel             = new EcommercePromocionesModel();
+$EcommercePromocionesEntity             = new EcommercePromocionesEntity();
 
 $id		= $Tokenizer->decode($MyRequest->getRequest('id'));
 $callback	= $MyRequest->getRequest('callback');
 
 $data = $MyFlashMessage->getResponse();
-$MySession->SetVar('data_cupon',$data);
-$adminForm = new PromocionesForm("frmpromocion");
+
+$adminForm = new CuponesPromocionesForm("frmpromociones");
 
 
 if(!empty($id))
 {
-	$EcommercepromocionesEntity->id($id);
-        $EcommercepromocionesModel->getData($EcommercepromocionesEntity->getArrayCopy());
-	$data = $EcommercepromocionesModel->getRows();
+	$EcommercePromocionesEntity->id($id);
+        $EcommercePromocionesModel->getData($EcommercePromocionesEntity->getArrayCopy());
+	$data = $EcommercePromocionesModel->getRows();
         $data['id'] = $Tokenizer->token('promociones', $data['id']);;
-        $adminForm->addId();     
+        $adminForm->addId();
+        
 }
 $promociones = getPromocionesClass();
 $adminForm->setOptionsInput('id_promocion', $promociones);

@@ -78,7 +78,7 @@ function getMyIdCarrito()
     $MyCarritoCompras =  new \Ecommerce\model\CarritoModel();
     $MyCarritoEntity =  new \Ecommerce\entity\CarritoEntity();
 
-    if($MyCarritoCompras->getData("", ($MySession->LoggedIn() ? $MySession->GetVar("id") : ""),  session_id()) == REGISTRO_SUCCESS)
+    if($MyCarritoCompras->getData("", ($MySession->LoggedIn() ? $MySession->GetVar("id") : ""),  session_id(),'1') == REGISTRO_SUCCESS)
     {
         $registro = $MyCarritoCompras->getRows();
         $MyCarritoEntity->exchangeArray($registro);
@@ -87,31 +87,6 @@ function getMyIdCarrito()
     return 0;
 }
 
-function makeHTMLCards($uid = "")
-{
-    $CardsModel = new Ecommerce\model\CardsModel();
-    $CardsEntity = new \Ecommerce\entity\CardsEntity();
-    $CardsEntity->uid($uid);
-    $CardsEntity->status(1);
-    $CardsModel->setTampag(50);
-    $CardsModel->setOrdensql("nombre ASC");
-    $CardsModel->getData($CardsEntity->getArrayCopy());
-    $total	= $CardsModel->getTotal();
-    $cards = array();
-
-
-    if($total > 0)
-    {
-
-        while($registro = $CardsModel->getRows())
-        {
-                $cards[$registro['id']] = $registro["nombre"].": XXXX-XXXX-XXXX-".$registro["numero"];
-	}
-    }
-
-
-    return $cards;
-}
 
 function makeHTMLDireccion($type="envio",$uid = "")
 {
@@ -123,16 +98,16 @@ function makeHTMLDireccion($type="envio",$uid = "")
     }
     if($type =="envio")
     {
-        $MyDireccion = new Ecommerce\model\direcciones();
-        $direccion = "%s: calle %s #%s, Colonia %s, municipio %s,%s C.P. %d";
+        $MyDireccion = new Ecommerce\model\EcommerceDireccionesModel();
+        $direccion = getCoreConfig("ecommerce/ventas/address-format");;
     }
     if($type == "facturacion")
     {
-        $MyDireccion = new Ecommerce\model\direcciones_facturacion();
-        $direccion = "%s: calle %s #%s, Colonia %s, municipio %s,%s C.P. %d";
+        $MyDireccion = new Ecommerce\model\EcommerceDireccionesFacturacionModel();
+        $direccion = getCoreConfig("ecommerce/ventas/addressf-format");;
     }
     $MyDireccion->setTampag(1000);
-    $MyDireccion->setOrdensql("fecha ASC");
+    $MyDireccion->setOrdensql("created_at ASC");
     $MyDireccion->getData("",$uid);
     $total	= $MyDireccion->getTotal();
     
@@ -145,11 +120,11 @@ function makeHTMLDireccion($type="envio",$uid = "")
         {
             if($type =="envio")
             {
-                $direcciones[$registro['id']] = sprintf($direccion,$registro["nombre"],$registro["calle"],$registro["numero"],$registro["colonia"],$registro["municipio"],$registro["estado"],$registro["cp"]);
+                $direcciones[$registro['id']] = sprintf($direccion,$registro["calle"],$registro["numero"],$registro["colonia"],$registro["municipio"],$registro["estado"],$registro["cp"]);
             }
             if($type =="facturacion")
             {
-                $direcciones[$registro['id']] = sprintf($direccion,$registro["nombre"],$registro["calle"],$registro["numero"],$registro["colonia"],$registro["municipio"],$registro["estado"],$registro["cp"]);
+                $direcciones[$registro['id']] = sprintf($direccion,$registro["nombre"],$registro["rfc"],$registro["calle"],$registro["numero"],$registro["colonia"],$registro["municipio"],$registro["estado"],$registro["cp"]);
             }
 	}
     }
@@ -194,44 +169,52 @@ function makeHTMLMetodosEnvio($id = null)
     return $shippingMethods;
 }
 
-
-function getMetodosEnvio($id)
+function makeHTMLMetodosPago($id = null)
 {
-    $EcommerceenviosModel = new Ecommerce\model\EcommerceenviosModel();
-    $EcommerceenviosEntity = new Ecommerce\entity\EcommerceenviosEntity();
-    
-    $EcommerceenviosEntity->id($id);
-    $EcommerceenviosModel->getData($EcommerceenviosEntity->getArrayCopy());
-    $total	= $EcommerceenviosModel->getTotal();
-    
-    if($total > 0)
-    {
-        while($registro = $EcommerceenviosModel->getRows())
-        {
-            if(getCoreConfig('ecommerce/'.$registro['path'].'/enabled'))
-            {
-                $MetodoEnvio = new $registro['dataClass'];
-                
-                $data = $MetodoEnvio->getData();
+    $paymentMethods = ["codes" => []];
+    $modulos = getModulos("DESC");
 
-                return $data['price'];
+    if(!empty($modulos))
+    {
+        foreach($modulos as $modulo)
+        {
+            if(file_exists(PROJECT_DIR."/modulos/$modulo/configure/payment.php"))
+            {
+                $paymentMethods = include(PROJECT_DIR."/modulos/$modulo/configure/payment.php");
+                foreach ($paymentMethods as $k => $v) {
+
+                    if(!$v['data']['enabled']) {
+                        continue;
+                    } 
+                    $paymentMethods["codes"][$v['code']] = $v['data']['name'];
+                
+                
+                    $paymentMethods[$v['code']] = $v['data'];
+                    if(!is_null($id) && $id == $v['code']) {
+                        return $v['data'];
+                    }
+                }
             }
-	    }
+        }
     }
-    return false;
+    if(!is_null($id)) {
+        return [];
+    }
+
+    return $paymentMethods;
 }
+
 
 function getInfoCarrito()
 {
     $MyCarritoProducto =  new \Ecommerce\model\CarritoProductoModel();
-    $MyCarritoCompras =  new \Ecommerce\model\CardsModel();
     $Tokenizer = new \Franky\Haxor\Tokenizer;
  
     $MyCarrito = getMyIdCarrito();
 
 
     $respuesta = array("qty" => 0,"subtotal" => 0,"total"=> 0,"productos"=> []);
-    if($MyCarrito == 0) {
+    if(empty($MyCarrito)) {
         return $respuesta;
     }
     $MyCarritoProducto->setTampag(1000);
@@ -258,16 +241,17 @@ function getInfoCarrito()
                 "total" => getFormatoPrecio($registro["total"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
                 "total_descuento" => getFormatoPrecio($registro["total_discount"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
                 "total_custom" => getFormatoPrecio($registro["total_custom_price"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
-                "precio_descuento" => getFormatoPrecio($registro["precio_descuento"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
-                "caracteristicas" => json_decode($registro['caracteristicas'],true));
+                "precio_descuento" => getFormatoPrecio($registro["price_discount"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+                "caracteristicas" => json_decode($registro['data'],true));
 
         }
 
-       
+        $respuesta["totalItems"] = getFormatoPrecio($MyCarrito->getTotalItems(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
         $respuesta["total"] = getFormatoPrecio($MyCarrito->getTotal(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
         $respuesta["subtotal"] = getFormatoPrecio($MyCarrito->getSubtotal(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
         $respuesta["iva"] = getFormatoPrecio($MyCarrito->getTax(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
         $respuesta["discount"] = getFormatoPrecio($MyCarrito->getDiscount(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+        $respuesta["totalItemsPlain"] = $MyCarrito->getTotalItems();
         $respuesta["totalPlain"] = $MyCarrito->getTotal();
         $respuesta["subtotalPlain"] = $MyCarrito->getSubtotal();
         $respuesta["ivaPlain"] = $MyCarrito->getTax();
@@ -275,9 +259,10 @@ function getInfoCarrito()
         $respuesta["shippingPrice"] = getFormatoPrecio($MyCarrito->getShippingPrice(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
         $respuesta["shippingSubtotal"] = getFormatoPrecio($MyCarrito->getShippingSubtotal(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
         $respuesta["shippingTax"] = getFormatoPrecio($MyCarrito->getShippingTax(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
-        $respuesta["shippingPricePlain"] = $MyCarrito->getShippingPrice();
+        $respuesta["shippingPricePlain"] = (int)$MyCarrito->getShippingPrice();
         $respuesta["shippingSubtotalPlain"] = $MyCarrito->getShippingSubtotal();
         $respuesta["shippingTaxPlain"] = $MyCarrito->getShippingTax();
+        $respuesta["cupon"] = $MyCarrito->getCoupon();
 
     }
 
@@ -317,23 +302,34 @@ function getUpdateCarrito()
             $MyCarritoEntity->setUid($MySession->GetVar("id"));
             $MyCarritoEntity->setName($MySession->GetVar("nombre"));
             $MyCarritoEntity->setEmail($MySession->GetVar("email"));
-
+            $MyCarritoEntity->setGuest(0);
+        } else {
+            $MyCarritoEntity->setGuest(1);
         }
-        /*
-            Descuentos y promociones se validaran aqui.
-        */
-       
-       
-        
 
+        $MyCarritoEntity->setTotalItems($total);
+        $MyCarritoCompras->save($MyCarritoEntity->getArrayCopy());
+        $cupon =  $MyCarritoEntity->getCoupon();
+        if(!empty($cupon)){
+            $valida_cupo = validaCuponEcommerce($cupon);
+            if($valida_cupo['error'] == true){
+                $MyCarritoEntity->setCoupon("");
+                $MyCarritoEntity->setDiscount(0);
+            }
+        }
 
-        $total -= $MyCarritoEntity->getDiscount();
         $iva = DATA_STORE_CONFIG['iva'];
+
+       
         $price = parsePrecio($total,$iva,1);
         
         $MyCarritoEntity->setTotal($price['total']);
         $MyCarritoEntity->setSubtotal($price['subtotal']);
         $MyCarritoEntity->setTax($price['iva']);
+
+        $priceD = parsePrecio($MyCarritoEntity->getTotal() - $MyCarritoEntity->getDiscount(),$iva,1);
+        $MyCarritoEntity->setTotal($priceD['total']);
+
         $MyCarritoCompras->save($MyCarritoEntity->getArrayCopy());
 
         if(!empty($MyCarritoEntity->getShipmentMethod())) {
@@ -348,17 +344,12 @@ function getUpdateCarrito()
                 $MyCarritoEntity->setShippingTax(0);
             }
 
-            $price['total'] += $MyCarritoEntity->getShippingPrice();
-            $price['subtotal'] += $MyCarritoEntity->getShippingSubtotal();
-            $price['iva'] += $MyCarritoEntity->getShippingTax();
+            $priceD['total'] += $MyCarritoEntity->getShippingPrice();
             
             
-            $MyCarritoEntity->setTotal($price['total']);
-            $MyCarritoEntity->setSubtotal($price['subtotal']);
-            $MyCarritoEntity->setTax($price['iva']);
+            $MyCarritoEntity->setTotal($priceD['total']);
             $MyCarritoCompras->save($MyCarritoEntity->getArrayCopy());
         }
-
     }
 }
 
@@ -393,70 +384,6 @@ function setCarritoUser(){
   }
   
   return false;
-}
-
-
-function getPedido($id,$uid=""){
-
-    $pedidosModel             = new \Ecommerce\model\pedidos();
-    $producto_pedidoModel             = new \Ecommerce\model\producto_pedidoModel();
-    $producto_pedidoEntity          = new \Ecommerce\entity\producto_pedido();
-    $MyDirecciones = new \Ecommerce\model\direcciones_facturacion;
-
-
-    $productos =  OBJETO_PRODUCTOS;
-    $MyProducto =  new $productos();
-
-    $result	 		= $pedidosModel->getData($id,$uid);
-    $detalle_pedido = array();
-    if($pedidosModel->getTotal() > 0)
-    {
-        $detalle_pedido = $pedidosModel->getRows();
-      
-        $detalle_pedido["envio"] = json_decode($detalle_pedido["id_direccion_envio"],true);
-        $detalle_pedido["facturacion"] = json_decode($detalle_pedido["id_direccion_facturacion"],true);
-
-    }
-    
-    if(!empty($detalle_pedido['metodo_envio']))
-    {
-            $EcommerceenviosModel = new Ecommerce\model\EcommerceenviosModel();
-            $EcommerceenviosEntity = new Ecommerce\entity\EcommerceenviosEntity();
-
-            $EcommerceenviosEntity->id($detalle_pedido['metodo_envio']);
-            $EcommerceenviosModel->getData($EcommerceenviosEntity->getArrayCopy());
-
-            $metodo_envio =  $EcommerceenviosModel->getRows();
-            
-            $detalle_pedido['metodo_envio'] = $metodo_envio;
-    }
-    
-    
-
-    $producto_pedidoEntity->setId_pedido($detalle_pedido['id']);
-    $producto_pedidoModel->setTampag(100);
-    $producto_pedidoModel->getData($producto_pedidoEntity->getArrayCopy());
-
-
-    while($registro = $producto_pedidoModel->getRows())
-    {
-
-        $MyProducto->getInfoProducto($registro["id_producto"]);
-        $_registro = $MyProducto->getRows();
-
-        $detalle_pedido['productos'][] = array("id" => $registro["id_producto"],
-            "qty" => $registro["qty"],
-            "nombre" => $_registro["nombre"],
-            "caracteristicas" => json_decode($registro["caracteristicas"],true),
-            "precio" => $registro["precio"],
-            "imagen" => $_registro["imagen"]
-        );
-    }
-
-
-
-    return $detalle_pedido;
-
 }
 
 function redondeado ($numero, $decimales)
@@ -516,26 +443,21 @@ function getHTMLRenderMinicart(){
             'MyFrankyMonster' => $MyFrankyMonster,
             'MyRequest' => $MyRequest]);
 }
-        
-
-
-    
 
 function validaCuponEcommerce($cupon)
 {
     global $MySession;
-    
     $descuento = 0;
-    
-    $EcommercecuponesModel             = new Ecommerce\model\EcommercecuponesModel();
-    $EcommercecuponesEntity             = new Ecommerce\entity\EcommercecuponesEntity();
-    
-    $EcommercecuponesEntity->codigo_promocion($cupon);
-    $EcommercecuponesEntity->status(1);
-    if($EcommercecuponesModel->getData($EcommercecuponesEntity->getArrayCopy()) ==REGISTRO_SUCCESS)
+    $EcommercePromocionesModel             = new Ecommerce\model\EcommercePromocionesModel();
+    $EcommercePromocionesEntity             = new Ecommerce\entity\EcommercePromocionesEntity();
+    $carrito = getMyIdCarrito();
+
+    $EcommercePromocionesEntity->codigo_promocion($cupon);
+    $EcommercePromocionesEntity->status(1);
+    if($EcommercePromocionesModel->getData($EcommercePromocionesEntity->getArrayCopy()) ==REGISTRO_SUCCESS)
     {
         
-        $registro = $EcommercecuponesModel->getRows();
+        $registro = $EcommercePromocionesModel->getRows();
         $id_cupon = $registro['id'];
         $numero_usos = $registro['numero_usos'];
         $numero_usos_usuario = $registro['numero_usos_usuario'];
@@ -558,14 +480,15 @@ function validaCuponEcommerce($cupon)
                 return $respuesta;
             }
         }
-        
+        /*
         if($numero_usos > 0){
         
             $pedidosModel             = new Ecommerce\model\pedidos();
 
-            $pedidosModel->setCupon($id_cupon);
+            $pedidosModel->setCupon($cupon);
+            
 
-            $pedidosModel->setTampag(1000000);
+            $pedidosModel->setTampag($numero_usos +1 );
             $pedidosModel->getData();
             if($pedidosModel->getTotal() >= $numero_usos){
                 $respuesta['error'] =true;
@@ -575,11 +498,16 @@ function validaCuponEcommerce($cupon)
         }
         if($numero_usos_usuario > 0){
         
+            if(!$MySession->LoggedIn()) {
+                $respuesta['error'] =true;
+                $respuesta['message'] = "ecommerce_cupon_no_register";
+                return $respuesta;
+            }
             $pedidosModel             = new Ecommerce\model\pedidos();
 
-            $pedidosModel->setCupon($id_cupon);
-
-            $pedidosModel->setTampag(1000000);
+            $pedidosModel->setCupon($cupon);
+            $pedidosModel->setCustomerEmail($carrito->getCustomerEmail());
+            $pedidosModel->setTampag($numero_usos_usuario +1 );
             $pedidosModel->getData('',$MySession->GetVar('id'));
             if($pedidosModel->getTotal() >= $numero_usos_usuario){
                 $respuesta['error'] =true;
@@ -587,7 +515,7 @@ function validaCuponEcommerce($cupon)
                 return $respuesta;
             }
         }
-        
+        */
         $EcommercepromocionesclassModel = new Ecommerce\model\EcommercepromocionesclassModel();
         $EcommercepromocionesclassEntity = new Ecommerce\entity\EcommercepromocionesclassEntity();
         
@@ -599,8 +527,8 @@ function validaCuponEcommerce($cupon)
 
         $class->setUser($MySession->GetVar('id'));
         $class->setConfig(json_decode($registro['data'],true));
-        $carrito = getCarrito();
-        $class->setCarrito($carrito);
+        
+        $class->setTotalProducts($carrito->getTotalItems());
         
         $descuento = $class->getDiscount();
         if($descuento == false)
@@ -611,9 +539,7 @@ function validaCuponEcommerce($cupon)
         }
         
         
-        $data = ['id' => $id_cupon,'cupon' => $cupon, 'descuento' => $descuento];
-
-        $MySession->SetVar('cupon_checkout',$data);
+        $respuesta = ['cupon' => $cupon, 'descuento' => $descuento];
         
         $respuesta['error'] = false;
         
@@ -626,82 +552,75 @@ function validaCuponEcommerce($cupon)
     return $respuesta;
 }
 
-
-
-
-
-function validaPromocionEcommerce()
+function getDataOrder($orderId)
 {
-    global $MySession;
-    
-    $descuento = 0;
-    $data =[];
-    $EcommercepromocionesModel             = new Ecommerce\model\EcommercepromocionesModel();
-    $EcommercepromocionesEntity             = new Ecommerce\entity\EcommercepromocionesEntity();
-    
+    $PedidosModel =  new \Ecommerce\model\PedidosModel();
+    $PedidosEntity =  new \Ecommerce\entity\PedidosEntity();
+    $ProductoPedidoModel =  new \Ecommerce\model\ProductoPedidoModel();
+    $ProductoPedidoEntity =  new \Ecommerce\entity\ProductoPedidoEntity();
+    $Tokenizer = new \Franky\Haxor\Tokenizer;
+    $PedidosEntity->setOrderId($orderId);
 
-    $EcommercepromocionesEntity->status(1);
 
-    $cupon = $MySession->GetVar('cupon_checkout');
-  
+    $respuesta = array("qty" => 0,"subtotal" => 0,"total"=> 0,"productos"=> []);
 
-    if($EcommercepromocionesModel->getData($EcommercepromocionesEntity->getArrayCopy()) ==REGISTRO_SUCCESS && $cupon == false)
+    $PedidosModel->setTampag(1);
+    if($PedidosModel->getData($PedidosEntity->getArrayCopy()) == REGISTRO_SUCCESS)
     {
-        
-        while( $registro = $EcommercepromocionesModel->getRows()):
-            $id_promo = $registro['id'];
-        
-            if($registro['fecha_inicio'] !='0000-00-00')
-            {
-                if(strtotime(date('Y-m-d')) < strtotime($registro['fecha_inicio']))
-                {
-                continue;
+
+        $PedidosEntity->exchangeArray($PedidosModel->getRows());
+        $ProductoPedidoEntity->getPedidoId($PedidosEntity->getId());
+
+        if($ProductoPedidoModel->getData($ProductoPedidoEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+        {
+            while($_registro = $ProductoPedidoModel->getRows()) {
+
+                $respuesta["qty"] += $_registro["qty"];
+                if ($_registro["envio_requerido"] == 1) {
+                    $respuesta["envio_requerido"] = 1;
                 }
+                $respuesta["productos"][] = array(
+                    "id" => $Tokenizer->token("productos",$_registro["id"]), 
+                    "id_producto" => $Tokenizer->token("productos",$_registro["id_product"]),
+                    "id_producto_ori" => $_registro["id_product"],
+                    "_id" => $_registro['id'],
+                    "nombre" => $_registro["name"],
+                    "url" => $_registro["url"],
+                    "sku" => $_registro["sku"],
+                    "precio" => getFormatoPrecio($_registro["price"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+                    "qty" =>  $_registro["qty"],
+                    "img" => $_registro['image'],
+                    "total" => getFormatoPrecio($_registro["total"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+                    "total_descuento" => getFormatoPrecio($_registro["total_discount"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+                    "total_custom" => getFormatoPrecio($_registro["total_custom_price"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+                    "precio_descuento" => getFormatoPrecio($_registro["price_discount"],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),
+                    "caracteristicas" => json_decode($_registro['data'],true));
+
             }
-            if($registro['fecha_fin'] != '0000-00-00')
-            {
-                if(strtotime(date('Y-m-d')) > strtotime($registro['fecha_fin']))
-                {
-                    
-                    continue;
-                }
-            }
-            
-            
-            $EcommercepromocionesclassModel = new Ecommerce\model\EcommercepromocionesclassModel();
-            $EcommercepromocionesclassEntity = new Ecommerce\entity\EcommercepromocionesclassEntity();
-            
-            $EcommercepromocionesclassEntity->id($registro['id_promocion']);
-            $EcommercepromocionesclassModel->getData($EcommercepromocionesclassEntity->getArrayCopy());
-            $_registro = $EcommercepromocionesclassModel->getRows();
+        }
 
-            $class = new $_registro['dataClass'];
-
-            $class->setUser($MySession->GetVar('id'));
-            $class->setConfig(json_decode($registro['data'],true));
-            $carrito = getCarrito();
-            $class->setCarrito($carrito);
-            
-           $_descuento = $class->getDiscount();
-
-
-            if($_descuento > $descuento)
-            {
-                $descuento = $_descuento;
-                 $data = ['id' => $id_promo,'promo' => $registro['titulo'], 'descuento' => $descuento];
-            }
-        endwhile;
-        
-        $MySession->SetVar('promocion_checkout',$data);
-        
-        $respuesta['error'] = false;
-        
-        
+        $respuesta["totalItems"] = getFormatoPrecio($PedidosEntity->getTotalItems(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+        $respuesta["total"] = getFormatoPrecio($PedidosEntity->getTotal(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+        $respuesta["subtotal"] = getFormatoPrecio($PedidosEntity->getSubtotal(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+        $respuesta["iva"] = getFormatoPrecio($PedidosEntity->getTax(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+        $respuesta["discount"] = getFormatoPrecio($PedidosEntity->getDiscount(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+        $respuesta["totalItemsPlain"] = $PedidosEntity->getTotalItems();
+        $respuesta["totalPlain"] = $PedidosEntity->getTotal();
+        $respuesta["subtotalPlain"] = $PedidosEntity->getSubtotal();
+        $respuesta["ivaPlain"] = $PedidosEntity->getTax();
+        $respuesta["discountPlain"] = $PedidosEntity->getDiscount();
+        $respuesta["shippingPrice"] = getFormatoPrecio($PedidosEntity->getShippingPrice(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+        $respuesta["shippingSubtotal"] = getFormatoPrecio($PedidosEntity->getShippingSubtotal(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+        $respuesta["shippingTax"] = getFormatoPrecio($PedidosEntity->getShippingTax(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+        $respuesta["shippingPricePlain"] = (int)$PedidosEntity->getShippingPrice();
+        $respuesta["shippingSubtotalPlain"] = $PedidosEntity->getShippingSubtotal();
+        $respuesta["shippingTaxPlain"] = $PedidosEntity->getShippingTax();
+        $respuesta["cupon"] = $PedidosEntity->getCoupon();
+        $respuesta["status"] = $PedidosEntity->getStatus();
+        $respuesta["state"] = $PedidosEntity->getState();
+        $respuesta["order_id"] = $PedidosEntity->getOrderId();
     }
-    else{
-        $MySession->UnsetVar('promocion_checkout');
-        $respuesta['error'] =true;
-    }
+
     return $respuesta;
 }
 
@@ -710,8 +629,46 @@ function getShippingPlainPrice() {
     $price = getCoreConfig("ecommerce/plain-price/price");
     $MyCarrito = getMyIdCarrito();
     if($tipo == "porcentaje") {
-        return $MyCarrito->getTotal() * ($price/100);
+        return $MyCarrito->getTotalItems() * ($price/100);
     }
     return $price;
+}
+
+function getFreePayEnabled(){
+    if(getCoreConfig("ecommerce/free_pay/enabled") == 0) {
+        return false;
+    }
+    $MyCarrito = getMyIdCarrito();
+    if($MyCarrito->getTotal() > 0)
+    {
+        return false;
+    }
+    return true;
+}
+
+function placeOrderFreePay(){
+    if(getCoreConfig("ecommerce/free_pay/enabled") == 0) {
+        return false;
+    }
+    $MyCarrito = getMyIdCarrito();
+    if($MyCarrito->getTotal() > 0)
+    {
+        return false;
+    }
+
+    return [
+        "total" => 0,
+        "extra_data" => [],
+        "payment_method" => "free_pay",
+        "created_at" => date('Y-m-d H:i:s'),
+        "status" => "processing",
+        "state" => "processing",
+        "data_email" => []
+    ];
+}
+
+function getCallbakFreePay(){
+    global $MyRequest;
+    return $MyRequest->url(ECOMMERCE_SUCCESS_PAGE);
 }
 ?>

@@ -1,19 +1,12 @@
-<?php
-$productos =  OBJETO_PRODUCTOS;
-$MyProducto =  new $productos();
-?>
+
 <table style="width:90%">
 <tr><td>Nombre</td><td>Precio</td><td>QTY</td></tr>
-<?php foreach($items as $producto):
-
-  $MyProducto->getInfoProducto($producto["id"]);
-  $_registro = $MyProducto->getRows();
-?>
+<?php foreach($items as $producto): ?>
   <tr><td style="width:33%">
-    <h3><?php echo $_registro['nombre']; ?></h3>
-    <?php if(!empty($producto['caracteristicas'])): ?>
+    <h3><?php echo $producto['name']; ?></h3>
+    <?php if(!empty($producto['data'])): ?>
           <ul class="caracteristicas">
-          <?php foreach($producto['caracteristicas'] as $caracteristicas): ?>
+          <?php foreach($producto['data'] as $caracteristicas): ?>
               <?php if(!empty($caracteristicas['value'])): ?>
               <li><strong><?=$caracteristicas['name']?>:</strong><span><?=$caracteristicas['value']?></span></li>
               <?php endif; ?>
@@ -21,8 +14,16 @@ $MyProducto =  new $productos();
           </ul>
       <?php endif; ?>
   </td>
-  
-  <td><?php echo getFormatoPrecio($_registro['precio'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></td>
+  <?php
+  $price = $producto['price'];
+if($producto['price_discount'] > 0) {
+  $price = $producto['price_discount'];
+}
+if($producto['custom_price'] > 0) {
+  $price = $producto['custom_price'];
+}
+  ?>
+  <td><?php echo getFormatoPrecio($price,true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></td>
   
   <td><?php echo $producto['qty']; ?></td>
 

@@ -1,10 +1,10 @@
 <?php
 use Franky\Core\validaciones; 
-use Ecommerce\model\direcciones;
-use Ecommerce\entity\direcciones as direccionesEntity;
+use Ecommerce\model\EcommerceDireccionesModel;
+use Ecommerce\entity\EcommerceDireccionesEntity;
 
-$MyDirecciones             = new direcciones();
-$MyDireccionesEntity       = new direccionesEntity($MyRequest->getRequest());
+$MyDirecciones             = new EcommerceDireccionesModel();
+$MyDireccionesEntity       = new EcommerceDireccionesEntity($MyRequest->getRequest());
 $id = $MyDireccionesEntity->getId(); 
 $callback = $MyRequest->getRequest("callback");
 $error = false;
@@ -41,9 +41,12 @@ if(!$error)
 
     if(empty($id))
     {
-        $MyDireccionesEntity->setFecha(date('Y-m-d H:i:s'));
+        $MyDireccionesEntity->setCreatedAt(date('Y-m-d H:i:s'));
         $MyDireccionesEntity->setUid($MySession->GetVar('id'));
         $MyDireccionesEntity->setStatus(1);
+    } else {
+        $MyDireccionesEntity->setUid($MySession->GetVar('id'));
+        $MyDireccionesEntity->setUpdateAt(date('Y-m-d H:i:s'));
     }
     
     $result = $MyDirecciones->save($MyDireccionesEntity->getArrayCopy());

@@ -58,10 +58,10 @@
 
             <div class="_mycart_checkout">
                 <div class='resumen_page_carrito'>
-                  <div class="_mycart_resume _subtotal">Subtotal: <span class="subtotal"><?=$parse_precio['subtotal'] ?></span></div>
-                  <div class="_mycart_resume _iva">IVA: <span class="iva"><?=$parse_precio['iva'] ?></span></div>
-                  <div class="_mycart_resume _descuento" <?=($parse_precio['descuentoPlain'] > 0 ? '' : 'style="display:none;"')?>>Descuento: <span class="descuento"><?php echo $parse_precio['descuento']; ?></span></div>
-                  <div class="_mycart_resume _total">Total: <span class="total"><?php echo getFormatoPrecio($parse_precio['totalPlain']- $parse_precio['discountPlain'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></span></div>
+                  <div class="_mycart_resume _subtotal">Subtotal: <span class="price"><?=$parse_precio['subtotal'] ?></span></div>
+                  <div class="_mycart_resume _iva">IVA: <span class="price"><?=$parse_precio['iva'] ?></span></div>
+                  <div class="_mycart_resume _descuento" <?=($parse_precio['discountPlain'] > 0 ? '' : 'style="display:none;"')?>>Descuento: <span class="price"><?php echo $parse_precio['discount']; ?></span></div>
+                  <div class="_mycart_resume _total">Total: <span class="price"><?php echo getFormatoPrecio($parse_precio['totalPlain']- $parse_precio['discountPlain'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></span></div>
                 </div>
                 <div>
 

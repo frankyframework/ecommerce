@@ -32,6 +32,24 @@
                 "null":0
             },
             {
+                "name":"numero_usos",
+                "type":"int",
+                "null":1
+                
+            },
+            {
+                "name":"numero_usos_usuario",
+                "type":"int",
+                "null":1
+                
+            },
+            {
+                "name":"codigo_promocion",
+                "type":"varchar",
+                "length":255,
+                "null":0
+            },
+            {
                 "name":"data",
                 "type":"text",
                 "null":0

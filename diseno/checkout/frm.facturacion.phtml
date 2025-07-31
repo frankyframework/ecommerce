@@ -10,8 +10,13 @@
     <?=$direccionesFacturacionForm->getRow('ciudad')?>
     <?=$direccionesFacturacionForm->getRow('municipio')?>
     <?=$direccionesFacturacionForm->getRow('colonia')?>
+    <?php 
+    if ($MySession->LoggedIn()) {
+        echo $direccionesFacturacionForm->getRow('save_address');
+    }
+    ?>
+
     <?=$direccionesFacturacionForm->getRow('guardar')?>
     <?=$direccionesFacturacionForm->endTag(); ?>
-    
 </div>
     

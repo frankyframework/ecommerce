@@ -1,0 +1,36 @@
+{
+    "data":[
+        {
+            "id":100,
+            "nombre":"Nuevo pedido ecommerce",
+            "id_transaccional":100,
+            "status":1,
+            "fecha":"2024-10-01 00:00:00",
+            "Asunto":"SNuevo pedido",
+            "destinatario":["{email}"],
+            "cc":[],
+            "bcc":[],
+            "name_from":"Webmaster",
+            "email_from":"webmaster@test.com",
+            "reply":"webmaster@test.com",
+            "editable":1,
+            "html": "<p>{header}</p><p>Tu pedido numero #{order_id} fue registrado</p><p>Hola {name} gracias por tu compra</p><p>{productos}</p><p>Metodo de pago {payment_method}</p><p>subtotal {subtotal}</p><p>IVA {tax}</p><p>Envio {shipping_price}</p><p>Descuento {discount}</p><p>Total {total}</p><p>Status de la orden {status}</p><p>Direccion de envio</p><p>{shipping_address}</p><p>{footer}</p>"
+         },
+         {
+            "id":101,
+            "nombre":"Cambio de status pedido",
+            "id_transaccional":101,
+            "status":1,
+            "fecha":"2024-10-01 00:00:00",
+            "Asunto":"El status de tu pedido a cambiado",
+            "destinatario":["{email}"],
+            "cc":[],
+            "bcc":[],
+            "name_from":"Webmaster",
+            "email_from":"webmaster@test.com",
+            "reply":"webmaster@test.com",
+            "editable":1,
+            "html": "<p>{header}</p><p>El status de tuu pedido numero #{order_id} a cambiado</p><p>Hola {name} gracias por tu compra</p><p>{productos}</p><p>Metodo de pago {payment_method}</p><p>Total {total}</p><p>Status {status}</p><p>{footer}</p>"
+        }
+    ]
+}

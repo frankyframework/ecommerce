@@ -8,11 +8,6 @@ return array(
          "etiqueta" => _ecommerce("Administrar pagos")
         ),
         array(
-         "permiso" =>   "administrar_cupones_ecommerce",
-         "url" => $MyRequest->url(ADMIN_LISTA_CUPONES_ECOMMERCE),
-         "etiqueta" => _ecommerce("Administrar cupones")
-        ),
-        array(
             "permiso" =>   "administrar_promociones_ecommerce",
             "url" => $MyRequest->url(ADMIN_LISTA_PROMOCIONES_ECOMMERCE),
             "etiqueta" => _ecommerce("Administrar promociones")

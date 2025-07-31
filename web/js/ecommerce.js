@@ -25,7 +25,6 @@ var changeShippingAddress = function(){
 var changeBillingAddress = function(){
     $(".direccion_facturacion").addClass("_nono").addClass('_active').removeClass("_sisi").next("div").show();
     $(".metodo_envio").addClass("_nono").removeClass('_active').removeClass("_sisi").next("div").hide();
-    $(".paga_ahora").addClass("_nono").removeClass('_active').removeClass("_sisi").next("div").hide();
     $(".metodo_pago").addClass("_nono").removeClass('_active').removeClass("_sisi").next("div").hide();
     $("#resumen_checkout_facturacion").empty();
     $("#resumen_metodo_envio").empty();
@@ -34,16 +33,9 @@ var changeBillingAddress = function(){
 var changeMetodoEnvio = function(){
 
     $(".metodo_envio").addClass("_nono").addClass('_active').removeClass("_sisi").next("div").show();
-    $(".paga_ahora").addClass("_nono").removeClass('_active').removeClass("_sisi").next("div").hide();
     $(".metodo_pago").addClass("_nono").removeClass('_active').removeClass("_sisi").next("div").hide();
     $("#resumen_metodo_envio").empty();
 
-}
-
-var changePaimentMethod = function(){
-    $(".paga_ahora").addClass("_nono").removeClass('_active').removeClass("_sisi").next("div").hide();
-    $(".metodo_pago").addClass("_nono").addClass('_active').removeClass("_sisi").next("div").show();
-    $("#contenedor_frm_pago").empty();
 }
 
 

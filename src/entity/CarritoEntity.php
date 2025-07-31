@@ -15,6 +15,7 @@ class CarritoEntity
     private $name;
     private $email;
     private $total;
+    private $total_items;
     private $subtotal;
     private $tax;
     private $discount;
@@ -25,6 +26,7 @@ class CarritoEntity
     private $shipping_tax;
     private $created_at;
     private $update_at;
+    private $active;
    
     public function __construct($data = null)
     {
@@ -48,6 +50,7 @@ class CarritoEntity
         $this->name                 = (isset($data['name']))                ? $data['name']                 : null;
         $this->email                = (isset($data['email']))               ? $data['email']                : null;
         $this->total                = (isset($data['total']))               ? $data['total']                : null;
+        $this->total_items          = (isset($data['total_items']))               ? $data['total_items']                : null;
         $this->subtotal             = (isset($data['subtotal']))            ? $data['subtotal']             : null;
         $this->tax                  = (isset($data['tax']))                 ? $data['tax']                  : null;
         $this->discount             = (isset($data['discount']))            ? $data['discount']             : null;
@@ -58,6 +61,7 @@ class CarritoEntity
         $this->shipping_tax     = (isset($data['shipping_tax']))    ? $data['shipping_tax']  : null;
         $this->created_at           = (isset($data['created_at']))          ? $data['created_at']           : null;
         $this->update_at           = (isset($data['update_at']))          ? $data['update_at']              : null;
+        $this->active           = (isset($data['active']))          ? $data['active']              : null;
     }
     
     public function getArrayCopy()
@@ -294,6 +298,25 @@ class CarritoEntity
         $this->shipping_data = $shippingData;
     }
 
-   
+    public function getTotalItems()
+    {
+        return $this->total_items;
+    }
+
+    public function setTotalItems($totalItems)
+    {
+        $this->total_items = $totalItems;
+    }
+
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    public function setActive($active)
+    {
+        $this->active = $active;
+    }
+
  }
 

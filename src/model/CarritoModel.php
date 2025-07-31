@@ -9,11 +9,11 @@ class CarritoModel  extends \Franky\Database\Mysql\objectOperations
     parent::__construct();
     $this->from()->addTable('ecommerce_carrito');
   }
-    function getData($id='',$uid='',$cookie_id='')
+    function getData($id='',$uid='',$cookie_id='', $active='1')
     {
         $campos = array("id","uid","cookie_id","shipping_method","payment_method","shipping_address","invoice_address",
         "name", "email", "guest","total","subtotal","tax","discount","coupon","promotion","created_at","update_at",
-      "shipping_price","shipping_subtotal", "shipping_tax","shipping_data");
+      "shipping_price","shipping_subtotal", "shipping_tax","shipping_data","total_items");
 
         if(!empty($id))
         {
@@ -31,6 +31,11 @@ class CarritoModel  extends \Franky\Database\Mysql\objectOperations
         if(!empty($cookie_id))
         {
           $this->where()->addAnd('cookie_id',$cookie_id,'=');
+        }
+
+        if(!empty($active))
+        {
+          $this->where()->addAnd('active',$active,'=');
         }
 
         return $this->getColeccion($campos);

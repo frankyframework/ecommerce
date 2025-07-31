@@ -1,33 +1,34 @@
 <?php
 use Franky\Core\validaciones; 
-use Ecommerce\model\EcommercepromocionesModel;
-use Ecommerce\entity\EcommercepromocionesEntity;
+use Ecommerce\model\EcommercePromocionesModel;
+use Ecommerce\entity\EcommercePromocionesEntity;
 use Franky\Haxor\Tokenizer;
 
 
 $Tokenizer = new Tokenizer();
-$EcommercepromocionesModel             = new EcommercepromocionesModel();
-$EcommercepromocionesEntity            = new EcommercepromocionesEntity($MyRequest->getRequest());
+$EcommercePromocionesModel             = new EcommercePromocionesModel();
+$EcommercePromocionesEntity            = new EcommercePromocionesEntity($MyRequest->getRequest());
 
 
 $id	= $Tokenizer->decode($MyRequest->getRequest('id'));
 $callback = $Tokenizer->decode($MyRequest->getRequest('callback'));
-$EcommercepromocionesEntity->id($id);
+$EcommercePromocionesEntity->id($id);
 $error = false;
 
 if($MyRequest->getRequest('fecha_inicio') == '')
 {
-    $EcommercepromocionesEntity->fecha_inicio('0000-00-00');
+    $EcommercePromocionesEntity->fecha_inicio('0000-00-00');
 }
 if($MyRequest->getRequest('fecha_fin') == '')
 {
-    $EcommercepromocionesEntity->fecha_fin('0000-00-00');
+    $EcommercePromocionesEntity->fecha_fin('0000-00-00');
 }
 
 
 $data = $MyRequest->getRequest();
 unset($data['id']);
 unset($data['titulo']);
+unset($data['codigo_promocion']);
 unset($data['fecha_inicio']);
 unset($data['fecha_inicio_dia']);
 unset($data['fecha_inicio_mes']);
@@ -38,9 +39,11 @@ unset($data['fecha_fin_mes']);
 unset($data['fecha_fin_ano']);
 unset($data['id_promocion']);
 unset($data['guardar']);
+unset($data['numero_usos']);
+unset($data['numero_usos_usuario']);
 
 $validaciones =  new validaciones();
-$valid = $validaciones->validRules($EcommercepromocionesEntity->setValidation());
+$valid = $validaciones->validRules($EcommercePromocionesEntity->setValidation());
 if(!$valid)
 {
     $MyFlashMessage->setMsg("error",$validaciones->getMsg());
@@ -55,20 +58,27 @@ if(!$MyAccessList->MeDasChancePasar("administrar_promociones_ecommerce"))
     $error = true;
 }
 
+if($EcommercePromocionesModel->existe($EcommercePromocionesEntity->codigo_promocion(),$EcommercePromocionesEntity->id()) == REGISTRO_SUCCESS)
+{
+    $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("ecommerce_codigo_cupon_duplicado"));
+    $error = true;
+}
+
+
 if(!$error)
 {
 
 
     if(empty($id))
     {
-        $EcommercepromocionesEntity->createdAt(date('Y-m-d H:i:s'));
-        $EcommercepromocionesEntity->status(1);
+        $EcommercePromocionesEntity->createdAt(date('Y-m-d H:i:s'));
+        $EcommercePromocionesEntity->status(1);
     }
-    else{
-        $EcommercepromocionesEntity->updateAt(date('Y-m-d H:i:s'));
+    else {
+        $EcommercePromocionesEntity->updateAt(date('Y-m-d H:i:s'));
     }
-    $EcommercepromocionesEntity->data(json_encode($data));
-    $result = $EcommercepromocionesModel->save($EcommercepromocionesEntity->getArrayCopy());
+    $EcommercePromocionesEntity->data(json_encode($data));
+    $result = $EcommercePromocionesModel->save($EcommercePromocionesEntity->getArrayCopy());
    
     if($result == REGISTRO_SUCCESS)
     {

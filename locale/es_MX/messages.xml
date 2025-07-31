@@ -105,5 +105,16 @@
         <llave>error_transaction</llave>
         <valor>Error al realizar la transacción intente mas tarde</valor>
     </mensaje>
-
+    <mensaje>
+        <llave>cupon_no_register</llave>
+        <valor>Este cupon es solo para usuarior registrados</valor>
+    </mensaje>
+    <mensaje>
+        <llave>error_payment_method</llave>
+        <valor>Error al seleccionar el metodo de pago</valor>
+    </mensaje>
+    <mensaje>
+        <llave>payment_error</llave>
+        <valor>Error al interntar pagar la orden</valor>
+    </mensaje>
 </mensajes>

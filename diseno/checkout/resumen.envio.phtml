@@ -1,6 +1,9 @@
 <div class="w-xxxx-12">
     <div class="w-xxxx-10">
-        Calle <?=$direccion_envio['calle']?> #<?=$direccion_envio['numero']?>, Colonia <?=$direccion_envio['colonia']?>, municipio <?=$direccion_envio['municipio']?>,<?=$direccion_envio['pais']?> C.P. <?=$direccion_envio['cp']?>
+        <?php
+        $direccion = getCoreConfig("ecommerce/ventas/address-format");
+        echo sprintf($direccion,$direccion_envio["calle"],$direccion_envio["numero"],$direccion_envio["colonia"],$direccion_envio["municipio"],$direccion_envio["estado"],$direccion_envio["cp"]);
+        ?>
     </div>
     <div class="w-xxxx-2">
         <a href="javascript:void(0)" onclick="changeShippingAddress();"><i class="icon icon-editar"></i> Cambiar</a>

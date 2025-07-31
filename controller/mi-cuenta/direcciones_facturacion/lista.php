@@ -1,13 +1,13 @@
 <?php
 use Base\Form\filtrosForm;
 use Franky\Core\paginacion;
-use Ecommerce\model\direcciones_facturacion;
+use Ecommerce\model\EcommerceDireccionesFacturacionModel;
 
-$MyDirecciones             = new direcciones_facturacion();
+$MyDirecciones             = new EcommerceDireccionesFacturacionModel();
 $MyPaginacion = new paginacion();
 
 $MyPaginacion->setPage($MyRequest->getRequest('page',1));
-$MyPaginacion->setCampoOrden($MyRequest->getRequest('por',"fecha"));
+$MyPaginacion->setCampoOrden($MyRequest->getRequest('por',"created_at"));
 $MyPaginacion->setOrden($MyRequest->getRequest('order',"DESC"));
 $MyPaginacion->setTampageDefault($MyRequest->getRequest('tampag',25));			
 $busca_b	= $MyRequest->getRequest('busca_b');	

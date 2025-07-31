@@ -65,7 +65,7 @@
             "constante":"CHECKOUT_ECOMMERCE",
             "url":"ecommerce/checkout/",
             "nombre":"Checkout",
-            "ajax":["base/ajax.admin.js","ecommerce/ajax.paypal.js","ecommerce/ajax.conekta.js"],
+            "ajax":["base/ajax.admin.js"],
             "status":1,
             "editable":1,
             "modulo":"ecommerce"
@@ -169,48 +169,6 @@
             "modulo":"ecommerce"
         },
         {
-            "php":"admin/pedidos/detalle.php",
-            "css":"",
-            "js":[],
-            "jquery":["jquery-validate"],
-            "resource":"administras_pedidos",
-            "constante":"ADMIN_DETALLE_PEDIDOS",
-            "url":"admin/ecommerce/pedidos/detalle/",
-            "nombre":"Detalle de pedido",
-            "ajax":["base/ajax.admin.js", "ecommerce/ajax.admin.js"],
-            "status":1,
-            "editable":1,
-            "modulo":"ecommerce"
-        },
-        {
-            "php":"admin/cupones/form.php",
-            "css":"",
-            "js":[],
-            "jquery":["jquery-validate"],
-            "resource":"administras_cupones",
-            "constante":"ADMIN_FRM_CUPONES_ECOMMERCE",
-            "url":"admin/ecommerce/cupones/form/",
-            "nombre":"Alta y edicion de cupones",
-            "ajax":[],
-            "status":1,
-            "editable":1,
-            "modulo":"ecommerce"
-        },
-        {
-            "php":"admin/cupones/lista.php",
-            "css":"",
-            "js":[],
-            "jquery":[],
-            "resource":"administras_cupones",
-            "constante":"ADMIN_LISTA_CUPONES_ECOMMERCE",
-            "url":"admin/ecommerce/cupones/",
-            "nombre":"Administrar cupones",
-            "ajax":["base/ajax.admin.js", "ecommerce/ajax.admin.js"],
-            "status":1,
-            "editable":1,
-            "modulo":"ecommerce"
-        },
-        {
             "php":"admin/tiendas/form.php",
             "css":"",
             "js":[],
@@ -234,6 +192,20 @@
             "url":"admin/ecommerce/tiendas/",
             "nombre":"Administrar lista de tiendas",
             "ajax":["base/ajax.admin.js", "ecommerce/ajax.admin.js"],
+            "status":1,
+            "editable":1,
+            "modulo":"ecommerce"
+        },
+        {
+            "php":"successpage.php",
+            "css":"",
+            "js":[],
+            "jquery":[],
+            "resource":"",
+            "constante":"ECOMMERCE_SUCCESS_PAGE",
+            "url":"ecommerce/order/success/",
+            "nombre":"Success page",
+            "ajax":[],
             "status":1,
             "editable":1,
             "modulo":"ecommerce"

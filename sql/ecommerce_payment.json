@@ -1,0 +1,56 @@
+{
+    "schema" :
+    {
+        "attributes":[
+            {
+                "name":"id",
+                "type":"int",
+                "length":11,
+                "null":0,
+                "auto_increment":1
+            },
+            {
+                "name":"order_id",
+                "type":"int",
+                "length":11,
+                "null":1
+            },
+            {
+                "name":"payment_method",
+                "type":"varchar",
+                "length":255,
+                "null":0
+            },
+            {
+                "name":"amount",
+                "type":"varchar",
+                "length":255,
+                "null":1
+            },
+            {
+                "name":"extra_data",
+                "type":"varchar",
+                "length":255,
+                "null":1
+            },
+            {
+                "name":"created_at",
+                "type":"datetime",
+                "null":0
+                
+            },
+            {
+                "name":"update_at",
+                "type":"datetime",
+                "null":1
+            }
+
+        ],
+        "config":{
+            "primary":"id",
+            "engine":"MyISAM"
+        }
+    }
+    ,
+    "data":[]
+}

@@ -1,13 +1,13 @@
 <?php
 use Base\Form\filtrosForm;
 use Franky\Core\paginacion;
-use Ecommerce\model\direcciones;
+use Ecommerce\model\EcommerceDireccionesModel;
 
-$MyDirecciones             = new direcciones();
+$MyDirecciones             = new EcommerceDireccionesModel();
 $MyPaginacion = new paginacion();
 
 $MyPaginacion->setPage($MyRequest->getRequest('page',1));
-$MyPaginacion->setCampoOrden($MyRequest->getRequest('por',"fecha"));
+$MyPaginacion->setCampoOrden($MyRequest->getRequest('por',"created_at"));
 $MyPaginacion->setOrden($MyRequest->getRequest('order',"DESC"));
 $MyPaginacion->setTampageDefault($MyRequest->getRequest('tampag',25));			
 $busca_b	= $MyRequest->getRequest('busca_b');	
@@ -31,11 +31,11 @@ if($MyDirecciones->getTotal() > 0)
 	{
 		$thisClass  = ((($iRow % 2) == 0) ? "formFieldDk" : "formFieldLt");
                 
-                $direccion = "%s: calle %s #%s, Colonia %s, municipio %s,%s C.P. %d";
+                $direccion = getCoreConfig("ecommerce/ventas/address-format");
                 $lista_admin_data[] = array_merge($registro,array(
                 "thisClass"     => $thisClass,
                "nuevo_estado"  =>($registro["status"] == 1 ?"desactivar" : "activar"),
-                    "calle" => sprintf($direccion,$registro["nombre"],$registro["calle"],$registro["numero"],$registro["colonia"],$registro["municipio"],$registro["estado"],$registro["cp"])
+                    "calle" => sprintf($direccion,$registro["calle"],$registro["numero"],$registro["colonia"],$registro["municipio"],$registro["estado"],$registro["cp"])
                 ));
                 
                 $iRow++;
@@ -51,9 +51,9 @@ $class_grid = "cont_direcciones";
 $error_grid = _ecommerce("No hay direcciones registradas");
 $deleteFunction = "EliminarDireccionEcommerce";
 $frm_constante_link = FRM_DIRECCIONES_ECOMMERCE;
-$titulo_columnas_grid = array("nombre" => _ecommerce("Nombre"),"calle" => _ecommerce("Direccion"));
-$value_columnas_grid = array("nombre","calle");
-$css_columnas_grid = array("nombre" => 'w-xxxx-3',"calle" => "w-xxxx-6" );
+$titulo_columnas_grid = array("calle" => _ecommerce("Direccion"));
+$value_columnas_grid = array("calle");
+$css_columnas_grid = array("calle" => "w-xxxx-6" );
 
 $permisos_grid = "administrar_direcciones_ecommerce";
 

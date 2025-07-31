@@ -1,8 +1,8 @@
 <?php
 use Ecommerce\Form\direccionesForm;
-use Ecommerce\model\direcciones;
+use Ecommerce\model\EcommerceDireccionesModel;
 
-$MyDirecciones             = new direcciones();
+$MyDirecciones             = new EcommerceDireccionesModel();
 
 $id		= $MyRequest->getRequest('id');
 $callback	= $MyRequest->getRequest('callback');
@@ -21,9 +21,7 @@ if(!empty($id))
         
 }
 
-$adminForm->addOtroTelefono();
 $adminForm->addEntrecalles();
-$adminForm->addInstrucciones();
 $adminForm->addSubmit();
 $adminForm->setData($data);
 

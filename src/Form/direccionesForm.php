@@ -162,7 +162,7 @@ class direccionesForm extends \Franky\Form\Form
             )
         );
         $this->add(array(
-            'name' => 'telefono_fijo',
+            'name' => 'telefono_otro',
             'label' => _ecommerce('Teléfono fijo'),
 
             'type'  => 'text',

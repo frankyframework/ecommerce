@@ -58,27 +58,6 @@ class checkoutForm extends \Franky\Form\Form
         );
     }
 
-
-    public function addCard($values)
-    {
-        $this->add(array(
-                'name' => 'id_tarjeta',
-                'label' => _ecommerce('Tarjeta'),
-                'type'  => 'radio',
-                'required'  => true,
-
-                'atributos' => array(
-                    'class'       => 'required'
-                 ),
-                'options' => $values,
-                'label_atributos' => array(
-                    'class'       => 'desc_form_obligatorio'
-                 )
-            )
-        );
-    }
-
-
     public function addMetodoPago($values = array())
     {
         $this->add(array(

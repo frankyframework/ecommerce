@@ -1,8 +1,8 @@
 <?php
 use Ecommerce\Form\direccionesForm;
-use Ecommerce\model\direcciones_facturacion;
+use Ecommerce\model\EcommerceDireccionesFacturacionModel;
 
-$MyDirecciones             = new direcciones_facturacion();
+$MyDirecciones             = new EcommerceDireccionesFacturacionModel();
 
 $id		= $MyRequest->getRequest('id');
 $callback	= $MyRequest->getRequest('callback');
@@ -10,7 +10,7 @@ $data = $MyFlashMessage->getResponse();
 
 $adminForm = new direccionesForm("frmdirecciones_facturacion");
 
-$adminForm->setAtributo("action", "/ecommerce/admin/direcciones_facturacion/submit.php");
+$adminForm->setAtributo("action", "/ecommerce/mi-cuenta/direcciones_facturacion/submit.php");
 if(!empty($id))
 {
 
@@ -22,6 +22,7 @@ if(!empty($id))
 }
 
 $adminForm->addRFC();
+$adminForm->addName();
 $adminForm->addSubmit();
 $adminForm->setData($data);
 

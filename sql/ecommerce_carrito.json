@@ -68,6 +68,12 @@
                 "null":0
             },
             {
+                "name":"total_items",
+                "type":"float",
+                "length":11,
+                "null":0
+            },
+            {
                 "name":"subtotal",
                 "type":"float",
                 "length":11,
@@ -87,8 +93,8 @@
             },
             {
                 "name":"coupon",
-                "type":"int",
-                "length":11,
+                "type":"varchar",
+                "length":50,
                 "null":1
             },
             {
@@ -130,6 +136,13 @@
                 "name":"update_at",
                 "type":"datetime",
                 "null":1
+            },
+            {
+                "name":"active",
+                "type":"int",
+                "length":1,
+                "null":0,
+                "default":1
             }
 
         ],
