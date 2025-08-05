@@ -1,6 +1,4 @@
 
-insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('paypal/confirmacion.php','','','','[3]','CONFIRMACION_PAYPAL','ecommerce/paypal/confirmacion/','Confirmacion PAYPAL','','1','0','ecommerce');
-
 insert into `franky` (`php`, `css`, `js`, `jquery`, `resource`, `constante`, `url`, `nombre`, `ajax`, `status`, `editable`, `modulo`) values('admin/tiendas/form.php','','[\"validaciones.js\"]','[\"jquery-validate\"]','[3]','FRM_TIENDAS_ECOMMERCE','admin/ecommerce/tiendas/form/','Formulario administracion tiendas','','1','0','ecommerce');
 
 

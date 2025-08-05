@@ -36,7 +36,7 @@ $EcommercePromocionesModel->setTampag($MyPaginacion->getTampageDefault());
 $EcommercePromocionesModel->setOrdensql($orden." ".$MyPaginacion->getOrden());
 
 
-if(getCoreConfig('ecommerce/cupones/showdelete') == 0){
+if(getCoreConfig('ecommerce/promociones/showdelete') == 0){
     $EcommercePromocionesEntity->status(1);
 }
 

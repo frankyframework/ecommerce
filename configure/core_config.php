@@ -70,23 +70,6 @@ return array(
         ),
           
     ),
-    'ecommerce-cupones' => array(
-        'menu' => "ECOMMERCE CUPONES",
-        'title' => "Configuración de cupones",
-        'config' =>  array(
-     
-
-        array('path' => 'ecommerce/cupones/showdelete',
-                'type' => 'select',
-                'label' => '¿Mostrar cupones eliminados en panel?',
-                'validation' => array('require' => true),
-                'data' => ['0' => 'No','1' => 'Sí'],
-                            'value' => '1'
-                )
-
-          
-            )
-    ),
     'ecommerce-promociones' => array(
         'menu' => "ECOMMERCE PROMOCIONES",
         'title' => "Configuración de promociones",
