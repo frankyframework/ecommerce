@@ -799,6 +799,8 @@ function placeOrderHTML(response)
         if(!respuesta.error)
         {
             window.location = respuesta.callback;
+        } else {
+            _alert(respuesta.msg);
         }
     }
 }

@@ -480,22 +480,24 @@ function validaCuponEcommerce($cupon)
                 return $respuesta;
             }
         }
-        /*
+        
         if($numero_usos > 0){
         
-            $pedidosModel             = new Ecommerce\model\pedidos();
+            $pedidosModel             = new Ecommerce\model\PedidosModel();
+            $pedidosEntity             = new Ecommerce\entity\PedidosEntity();
 
-            $pedidosModel->setCupon($cupon);
+            $pedidosEntity->setCoupon($cupon);
             
 
             $pedidosModel->setTampag($numero_usos +1 );
-            $pedidosModel->getData();
+            $pedidosModel->getData($pedidosEntity->getArrayCopy());
             if($pedidosModel->getTotal() >= $numero_usos){
                 $respuesta['error'] =true;
                 $respuesta['message'] = "ecommerce_cupon_numero_usos";
                 return $respuesta;
             }
         }
+        
         if($numero_usos_usuario > 0){
         
             if(!$MySession->LoggedIn()) {
@@ -503,19 +505,19 @@ function validaCuponEcommerce($cupon)
                 $respuesta['message'] = "ecommerce_cupon_no_register";
                 return $respuesta;
             }
-            $pedidosModel             = new Ecommerce\model\pedidos();
-
-            $pedidosModel->setCupon($cupon);
-            $pedidosModel->setCustomerEmail($carrito->getCustomerEmail());
+            $pedidosModel             = new Ecommerce\model\PedidosModel();
+            $pedidosEntity             = new Ecommerce\entity\PedidosEntity();
+            $pedidosEntity->setCoupon($cupon);
+            $pedidosEntity->setEmail($carrito->getEmail());
             $pedidosModel->setTampag($numero_usos_usuario +1 );
-            $pedidosModel->getData('',$MySession->GetVar('id'));
+            $pedidosModel->getData($pedidosEntity->getArrayCopy());
             if($pedidosModel->getTotal() >= $numero_usos_usuario){
                 $respuesta['error'] =true;
                 $respuesta['message'] = "ecommerce_cupon_numero_usos";
                 return $respuesta;
             }
         }
-        */
+        
         $EcommercepromocionesclassModel = new Ecommerce\model\EcommercepromocionesclassModel();
         $EcommercepromocionesclassEntity = new Ecommerce\entity\EcommercepromocionesclassEntity();
         

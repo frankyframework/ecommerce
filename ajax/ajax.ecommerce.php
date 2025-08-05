@@ -187,7 +187,9 @@ function addProductoCarrito($producto,$qty=1,$caracteristicas="{}")
    
             $MyCarritoEntity->setCreatedAt(date('Y-m-d'));
             $MyCarritoEntity->setActive(1);
-        
+            if($MySession->LoggedIn()) {
+                $MyCarritoEntity->setUid($MySession->GetVar('id'));
+            }
             $MyCarritoCompras->save($MyCarritoEntity->getArrayCopy());
             $id_carrito = $MyCarritoCompras->getUltimoID();
         } else {

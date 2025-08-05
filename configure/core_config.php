@@ -175,59 +175,7 @@ return array(
                 'value' => ''
                 )
           )
-  ),/*
-  'ecommerce-paypal' => array(
-          'menu' => "ECOMMERCE API PAYPAL",
-          'title' => "Configuración de paypal",
-          'config' =>  array(
-                    array('path' => 'ecommerce/paypal/enabled',
-                            'type' => 'select',
-                            'label' => 'Habilitar metodo de pago',
-                            'validation' => array('required' => true),
-                            'data' => ['0' => 'No','1' => 'Sí'],
-                            'value' => '0'
-                          ),
-                      array('path' => 'ecommerce/paypal/sandbox',
-                              'type' => 'select',
-                              'label' => 'SANDBOX',
-                              'validation' => array('required' => true),
-                              'data' => ['0' => 'No','1' => 'Sí'],
-                              'value' => '1'
-                            ),
-                      array('path' => 'ecommerce/paypal/key',
-                              'type' => 'text',
-                              'label' => 'API KEY',
-                              'validation' => array('required' => false),
-                              'value' => ''
-                            ),
-                      array('path' => 'ecommerce/paypal/secret',
-                              'type' => 'text',
-                              'label' => 'SECRET KEY',
-                              'validation' => array('required' => false),
-                              'value' => ''
-                        ),
-                      array('path' => 'ecommerce/paypal/keysandbox',
-                              'type' => 'text',
-                              'label' => 'API KEY SANDBOX',
-                              'validation' => array('required' => false),
-                              'value' => ''
-                            ),
-                      array('path' => 'ecommerce/paypal/secretsandbox',
-                              'type' => 'text',
-                              'label' => 'SECRET KEY SANDBOX',
-                              'validation' => array('required' => false),
-                              'value' => ''
-                            ),
-                            array('path' => 'ecommerce/paypal/email-order',
-                                  'type' => 'select',
-                                  'label' => 'Template E-mail para nueva orden',
-                                  'validation' => array('required' => true),
-                                  'data' => getTemplatesEmail(),
-                                  'value' => ''
-                                  ),
-             
-          )
-  ),*/
+  )
 );
 
 ?>

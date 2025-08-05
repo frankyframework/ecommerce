@@ -29,8 +29,7 @@
             },
             {
                 "name":"extra_data",
-                "type":"varchar",
-                "length":255,
+                "type":"text",
                 "null":1
             },
             {
