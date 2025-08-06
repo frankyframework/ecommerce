@@ -15,7 +15,7 @@ if (function_exists('bind_textdomain_codeset'))
 $ObserverManager->addObserver('login_user','setCarritoUser');
 $ObserverManager->addObserver('register_new_user','setCarritoUser');
 $ObserverManager->addObserver('change_quote','getUpdateCarrito');
-
+$ObserverManager->addObserver('product_order_save','catalogRestaStock');
 
 define("OBJETO_PRODUCTOS", getCoreConfig('ecommerce/product/object')); // \Catalog\model\CatalogproductsModel
 define("DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE", getCoreConfig('ecommerce/product/path_images')); // catalog/products/

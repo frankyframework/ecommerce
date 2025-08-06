@@ -764,6 +764,8 @@ function placeOrder()
                             $ProductoPedidoEntity->exchangeArray($product);
                             $ProductoPedidoModel->save($ProductoPedidoEntity->getArrayCopy());
                             $productosComprados[] = $ProductoPedidoEntity->getArrayCopy();
+
+                            $ObserverManager->dispatch('product_order_save',["idProduct" => $ProductoPedidoEntity->getIdProduct(),"qty" => $ProductoPedidoEntity->getQty()]);
                         }
                     }
 
