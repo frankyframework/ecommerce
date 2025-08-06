@@ -99,12 +99,10 @@ function makeHTMLDireccion($type="envio",$uid = "")
     if($type =="envio")
     {
         $MyDireccion = new Ecommerce\model\EcommerceDireccionesModel();
-        $direccion = getCoreConfig("ecommerce/ventas/address-format");;
     }
     if($type == "facturacion")
     {
         $MyDireccion = new Ecommerce\model\EcommerceDireccionesFacturacionModel();
-        $direccion = getCoreConfig("ecommerce/ventas/addressf-format");;
     }
     $MyDireccion->setTampag(1000);
     $MyDireccion->setOrdensql("created_at ASC");
@@ -120,11 +118,11 @@ function makeHTMLDireccion($type="envio",$uid = "")
         {
             if($type =="envio")
             {
-                $direcciones[$registro['id']] = sprintf($direccion,$registro["calle"],$registro["numero"],$registro["colonia"],$registro["municipio"],$registro["estado"],$registro["cp"]);
+                $direcciones[$registro['id']] =  getFormatreplace(getCoreConfig("ecommerce/ventas/address-format"),$registro);
             }
             if($type =="facturacion")
             {
-                $direcciones[$registro['id']] = sprintf($direccion,$registro["nombre"],$registro["rfc"],$registro["calle"],$registro["numero"],$registro["colonia"],$registro["municipio"],$registro["estado"],$registro["cp"]);
+                $direcciones[$registro['id']] =  getFormatreplace(getCoreConfig("ecommerce/ventas/addressf-format"),$registro);
             }
 	}
     }
@@ -561,7 +559,7 @@ function getDataOrder($orderId)
     $ProductoPedidoModel =  new \Ecommerce\model\ProductoPedidoModel();
     $ProductoPedidoEntity =  new \Ecommerce\entity\ProductoPedidoEntity();
     $Tokenizer = new \Franky\Haxor\Tokenizer;
-    $PedidosEntity->setOrderId($orderId);
+    $PedidosEntity->setId($orderId);
 
 
     $respuesta = array("qty" => 0,"subtotal" => 0,"total"=> 0,"productos"=> []);
@@ -569,10 +567,11 @@ function getDataOrder($orderId)
     $PedidosModel->setTampag(1);
     if($PedidosModel->getData($PedidosEntity->getArrayCopy()) == REGISTRO_SUCCESS)
     {
-
         $PedidosEntity->exchangeArray($PedidosModel->getRows());
-        $ProductoPedidoEntity->getPedidoId($PedidosEntity->getId());
 
+        $ProductoPedidoEntity->setPedidoId($PedidosEntity->getId());
+        $respuesta = $PedidosEntity->getArrayCopy();
+        $ProductoPedidoModel->setTampag(100000);
         if($ProductoPedidoModel->getData($ProductoPedidoEntity->getArrayCopy()) == REGISTRO_SUCCESS)
         {
             while($_registro = $ProductoPedidoModel->getRows()) {
@@ -621,8 +620,11 @@ function getDataOrder($orderId)
         $respuesta["status"] = $PedidosEntity->getStatus();
         $respuesta["state"] = $PedidosEntity->getState();
         $respuesta["order_id"] = $PedidosEntity->getOrderId();
-    }
+        $respuesta["created_at"] = getFechaUI($PedidosEntity->getCreatedAt());
+        $respuesta["paymentTotal"] = getFormatoPrecio($PedidosEntity->getPaymentTotal(),true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+        
 
+    }
     return $respuesta;
 }
 

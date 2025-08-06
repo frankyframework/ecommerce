@@ -1,37 +1,31 @@
 <?php
-use Ecommerce\Form\ComprovantePagoForm;
 use Ecommerce\Form\StatusPagoForm;
 use Franky\Haxor\Tokenizer;
-use Ecommerce\model\EcommercelogstatusModel;
-use Ecommerce\entity\EcommercelogstatusEntity;
+use Ecommerce\model\EcommerceStatusHistoryModel;
+use Ecommerce\entity\EcommerceStatusHistoryEntity;
 
 $Tokenizer = new Tokenizer;
-$EcommercelogstatusModel    = new EcommercelogstatusModel();
-$EcommercelogstatusEntity   = new EcommercelogstatusEntity();
+$EcommercelogstatusModel    = new EcommerceStatusHistoryModel();
+$EcommercelogstatusEntity   = new EcommerceStatusHistoryEntity();
 
 $uid = "";
 $id = $Tokenizer->decode($MyRequest->getRequest('id'));
-$detalle_pedido = getPedido($id,$uid);
+$detalle_pedido = getDataOrder($id);
 
 
 $uid = $MySession->GetVar('id');
 
 
-$ComprovantePagoForm = new ComprovantePagoForm('frmComprovante');
-$ComprovantePagoForm->setAtributoInput('id', 'value', $MyRequest->getRequest('id'));
-$ComprovantePagoForm->setAtributoInput('callback', 'value', $Tokenizer->token('pedido',$MyRequest->getURI()));
-
-
-$EcommercelogstatusEntity->id_pedido($id);
+$EcommercelogstatusEntity->setOrderId($id);
 $EcommercelogstatusModel->setTampag(10);
-$EcommercelogstatusModel->setOrdensql('fecha DESC');
+$EcommercelogstatusModel->setOrdensql('created_at DESC');
 $logStatus = [];
 if($EcommercelogstatusModel->getData($EcommercelogstatusEntity->getArrayCopy()) == REGISTRO_SUCCESS)
 {
     while($registro = $EcommercelogstatusModel->getRows())
     {
-      $registro['info'] = json_decode($registro['info'],true);
-      $registro['fecha'] = getFechaUI($registro['fecha']);
+      $registro['comment'] = json_decode($registro['comment'],true);
+      $registro['created_at'] = getFechaUI($registro['created_at']);
       $registro['status'] = getStatusTransaccion($registro['status']);
       $logStatus[] = $registro;
     }

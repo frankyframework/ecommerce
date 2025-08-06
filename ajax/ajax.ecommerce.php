@@ -747,7 +747,7 @@ function placeOrder()
                 unset($data['id']);
                 unset($data['update_at']);
 
-                $respuesta["callback"] = $paymentMethodsHTML["callback"]."?order=".$Tokenizer->token("order",$data['order_id']);
+                $respuesta["callback"] = $paymentMethodsHTML["callback"]."?order=".$Tokenizer->token("create_order",$data['order_id']);
 
                 $PedidosEntity->exchangeArray($data);
                 if($PedidosModel->save($PedidosEntity->getArrayCopy()) == REGISTRO_SUCCESS) {
@@ -809,14 +809,14 @@ function placeOrder()
                     $productosHTML = render(PROJECT_DIR.'/modulos/ecommerce/diseno/email/productos.phtml',['items' =>$productosComprados]);
 
                     //Se envia el email
-                    $direccion = getCoreConfig("ecommerce/ventas/address-format");
-                    $direccionf = getCoreConfig("ecommerce/ventas/addressf-format");
-                    
                     $campos = $PedidosEntity->getArrayCopy();
-                    $shippingAddress = json_decode($campos["shipping_address"],true);
-                    $billingAddress =json_decode($campos["invoice_address"],true);
-                    $campos["shipping_address"] = sprintf($direccion,$shippingAddress["calle"],$shippingAddress["numero"],$shippingAddress["colonia"],$shippingAddress["municipio"],$shippingAddress["estado"],$shippingAddress["cp"]);
-                    $campos["invoice_address"] = sprintf($direccionf,$billingAddress["name"],$billingAddress["rfc"],$billingAddress["calle"],$billingAddress["numero"],$billingAddress["colonia"],$billingAddress["municipio"],$billingAddress["estado"],$billingAddress["cp"]);
+                    $direccionf = getFormatreplace(getCoreConfig("ecommerce/ventas/addressf-format"),json_decode($campos['invoice_address'],true));
+                    $direccion = getFormatreplace(getCoreConfig("ecommerce/ventas/address-format"),json_decode($campos['shipping_address'],true));
+                    
+                    
+                  
+                    $campos["shipping_address"] = $direccion;
+                    $campos["invoice_address"] = $direccionf;
                     $campos["payment_metho"] = $paymentMethodsHTML['name'];
                     $campos["shipping_metho"] = $shippingMethodsHTML['name'];
                     $campos["total"] = getFormatoPrecio($campos['total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);

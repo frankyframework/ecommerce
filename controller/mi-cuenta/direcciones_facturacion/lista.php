@@ -35,7 +35,7 @@ if($MyDirecciones->getTotal() > 0)
                 $lista_admin_data[] = array_merge($registro,array(
                 "thisClass"     => $thisClass,
                "nuevo_estado"  =>($registro["status"] == 1 ? "desactivar" : "activar"),
-                "calle" => sprintf($direccion,$registro["nombre"],$registro["calle"],$registro["numero"],$registro["colonia"],$registro["municipio"],$registro["estado"],$registro["cp"])
+                "calle" => getFormatreplace(getCoreConfig("ecommerce/ventas/addressf-format"),$registro)
                 ));
                 
                 $iRow++;

@@ -1,9 +1,8 @@
 <div class="w-xxxx-12">
     <div class="w-xxxx-10">
         <?php
-        $direccion = getCoreConfig("ecommerce/ventas/address-format");
-        echo sprintf($direccion,$direccion_envio["calle"],$direccion_envio["numero"],$direccion_envio["colonia"],$direccion_envio["municipio"],$direccion_envio["estado"],$direccion_envio["cp"]);
-        ?>
+        echo getFormatreplace(getCoreConfig("ecommerce/ventas/addressf-format"),$direccion_envio);
+       ?>
     </div>
     <div class="w-xxxx-2">
         <a href="javascript:void(0)" onclick="changeShippingAddress();"><i class="icon icon-editar"></i> Cambiar</a>

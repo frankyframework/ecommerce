@@ -1,8 +1,7 @@
 <div class="w-xxxx-12">
     <div class="w-xxxx-10">
     <?php
-    $direccionf = getCoreConfig("ecommerce/ventas/addressf-format");
-    echo sprintf($direccionf,$direccion_facturacion["name"],$direccion_facturacion["rfc"],$direccion_facturacion["calle"],$direccion_facturacion["numero"],$direccion_facturacion["colonia"],$direccion_facturacion["municipio"],$direccion_facturacion["estado"],$direccion_facturacion["cp"]);
+    echo getFormatreplace(getCoreConfig("ecommerce/ventas/addressf-format"),$direccion_facturacion);
     ?>
     </div>
     <div class="w-xxxx-2">
