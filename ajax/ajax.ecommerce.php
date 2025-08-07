@@ -747,12 +747,13 @@ function placeOrder()
                 unset($data['id']);
                 unset($data['update_at']);
 
-                $respuesta["callback"] = $paymentMethodsHTML["callback"]."?order=".$Tokenizer->token("create_order",$data['order_id']);
+                
 
                 $PedidosEntity->exchangeArray($data);
                 if($PedidosModel->save($PedidosEntity->getArrayCopy()) == REGISTRO_SUCCESS) {
 
                     $orderId = $PedidosModel->getUltimoID();
+                    $respuesta["callback"] = $paymentMethodsHTML["callback"]."?order=".$Tokenizer->token("create_order",$orderId);
                     $respuesta["error"] = false;
                     $productosComprados = [];
                     $CarritoProductoModel->setTampag(10000);

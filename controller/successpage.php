@@ -5,8 +5,7 @@ use Franky\Haxor\Tokenizer;
 $Tokenizer = new Tokenizer;
 $id = $Tokenizer->decode($MyRequest->getRequest('order'));
 $productos_comprados = getDataOrder($id);
-
-if(empty($productos_comprados)){
+if(!isset($productos_comprados['id'])){
          $MyRequest->redirect($MyRequest->url(CARRITO_COMPRAS));
 }
 

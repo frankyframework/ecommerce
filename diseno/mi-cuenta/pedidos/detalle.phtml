@@ -6,53 +6,26 @@
 
 <div class="w-xxxx-8 m-l-xxxx-2 w-xxx-10  m-l-xxx-1 w-xx-12  m-l-xx-0 _card _m_t_30 imprimible_content">
     <h1>Detalle de pedido #<?=$detalle_pedido['order_id']?></h1>
-    <div class="w-xxxx-6 w-xxx-6 w-xx-6 w-x-1"> 
+    <div class="w-xxxx-6 w-xxx-6 w-xx-6 w-x-12"> 
       <ul class="_ul_txt_standar ">
+        <li><strong>Estatus del pedido:</strong> <span class='set-status'><?php echo getStatusTransaccion($detalle_pedido['status']); ?></span></li> 
         <li><strong>Fecha:</strong> <?=$detalle_pedido['created_at'] ?></li>
           <li><strong >Usuario:</strong> <?=$detalle_pedido['name'] ?></li>
           <li><strong>E-mail:</strong> #<?=$detalle_pedido['email']?></li>
-          <li><strong>Método de pago:</strong> <?=$detalle_pedido['payment_method']?></li>
-          <li><strong>Estatus de pago:</strong> <span class='set-status'><?php echo getStatusTransaccion($detalle_pedido['status']); ?></span></li>
-          <li><strong>Monto envio:</strong> <?=$detalle_pedido['shippingPrice']?></li>
-          <li><strong>Descuento:</strong> <?=$detalle_pedido['discount'] ?></li>
-          <li><strong>Total productos:</strong> <?=$detalle_pedido['totalItems']?></li>
-          <li><strong>Total a pagar:</strong> <?=$detalle_pedido['total']?></li>
-          <li class="_total"><strong>Monto pagado:</strong> <?=$detalle_pedido['paymentTotal']?></li>
-          <?php
-
-          $referencia = json_decode($detalle_pedido['referencia'],true);
-        
-          ?>
-          <?php if($detalle_pedido['metodo_pago'] == 'conekta_oxxo'): ?>
-            <li>Referencia pago oxxo: <?=$referencia['referencia']?></li>
-          <?php endif;?>
-          <?php if($detalle_pedido['metodo_pago'] == 'openpay_establecimiento'): ?>
-            <li>Codigo de pago: <?=makeHTMLImg($referencia['payment_method']['barcode_url'],150,'','codigo de barras pago');?></li>
-            <li>Referencia pago: <?=$referencia['payment_method']['reference']?></li>
-            <li>Fecha limite de pago: <?=getfechaUI($referencia['due_date'])?></li>
-          <?php endif;?>
-          <?php if($detalle_pedido['metodo_pago'] == 'srpago_oxxo'): ?>
-
-          
-            <?php $expiration_date = explode("T",$referencia['expiration_date']); ?>
-            <li>Codigo de pago: <?=makeHTMLImg($referencia['barcode_url'],150,'','codigo de barras pago');?></li>
-            <li>Referencia pago: <?=$referencia['barcode']?></li>
-            <li>Fecha limite de pago: <?=getfechaUI($expiration_date[0])?></li>
           
 
-          <?php endif;?>
-          <?php if($detalle_pedido['metodo_pago'] == 'srpago_spei'): ?>
-
-          <li>Referencia pago: <?=$referencia['order_id']?></li>
-        
-          <?php endif;?>
       </ul>
       </div>
-      <div class="w-xxxx-6 w-xxx-6 w-xx-6 w-x-1"> 
+      <div class="w-xxxx-6 w-xxx-6 w-xx-6 w-x-12"> 
 
         <?php if(isset($detalle_pedido['shipping_address']) && !empty($detalle_pedido['shipping_address'])): ?>
           <?php if(!empty( $detalle_pedido['shipping_method'] )): ?>
             <h4>Datos del envio</h4>
+
+            <ul class="_ul_txt_standar ">
+              <li><strong>Metodo de envio:</strong> <?=getCoreConfig("ecommerce/".$detalle_pedido['shipping_method']."/titulo") ?></li>
+            </ul>
+
             <?= getFormatreplace(getCoreConfig("ecommerce/ventas/address-format"),json_decode($detalle_pedido['shipping_address'],true)) ?>
           <?php endif; ?>
         <?php endif; ?>
@@ -65,7 +38,7 @@
         <?php endif; ?>
 
       </div>
-    <div class="order_content">
+    <div class="order_content w-xxxx-12">
     <h4>Productos</h4>
 
 
@@ -118,23 +91,39 @@
 
     <div class="w-xxxx-8 m-l-xxxx-2 w-xxx-10  m-l-xxx-1 w-xx-12  m-l-xx-0 _card _m_t_30">
 
-          <h3>Actualizaciones de la orden<h3>
-      <?php if(!empty($logStatus)): ?>
-      <?php foreach($logStatus as $status): ?>
-      <ul>
-        <li>Fecha: <?=$status['created_at']?></li>
-        <li>Status: <?=$status['status']?></li>
-        <?php if(!empty($status['comment'])): ?>
-        <li><p><?=$status["comment"]?></p></li>
-      <?php endif;?>
-      
-      </ul>
-      <hr />
-      <?php endforeach; ?>
-      <?php else: ?>
-        <p>Sin actualizaciones recientes</p>
-      <?php endif; ?>
+      <div class="w-xxxx-6  w-xxx-6 w-xx-6  w-x-12 ">
+            <h3>Actualizaciones de la orden<h3>
+        <?php if(!empty($logStatus)): ?>
+        <?php foreach($logStatus as $status): ?>
+        <ul>
+          <li>Fecha: <?=$status['created_at']?></li>
+          <li>Status: <?=$status['status']?></li>
+          <?php if(!empty($status['comment'])): ?>
+          <li><p><?=$status["comment"]?></p></li>
+        <?php endif;?>
+        
+        </ul>
+        <hr />
+        <?php endforeach; ?>
+        <?php else: ?>
+          <p>Sin actualizaciones recientes</p>
+        <?php endif; ?>
 
+        </div>
+        <div class="w-xxxx-6  w-xxx-6 w-xx-6  w-x-12 ">
+          <h3>Informacion del pago<h3>
 
+          <ul class="_ul_txt_standar ">
+            <li><strong>Método de pago:</strong> <?=getCoreConfig("ecommerce/".$detalle_pedido['payment_method']."/name") ?></li>
+            <li><strong>Descuento:</strong> <?=$detalle_pedido['discount'] ?></li>
+            <li><strong>Total productos:</strong> <?=$detalle_pedido['totalItems']?></li>
+            <li><strong>Monto envio:</strong> <?=$detalle_pedido['shippingPrice']?></li>
+            <li><strong>Total a pagar:</strong> <?=$detalle_pedido['total']?></li>
+            <li class="_total"><strong>Monto pagado:</strong> <?=$detalle_pedido['paymentTotal']?></li>
+          </ul>
+     
+
+        </div>
     </div>
+  </div>
 </div>
