@@ -8,10 +8,10 @@
     <h1>Detalle de pedido #<?=$detalle_pedido['order_id']?></h1>
     <div class="w-xxxx-6 w-xxx-6 w-xx-6 w-x-12"> 
       <ul class="_ul_txt_standar ">
-        <li><strong>Estatus del pedido:</strong> <span class='set-status'><?php echo getStatusTransaccion($detalle_pedido['status']); ?></span></li> 
+        <li><strong>Estatus del pedido:</strong> <span class='set-status'><?=getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $detalle_pedido["state"],$detalle_pedido["status"])?></span></li> 
         <li><strong>Fecha:</strong> <?=$detalle_pedido['created_at'] ?></li>
-          <li><strong >Usuario:</strong> <?=$detalle_pedido['name'] ?></li>
-          <li><strong>E-mail:</strong> #<?=$detalle_pedido['email']?></li>
+          <li><strong >Cliente:</strong> <?=$detalle_pedido['name'] ?></li>
+          <li><strong>E-mail:</strong> <?=$detalle_pedido['email']?></li>
           
 
       </ul>
@@ -88,7 +88,6 @@
     </div>
   </div>
 </div>
-
     <div class="w-xxxx-8 m-l-xxxx-2 w-xxx-10  m-l-xxx-1 w-xx-12  m-l-xx-0 _card _m_t_30">
 
       <div class="w-xxxx-6  w-xxx-6 w-xx-6  w-x-12 ">

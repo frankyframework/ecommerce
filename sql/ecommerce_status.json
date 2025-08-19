@@ -1,0 +1,71 @@
+{
+    "schema" :
+    {
+        "attributes":[
+            {
+                "name":"id",
+                "type":"int",
+                "length":11,
+                "null":0,
+                "auto_increment":1
+            },
+            {
+                "name":"store_id",
+                "type":"int",
+                "length":11,
+                "null":0
+            },
+            {
+                "name":"status",
+                "type":"varchar",
+                "length":255,
+                "null":0
+            },
+            {
+                "name":"state",
+                "type":"varchar",
+                "length":255,
+                "null":1
+            },
+            {
+                "name":"after",
+                "type":"varchar",
+                "length":255,
+                "null":1,
+                "default": ""
+            },
+            {
+                "name":"label",
+                "type":"varchar",
+                "length":255,
+                "null":1
+            },
+            {
+                "name":"created_at",
+                "type":"datetime",
+                "null":0
+                
+            },
+            {
+                "name":"update_at",
+                "type":"datetime",
+                "null":0
+                
+            },
+            {
+                "name":"active",
+                "type":"int",
+                "length":1,
+                "null":0,
+                "default" : 1
+            }
+
+        ],
+        "config":{
+            "primary":"id",
+            "engine":"MyISAM"
+        }
+    }
+    ,
+    "data":[]
+}

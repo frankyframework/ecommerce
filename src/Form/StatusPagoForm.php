@@ -17,7 +17,7 @@ class StatusPagoForm extends \Franky\Form\Form
 
 
         $this->add(array(
-                'name' => 'id',
+                'name' => 'order_id',
                 'type'  => 'hidden',
 
             )
@@ -33,13 +33,7 @@ class StatusPagoForm extends \Franky\Form\Form
                    'class'       => 'required',
 
                 ),
-               'options' => array(
-                  'paid' => getStatusTransaccion('paid'),
-                  'canceled' => getStatusTransaccion('canceled'),
-                  'request_refunded' => getStatusTransaccion('request_refunded'),
-                  'partially-refunded' => getStatusTransaccion('partially-refunded'),
-                    'refunded' => getStatusTransaccion('refunded'),
-               ),
+               'options' => [],
                'label_atributos' => array(
                    'class'       => 'desc_form_obligatorio',
 
@@ -48,36 +42,18 @@ class StatusPagoForm extends \Franky\Form\Form
        );
 
 
-
         $this->add(array(
-                'name' => 'cantidad',
-                'label' => _ecommerce('Cantidad a reenvolsar'),
-                'type'  => 'text',
-                'required'  => true,
-                'atributos' => array(
-                    'maxlength' => 10,
-                    'value' => '0.0',
-                    'class' => 'required'
-                 ),
-                'label_atributos' => array(
-                    'class'       => 'desc_form_obligatorio'
-                 )
-            )
-        );
-
-
-        $this->add(array(
-                'name' => 'nota',
-                'label' => _ecommerce('Nota'),
+                'name' => 'comment',
+                'label' => _ecommerce('Comentario'),
                 'type'  => 'textarea',
-                'required'  => true,
+                'required'  => false,
                 'atributos' => array(
 
                     'value' => '',
-                    'class' => 'required'
+                    'class' => ''
                  ),
                 'label_atributos' => array(
-                    'class'       => 'desc_form_obligatorio'
+                    'class'       => 'desc_form_no_obligatorio'
                  )
             )
         );

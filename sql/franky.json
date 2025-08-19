@@ -209,6 +209,34 @@
             "status":1,
             "editable":1,
             "modulo":"ecommerce"
+        },
+        {
+            "php":"admin/status/form.php",
+            "css":"",
+            "js":"",
+            "jquery":["jquery-validate"],
+            "resource":"administrar_status_ecommerce",
+            "constante":"ADMIN_FRM_STATUS_ECOMMERCE",
+            "url":"admin/ecommerce/status/form/",
+            "nombre":"Alta y edicion de status",
+            "ajax":["ecommerce/ajax.admin.js"],
+            "status":1,
+            "editable":1,
+            "modulo":"ecommerce"
+        },
+        {
+            "php":"admin/status/lista.php",
+            "css":"",
+            "js":[],
+            "jquery":[],
+            "resource":"administrar_status_ecommerce",
+            "constante":"ADMIN_LISTA_STATUS_ECOMMERCE",
+            "url":"admin/ecommerce/status/",
+            "nombre":"Administrar status",
+            "ajax":["base/ajax.admin.js","ecommerce/ajax.admin.js"],
+            "status":1,
+            "editable":1,
+            "modulo":"ecommerce"
         }
     ]
 }

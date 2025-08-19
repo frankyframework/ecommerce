@@ -1,0 +1,28 @@
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?></div>
+    <div class="w-xxxx-12">
+         
+            <h1><?php echo $title_form; ?></h1>
+            <?php echo $adminForm->openTag(); ?>
+            <?php if(!empty($id)): ?>
+            <?php echo $adminForm->get('id'); ?>
+            <?php endif; ?>
+            <?php echo $adminForm->get('callback'); ?>
+            <?php echo $adminForm->getRow('store_id'); ?>
+            <?php echo $adminForm->getRow('state'); ?>
+            <?php echo $adminForm->getRow('status'); ?>
+           
+            <?php echo $adminForm->getRow('label'); ?>
+            <?php echo $adminForm->getRow('after'); ?>
+            <?php echo $adminForm->getRow('guardar'); ?>
+            <?php echo $adminForm->endTag(); ?>
+     
+    </div>
+</div>
+
+<script>
+$(document).ready(function()
+{
+    $( "#frmstatus" ).validate();
+});
+</script>

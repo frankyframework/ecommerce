@@ -1,16 +1,16 @@
 <?php
 use Base\Form\filtrosForm;
 use Franky\Core\paginacion;
-use Ecommerce\model\pedidos;
-use Ecommerce\model\producto_pedidoModel;
+use Ecommerce\model\PedidosModel;
+use Ecommerce\entity\PedidosEntity;
 use Franky\Haxor\Tokenizer;
 $Tokenizer = new Tokenizer;
-$pedidosModel             = new pedidos();
-$producto_pedidoModel             = new producto_pedidoModel();
+$pedidosModel             = new PedidosModel();
+$pedidosEntity             = new PedidosEntity();
 $MyPaginacion = new paginacion();
 
 $MyPaginacion->setPage($MyRequest->getRequest('page',1));
-$MyPaginacion->setCampoOrden($MyRequest->getRequest('por',"ecommerce_pedidos.fecha"));
+$MyPaginacion->setCampoOrden($MyRequest->getRequest('por',"ecommerce_pedidos.created_at"));
 $MyPaginacion->setOrden($MyRequest->getRequest('order',"DESC"));
 $MyPaginacion->setTampageDefault($MyRequest->getRequest('tampag',25));
 $busca_b	= $MyRequest->getRequest('busca_b');
@@ -36,13 +36,17 @@ if(empty($rango_inicial) && !empty($rango_final))
 if(!$MyAccessList->MeDasChancePasar("administrar_pedidos"))
 {
     $uid = $MySession->GetVar('id');
+    $pedidosEntity->setUid($MySession->GetVar('id'));
 }
+$pedidosModel->setRango($rango);
+$pedidosModel->setBusca($busca_b);
+
 
 
 $pedidosModel->setPage($MyPaginacion->getPage());
 $pedidosModel->setTampag($MyPaginacion->getTampageDefault());
 $pedidosModel->setOrdensql($MyPaginacion->getCampoOrden()." ".$MyPaginacion->getOrden());
-$result	 		= $pedidosModel->getData('', $uid,$rango);
+$result	 		= $pedidosModel->getData($pedidosEntity->getArrayCopy());
 $MyPaginacion->setTotal($pedidosModel->getTotal());
 $lista_admin_data = array();
 
@@ -56,34 +60,36 @@ if($pedidosModel->getTotal() > 0)
     {
             $thisClass  = ((($iRow % 2) == 0) ? "formFieldDk" : "formFieldLt");
 
-            $registro['monto_compra'] = getFormatoPrecio($registro['monto_compra']+$registro['monto_envio'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
+            $registro['total'] = getFormatoPrecio($registro['total'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']);
 
             $lista_admin_data[] = array_merge($registro,array(
               "id" => $Tokenizer->token('pedidos',$registro["id"]),
-              "ecommerce_pedidos.id" => $registro["id"],
+              "_id" => $registro["id"],
                 "orden" => $registro["id"],
               "callback" => $Tokenizer->token('pedidos',$MyRequest->getURI()),
-              "status" => getStatusTransaccion($registro["status"]),
+              "status" => getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $registro["state"],$registro["status"]),
             "thisClass"     => $thisClass,
-            "ecommerce_pedidos.fecha" => getFechaUI($registro['fecha']),
-            "ecommerce_pedidos.status" => getStatusTransaccion($registro['status']),
-            "users.nombre" => $registro['nombre_user']
+           "created_at" => getFechaUI($registro['created_at']),
+            "name" => $registro['name']
             ));
 
             $iRow++;
     }
 }
 
-$titulo_columnas_grid = array("ecommerce_pedidos.fecha" => _ecommerce("Fecha"),"ecommerce_pedidos.id" => _ecommerce("#Orden"),"metodo_pago" => _ecommerce("Método de pago"), "monto_compra" => _ecommerce("Total Compra"),"ecommerce_pedidos.status" => _ecommerce("Estatus"));
-$value_columnas_grid = array("ecommerce_pedidos.fecha","ecommerce_pedidos.id","metodo_pago","monto_compra","ecommerce_pedidos.status");
-$css_columnas_grid = array("ecommerce_pedidos.fecha" => "w-xxxx-2" ,"ecommerce_pedidos.id" => "w-xxxx-2" , "metodo_pago" => "w-xxxx-2" , "monto_compra" => "w-xxxx-3","ecommerce_pedidos.status" => "w-xxxx-2");
+$titulo_columnas_grid = array("created_at" => _ecommerce("Fecha"),"order_id" => _ecommerce("#Orden"),"payment_method" => _ecommerce("Método de pago"), "total" =>_ecommerce("Total Compra"),"status" => _ecommerce("Estatus"));
+$value_columnas_grid = array("created_at","order_id","payment_method","total","status");
+$css_columnas_grid = array("created_at" => "w-xxxx-1" ,"order_id" => "w-xxxx-2" , "payment_method" => "w-xxxx-2" , "total" => "w-xxxx-3","status" => "w-xxxx-1");
 
 if($MyAccessList->MeDasChancePasar("administrar_pedidos"))
 {
-    $titulo_columnas_grid['users.nombre'] = _ecommerce("Usuario");
-		$value_columnas_grid[] ='users.nombre';
-		$css_columnas_grid['monto_compra'] = 'w-xxxx-2';
-		$css_columnas_grid['users.nombre'] = 'w-xxxx-1';
+    $css_columnas_grid['total'] = 'w-xxxx-1';
+    $titulo_columnas_grid['name'] = _ecommerce("Cliente");
+    $value_columnas_grid[] ='name';
+    $css_columnas_grid['name'] = 'w-xxxx-1';
+    $titulo_columnas_grid['email'] = _ecommerce("E-mail");
+    $value_columnas_grid[] ='email';
+    $css_columnas_grid['email'] = 'w-xxxx-2';
 
 }
 

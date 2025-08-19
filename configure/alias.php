@@ -7,6 +7,7 @@ return array
     "ecommerce/mi-cuenta/pedidos/comprovante-pago.php" => PROJECT_DIR."/modulos/ecommerce/controller/mi-cuenta/pedidos/comprovante-pago.php",
     "ecommerce/srpago/tarjeta/confirmacion.submit.php" => PROJECT_DIR."/modulos/ecommerce/controller/srpago/confirmacion_tarjeta.submit.php",
     "ecommerce/admin/promociones/submit.php" => PROJECT_DIR."/modulos/ecommerce/controller/admin/promociones/submit.php",
+    "ecommerce/admin/status/submit.php" => PROJECT_DIR."/modulos/ecommerce/controller/admin/status/submit.php",
     "ecommerce/admin/tiendas/submit.php" => PROJECT_DIR."/modulos/ecommerce/controller/admin/tiendas/submit.php",
     );
 ?>

@@ -534,11 +534,12 @@ function SetStatusPagoEcommerce($id,$status,$nota,$monto)
         $data = json_encode(['nota' => $nota,"monto" => $monto]);
 
         $pedidosEntity->setStatus($status);
+        $pedidosEntity->setState($state);
 
         if($pedidosModel->save($pedidosEntity->getArrayCopy()) == REGISTRO_SUCCESS)
         {
               $respuesta["message"] = $MyMessageAlert->Message("ecommerce_cambiar_status_pedido_success");
-              $respuesta["status"] = getStatusTransaccion($status);
+              $respuesta["status"] = getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $state, $status);
 
               $EcommercelogstatusEntity->status($status);
               $EcommercelogstatusEntity->auto(0);
@@ -559,7 +560,7 @@ function SetStatusPagoEcommerce($id,$status,$nota,$monto)
 
 
                 $campos = array("orden" => $Tokenizer->decode($id),"nombre" =>$detalle_pedido['nombre'],'productos' =>$productos_html,"email" => $dataUser['email'],
-                'gran_total' => getFormatoPrecio($detalle_pedido['monto_compra'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),'metodo_pago' =>$detalle_pedido['metodo_pago'],"status" => getStatusTransaccion($status));
+                'gran_total' => getFormatoPrecio($detalle_pedido['monto_compra'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),'metodo_pago' =>$detalle_pedido['metodo_pago'],"status" => $respuesta["status"]);
 
 
                 $TemplateemailEntity    = new \Base\entity\TemplateemailEntity;
@@ -626,7 +627,7 @@ function EliminarCuponesEcommerce($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar("administrar_cupones_ecommerce"))
+    if($MyAccessList->MeDasChancePasar("administrar_promociones_ecommerce"))
     {
         $EcommercePromocionesEntity->id(addslashes($Tokenizer->decode($id)));
         $EcommercePromocionesEntity->status($status);
@@ -638,6 +639,40 @@ function EliminarCuponesEcommerce($id,$status)
         else
         {
               $respuesta["message"] = $MyMessageAlert->Message("ecommerce_cupon_error_delete");
+              $respuesta["error"] = true;
+        }
+    }
+    else
+    {
+         $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
+         $respuesta["error"] = true;
+    }
+
+    return $respuesta;
+}
+
+function EliminarStatusEcommerce($id,$status)
+{
+    $EcommerceStatusModel             = new \Ecommerce\model\EcommerceStatusModel();
+    $EcommerceStatusEntity             = new \Ecommerce\entity\EcommerceStatusEntity();
+    $Tokenizer = new \Franky\Haxor\Tokenizer;
+    global $MyAccessList;
+    global $MyMessageAlert;
+
+    $respuesta = null;
+
+    if($MyAccessList->MeDasChancePasar("administrar_status_ecommerce"))
+    {
+        $EcommerceStatusEntity->setId(addslashes($Tokenizer->decode($id)));
+        $EcommerceStatusEntity->setActive($status);
+
+        if($EcommerceStatusModel->save($EcommerceStatusEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+        {
+
+        }
+        else
+        {
+              $respuesta["message"] = $MyMessageAlert->Message("ecommerce_status_error_delete");
               $respuesta["error"] = true;
         }
     }
@@ -925,4 +960,5 @@ $MyAjax->register("getInfoTotalsCheckout");
 $MyAjax->register("EliminarTiendaEcommerce");
 $MyAjax->register("setCustomerDataCheckout");
 $MyAjax->register("placeOrder");
+$MyAjax->register("EliminarStatusEcommerce");
 ?>

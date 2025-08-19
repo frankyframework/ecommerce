@@ -26,7 +26,7 @@ if($EcommercelogstatusModel->getData($EcommercelogstatusEntity->getArrayCopy()) 
     {
       $registro['comment'] = json_decode($registro['comment'],true);
       $registro['created_at'] = getFechaUI($registro['created_at']);
-      $registro['status'] = getStatusTransaccion($registro['status']);
+      $registro['status'] = getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $registro["state"],$registro["status"]);
       $logStatus[] = $registro;
     }
 }

@@ -4,71 +4,58 @@ function _ecommerce($txt)
     return dgettext("ecommerce",$txt);
 }
 
-function normalizeStatusTransaccion($status){
-
-  $array_paid = ['paid','approved','completed','processed'];
-  $array_canceled = ['canceled','reversed'];
-  $array_pending = ['pending','pending_payment','transfer_pending','in_progress'];
-  if(in_array($status,$array_paid))
-  {
-      return 'paid';
-  }
-
-  if(in_array($status,$array_canceled))
-  {
-      return 'canceled';
-  }
-
-  if(in_array($status,$array_pending))
-  {
-      return 'pending';
-  }
+function getStates(){
+    return [
+        "new" => "new",
+        "processing" => "processing",
+        "complete" => "complete",
+        "canceled" => "canceled"
+    ];
+ 
 }
 
-function getStatusTransaccion($status)
+function getLabelStatusTransaccion($store, $status, $state)
 {
-    switch (strtolower($status))
-    {
-        case "paid":
-            $_status = _ecommerce("Pagado");
-        break;
-        case "canceled-reversal":
-            $_status = _ecommerce("Cancelacion anulada");
-        break;
-        case "canceled":
-            $_status = _ecommerce("Cancelado");
-        break;
-        case "denied":
-            $_status = _ecommerce("Denegado");
-        break;
-        case "expired":
-            $_status = _ecommerce("Expirado");
-        break;
-        case "in-progress":
-            $_status = _ecommerce("En progreso");
-        break;
-        case "pending":
-            $_status = _ecommerce("Pendiente");
-        break;
-        case "partially-refunded":
-            $_status = _ecommerce("Reenvolso parcial");
-        break;
-        case "refunded":
-            $_status = _ecommerce("Reenvolso total");
-        break;
-        case "voided":
-            $_status = _ecommerce("Transaccion anulada");
-        break;
-        case "pago_incompleto":
-            $_status = _ecommerce("Pago incompleto");
-        break;
-        case "request_refunded":
-            $_status = _ecommerce("Solicita reenvolso");
-        break;
+    $label =  $state."-".$status;
+    global $statusesEcommersDBGlobal;
+    if(empty($statuses)){ 
+        $EcommerceStatusModel =  new \Ecommerce\model\EcommerceStatusModel();
+        $EcommerceStatusEntity =  new \Ecommerce\entity\EcommerceStatusEntity();
+        $statusesEcommersDBGlobal = [];   
+        $EcommerceStatusModel->setTampag(100);
+        if($EcommerceStatusModel->getData($EcommerceStatusEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+        {
+            while($registro = $EcommerceStatusModel->getRows()){
+                $statusesEcommersDBGlobal[$registro["store_id"]][$registro["state"]][$registro["status"]] = $registro["label"];   
+            }  
+        }
     }
+    if(isset($statusesEcommersDBGlobal[$store][$state][$status])) {
+        return $statusesEcommersDBGlobal[$store][$state][$status];
+    }
+    return $label;
+}
 
 
-    return $_status;
+function getStatusTransaccion($store,$after = null)
+{
+    $statuses = [];
+    $EcommerceStatusModel =  new \Ecommerce\model\EcommerceStatusModel();
+    $EcommerceStatusEntity =  new \Ecommerce\entity\EcommerceStatusEntity();
+    if(!is_null($after)) {
+        $EcommerceStatusEntity->setAfter($after);
+    }  
+    $EcommerceStatusEntity->setStoreId($store);
+    $EcommerceStatusModel->setTampag(100);
+    if($EcommerceStatusModel->getData($EcommerceStatusEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+    {
+        while($registro = $EcommerceStatusModel->getRows()){
+            $statuses[$registro["status"]."_".$registro["state"]] = $registro["label"];   
+        }  
+    }
+    
+  
+    return $statuses;
 }
 
 

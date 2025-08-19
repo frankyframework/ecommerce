@@ -64,10 +64,9 @@ if($pedidosModel->getTotal() > 0)
             "_id" => $registro["id"],
             "orden" => $registro["id"],
             "callback" => $Tokenizer->token('pedidos',$MyRequest->getURI()),
-            "status" => getStatusTransaccion($registro["status"]),
+            "status" => getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $registro["state"],$registro["status"]),
             "thisClass"     => $thisClass,
             "created_at" => getFechaUI($registro['created_at']),
-            "status" => getStatusTransaccion($registro['status']),
             "name" => $registro['name']
             ));
 

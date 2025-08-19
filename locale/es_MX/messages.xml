@@ -117,4 +117,12 @@
         <llave>payment_error</llave>
         <valor>Error al interntar pagar la orden</valor>
     </mensaje>
+    <mensaje>
+        <llave>status_duplicado</llave>
+        <valor>El status configurado ya existe</valor>
+    </mensaje>
+    <mensaje>
+        <llave>status_error_delete</llave>
+        <valor>Error al eliminar el status</valor>
+    </mensaje>    
 </mensajes>
