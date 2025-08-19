@@ -506,74 +506,40 @@ function setNuevaFacturacionCheckout($data)
     return $data;
 }
 
-function SetStatusPagoEcommerce($id,$status,$nota,$monto)
+function SetStatusPagoEcommerce($id,$status,$comment)
 {
     global $MyAccessList;
     global $MySession;
     global $MyMessageAlert;
+    
+    $status = explode("_",$status);
     $Tokenizer = new \Franky\Haxor\Tokenizer;
-    $pedidosModel    = new \Ecommerce\model\pedidos();
-    $pedidosEntity   = new \Ecommerce\entity\pedidos();
-    $TemplateemailModel    = new \Base\model\TemplateemailModel;
-    $USERS = new \Base\model\USERS();
-    $EcommercelogstatusModel    = new \Ecommerce\model\EcommercelogstatusModel();
-    $EcommercelogstatusEntity   = new \Ecommerce\entity\EcommercelogstatusEntity();
-    $ObserverManager = new \Franky\Core\ObserverManager;
+    $pedidosModel    = new \Ecommerce\model\PedidosModel();
+    $pedidosEntity   = new \Ecommerce\entity\PedidosEntity();
+
+    $EcommercelogstatusModel    = new \Ecommerce\model\EcommerceStatusHistoryModel();
+    $EcommercelogstatusEntity   = new \Ecommerce\entity\EcommerceStatusHistoryEntity();
 
 
     $respuesta = array("error" => false);
 
     if($MyAccessList->MeDasChancePasar("administrar_pedidos"))
     {
-        $pedidosEntity->setId($Tokenizer->decode($id));
-
-        $pedidosModel->getData($pedidosEntity->getArrayCopy());
-
-        $pedido = $pedidosModel->getRows();
-
-        $data = json_encode(['nota' => $nota,"monto" => $monto]);
-
-        $pedidosEntity->setStatus($status);
-        $pedidosEntity->setState($state);
+        $pedidosEntity->setId($Tokenizer->decode($id));  
+        $pedidosEntity->setStatus($status[1]);
+        $pedidosEntity->setState($status[0]);
 
         if($pedidosModel->save($pedidosEntity->getArrayCopy()) == REGISTRO_SUCCESS)
         {
               $respuesta["message"] = $MyMessageAlert->Message("ecommerce_cambiar_status_pedido_success");
-              $respuesta["status"] = getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $state, $status);
+              $respuesta["status"] = getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $status[0], $status[1]);
 
-              $EcommercelogstatusEntity->status($status);
-              $EcommercelogstatusEntity->auto(0);
-              $EcommercelogstatusEntity->id_user($MySession->GetVar('id'));
-              $EcommercelogstatusEntity->fecha(date('Y-m-d H:i:s'));
-              $EcommercelogstatusEntity->id_pedido($Tokenizer->decode($id));
-              $EcommercelogstatusEntity->info($data);
+              $EcommercelogstatusEntity->setState($status[0]);
+              $EcommercelogstatusEntity->setStatus($status[1]);
+              $EcommercelogstatusEntity->setCreatedAt(date('Y-m-d H:i:s'));
+              $EcommercelogstatusEntity->setOrderId($Tokenizer->decode($id));
+              $EcommercelogstatusEntity->setComment($comment);
               $EcommercelogstatusModel->save($EcommercelogstatusEntity->getArrayCopy());
-
-              $detalle_pedido = getPedido($Tokenizer->decode($id));
-
-              if($USERS->getData($detalle_pedido['uid'])==REGISTRO_SUCCESS)
-              {
-
-                $dataUser = $USERS->getRows();
-
-                $productos_html = render(PROJECT_DIR.'/modulos/ecommerce/diseno/email/productos.phtml',['items' =>$detalle_pedido['productos']]);
-
-
-                $campos = array("orden" => $Tokenizer->decode($id),"nombre" =>$detalle_pedido['nombre'],'productos' =>$productos_html,"email" => $dataUser['email'],
-                'gran_total' => getFormatoPrecio($detalle_pedido['monto_compra'],true,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']),'metodo_pago' =>$detalle_pedido['metodo_pago'],"status" => $respuesta["status"]);
-
-
-                $TemplateemailEntity    = new \Base\entity\TemplateemailEntity;
-                $TemplateemailEntity->id(getCoreConfig('ecommerce/ventas/email-template-cambiostatus'));
-                $TemplateemailModel->getData($TemplateemailEntity->getArrayCopy());
-                $registro  = $TemplateemailModel->getRows();
-
-                sendEmail($campos,$registro);
-
-                $ObserverManager->dispatch('change_status_pago',[$Tokenizer->decode($id)]);
-
-
-              }
         }
         else
         {

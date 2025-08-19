@@ -88,14 +88,11 @@ function SetStatusPagoEcommerce()
             modal: true,
             buttons: {
                 "Aceptar": function() {
-
-
                   var var_query = {
                     "function": "SetStatusPagoEcommerce",
-                    "vars_ajax":[$("form[name=frmStatus]").find('input[name=id]').val(),
+                    "vars_ajax":[$("form[name=frmStatus]").find('input[name=order_id]').val(),
                         $("form[name=frmStatus]").find('select[name=status]').val(),
-                        $("form[name=frmStatus]").find('textarea[name=nota]').val(),
-                        $("form[name=frmStatus]").find('input[name=cantidad]').val()]
+                        $("form[name=frmStatus]").find('textarea[name=comment]').val()]
                   };
 
                   pasarelaAjax('POST',var_query,"SetStatusPagoEcommerceHTML",var_query.vars_ajax);
@@ -112,7 +109,7 @@ function SetStatusPagoEcommerce()
 }
 
 
-function SetStatusPagoEcommerceHTML(response,id,status,nota,cantidad)
+function SetStatusPagoEcommerceHTML(response)
 {
     var respuesta = null;
 
@@ -122,16 +119,7 @@ function SetStatusPagoEcommerceHTML(response,id,status,nota,cantidad)
 
         if(!respuesta.error)
         {
-            _alert(respuesta.message,"success");
-            $('.set-status').text(respuesta.status);
-            $("form[name=frmStatus]").find('textarea[name=nota]').val('');
-            $("form[name=frmStatus]").find('input[name=cantidad]').val('');
-            $('.content_monto').hide();
-            $('.content_nota').hide();
-            if(status == 'canceled')
-            {
-                $( "form[name=frmStatus]" ).remove();
-            }
+            window.location.reload();
         }
         else
         {
