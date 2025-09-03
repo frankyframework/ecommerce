@@ -3,11 +3,12 @@ use Ecommerce\Form\StatusPagoForm;
 use Franky\Haxor\Tokenizer;
 use Ecommerce\model\EcommerceStatusHistoryModel;
 use Ecommerce\entity\EcommerceStatusHistoryEntity;
+use Franky\Core\ObserverManager;
 
 $Tokenizer = new Tokenizer;
 $EcommercelogstatusModel    = new EcommerceStatusHistoryModel();
 $EcommercelogstatusEntity   = new EcommerceStatusHistoryEntity();
-
+$ObserverManager = new ObserverManager;
 $uid = "";
 $id = $Tokenizer->decode($MyRequest->getRequest('id'));
 $detalle_pedido = getDataOrder($id);

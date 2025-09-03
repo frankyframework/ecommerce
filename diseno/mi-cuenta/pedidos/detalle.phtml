@@ -114,6 +114,7 @@
 
           <ul class="_ul_txt_standar ">
             <li><strong>Método de pago:</strong> <?=getCoreConfig("ecommerce/".$detalle_pedido['payment_method']."/name") ?></li>
+            <li><?php $ObserverManager->dispatch('show_payment_data',["id" => $id]); ?></li>
             <li><strong>Descuento:</strong> <?=$detalle_pedido['discount'] ?></li>
             <li><strong>Total productos:</strong> <?=$detalle_pedido['totalItems']?></li>
             <li><strong>Monto envio:</strong> <?=$detalle_pedido['shippingPrice']?></li>
