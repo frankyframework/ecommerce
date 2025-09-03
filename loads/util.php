@@ -39,7 +39,8 @@ function getLabelStatusTransaccion($store, $status, $state)
 
 function getStatusTransaccion($store,$after = null)
 {
-    $statuses = [];
+    $afterExplode = explode("_",$after);
+    $statuses = [$after => getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $afterExplode[0],$afterExplode[1])];
     $EcommerceStatusModel =  new \Ecommerce\model\EcommerceStatusModel();
     $EcommerceStatusEntity =  new \Ecommerce\entity\EcommerceStatusEntity();
     if(!is_null($after)) {
