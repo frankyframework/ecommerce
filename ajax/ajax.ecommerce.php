@@ -919,10 +919,11 @@ function CancelOrder($id)
     $EcommercelogstatusModel    = new \Ecommerce\model\EcommerceStatusHistoryModel();
     $EcommercelogstatusEntity   = new \Ecommerce\entity\EcommerceStatusHistoryEntity();
 
+    $detalle_pedido = getDataOrder($Tokenizer->decode($id));
 
     $respuesta = array("error" => false);
 
-    if($MyAccessList->MeDasChancePasar("administrar_pedidos"))
+    if($MyAccessList->MeDasChancePasar("administrar_pedidos") && $detalle_pedido["is_shipping"] == 0)
     {
         $pedidosEntity->setId($Tokenizer->decode($id));  
         $pedidosEntity->setStatus($status);
