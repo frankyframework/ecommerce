@@ -163,3 +163,63 @@ function ajax_setInputsConfigPromoHTML(response,id,promocion)
 
     }
 }
+
+
+function CancelOrder()
+{
+
+    var now = $.now();
+    var msg = "¿Realmente quieres cancelar pedido?";
+
+
+
+    var confirm = $('<div id="dialog-confirm'+now+'" title="Advertencia">\
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>'+msg+'</p>\
+    </div>');
+
+
+    $(function() {
+        $( confirm ).dialog({
+            resizable: false,
+            height:140,
+            modal: true,
+            buttons: {
+                "Aceptar": function() {
+                  var var_query = {
+                    "function": "CancelOrder",
+                    "vars_ajax":[window.ORDER_ID]
+                  };
+
+                  pasarelaAjax('POST',var_query,"CancelOrderHTML",var_query.vars_ajax);
+                    $( this ).dialog( "close" );
+
+                },
+                "Cancelar": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    });
+
+}
+
+
+function CancelOrderHTML(response)
+{
+    var respuesta = null;
+
+    if(response != "null")
+    {
+        respuesta = JSON.parse(response);
+
+        if(!respuesta.error)
+        {
+            window.location.reload();
+        }
+        else
+        {
+             _alert(respuesta["message"],"Error");
+        }
+
+    }
+}

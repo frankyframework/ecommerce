@@ -60,6 +60,13 @@ return array(
                 'data' => getTemplatesEmail(),
                 'value' => '1'
                 ) ,
+                array('path' => 'ecommerce/ventas/status-canceled',
+                'type' => 'select',
+                'label' => 'Status cancelado',
+                'validation' => array('required' => true),
+                'data' => getStatusTransaccion(DATA_STORE_CONFIG["id"]),
+                'value' => '1'
+                ) ,
                 array('path' => 'ecommerce/ventas/email-sales',
                 'type' => 'select',
                 'label' => 'Template E-mail para nueva orden',

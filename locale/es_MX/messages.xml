@@ -125,4 +125,12 @@
         <llave>status_error_delete</llave>
         <valor>Error al eliminar el status</valor>
     </mensaje>    
+    <mensaje>
+        <llave>order_canceled_error</llave>
+        <valor>La orden no puede ser cancelada</valor>
+    </mensaje>    
+    <mensaje>
+        <llave>order_canceled_success</llave>
+        <valor>La orden ha sido cancelada</valor>
+    </mensaje>    
 </mensajes>

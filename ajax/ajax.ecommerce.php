@@ -532,7 +532,7 @@ function SetStatusPagoEcommerce($id,$status,$comment)
         if($pedidosModel->save($pedidosEntity->getArrayCopy()) == REGISTRO_SUCCESS)
         {
               $respuesta["message"] = $MyMessageAlert->Message("ecommerce_cambiar_status_pedido_success");
-              $respuesta["status"] = getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $status[0], $status[1]);
+              $respuesta["status"] = getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $status[1], $status[0]);
 
               $EcommercelogstatusEntity->setState($status[0]);
               $EcommercelogstatusEntity->setStatus($status[1]);
@@ -902,6 +902,65 @@ function ajax_setInputsConfigPromo($id,$promocion){
     return $respuesta;
     
 }
+
+
+function CancelOrder($id)
+{
+    global $MyAccessList;
+    global $MyMessageAlert;
+    $ObserverManager = new \Franky\Core\ObserverManager;
+    $statusCode = explode("_",getCoreConfig('ecommerce/ventas/status-canceled'));
+    $status = $statusCode[1];
+    $state = $statusCode[0];
+    $Tokenizer = new \Franky\Haxor\Tokenizer;
+    $pedidosModel    = new \Ecommerce\model\PedidosModel();
+    $pedidosEntity   = new \Ecommerce\entity\PedidosEntity();
+
+    $EcommercelogstatusModel    = new \Ecommerce\model\EcommerceStatusHistoryModel();
+    $EcommercelogstatusEntity   = new \Ecommerce\entity\EcommerceStatusHistoryEntity();
+
+
+    $respuesta = array("error" => false);
+
+    if($MyAccessList->MeDasChancePasar("administrar_pedidos"))
+    {
+        $pedidosEntity->setId($Tokenizer->decode($id));  
+        $pedidosEntity->setStatus($status);
+        $pedidosEntity->setState($state);
+        $pedidosEntity->setUpdateAt(date('Y-m-d H:i:s'));
+        $pedidosEntity->setIsCanceled(1);
+
+        if($pedidosModel->save($pedidosEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+        {
+           
+              $respuesta["message"] = $MyMessageAlert->Message("ecommerce_order_canceled_success");
+              $respuesta["status"] = getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $status, $state);
+
+              $EcommercelogstatusEntity->setState($state);
+              $EcommercelogstatusEntity->setStatus($status);
+              $EcommercelogstatusEntity->setCreatedAt(date('Y-m-d H:i:s'));
+              $EcommercelogstatusEntity->setOrderId($Tokenizer->decode($id));
+              $EcommercelogstatusEntity->setComment("Orden cancelada");
+              $EcommercelogstatusModel->save($EcommercelogstatusEntity->getArrayCopy());
+
+              $ObserverManager->dispatch('cancel_order',["id" => $Tokenizer->decode($id)]);
+        }
+        else
+        {
+            $respuesta["message"] = $MyMessageAlert->Message("ecommerce_order_canceled_error");
+            $respuesta["error"] = true;
+        }
+    }
+    else
+    {
+        $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
+        $respuesta["error"] = true;
+    }
+
+
+    return $respuesta;
+}
+
 /******************************** EJECUTA *************************/
 $MyAjax->register("EliminarDireccionEcommerce");
 $MyAjax->register("EliminarDireccionFacturacionEcommerce");
@@ -927,4 +986,5 @@ $MyAjax->register("EliminarTiendaEcommerce");
 $MyAjax->register("setCustomerDataCheckout");
 $MyAjax->register("placeOrder");
 $MyAjax->register("EliminarStatusEcommerce");
+$MyAjax->register("CancelOrder");
 ?>

@@ -33,6 +33,17 @@
                 "null":1
             },
             {
+                "name":"is_canceled",
+                "type":"int",
+                "null":0,
+                "default":0
+            },
+            {
+                "name":"cancel_data",
+                "type":"text",
+                "null":1
+            },
+            {
                 "name":"created_at",
                 "type":"datetime",
                 "null":0

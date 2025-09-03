@@ -16,7 +16,7 @@ function getStates(){
 
 function getLabelStatusTransaccion($store, $status, $state)
 {
-    $label =  $state."-".$status;
+    $label =  $state."_".$status;
     global $statusesEcommersDBGlobal;
     if(empty($statuses)){ 
         $EcommerceStatusModel =  new \Ecommerce\model\EcommerceStatusModel();

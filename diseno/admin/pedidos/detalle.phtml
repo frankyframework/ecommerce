@@ -8,15 +8,18 @@
     <h1>Detalle de pedido #<?=$detalle_pedido['order_id']?></h1>
 
     <div class="w-xxxx-12 cont_header_panel">
+    <?php if($detalle_pedido['is_canceled'] == 0): ?>
           <div class="_wrapp_form_serch">   
           <a href="#" class="shippingbtn">Enviar</a>
           </div>
           <div class="_wrapp_form_serch">
             <a href="#" class="invoicebtn">Facturar</a>
           </div>
+        
           <div class="_wrapp_form_serch">
             <a href="#" class="cancelbtn">Cancelar</a>
           </div>
+      <?php endif; ?>
     </div>
 
     <div class="w-xxxx-6 w-xxx-6 w-xx-6 w-x-12"> 
@@ -163,3 +166,12 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  window.ORDER_ID = "<?=$Tokenizer->token("order",$detalle_pedido["id"])?>";
+</script>
+<script>
+  $(".cancelbtn").click(function(e){
+    e.preventDefault();
+    CancelOrder();
+  });
+</script>
