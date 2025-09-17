@@ -12,8 +12,9 @@ var changeCustomerData = function(){
 var changeShippingAddress = function(){
 
     if($(".datos_customer").length == 0) {
-        $("._sisi").removeClass("_sisi");
-        $("._active").addClass("._nono").removeClass('_active').next("div").hide();
+        $("._sisi, ._nono").next("div").hide();
+        $("._sisi").removeClass("_sisi").addClass("_nono");
+        $("._active").removeClass('_active');
     }
     $(".direccion_entrega").addClass("_nono").addClass('_active').next("div").show();
     $("#resumen_checkout_envio").empty();

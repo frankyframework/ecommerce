@@ -14,7 +14,7 @@ function getStates(){
  
 }
 
-function getLabelStatusTransaccion($store, $status, $state)
+function getLabelStatusTransaccion($store, $state, $status)
 {
     $label =  $state."_".$status;
     global $statusesEcommersDBGlobal;

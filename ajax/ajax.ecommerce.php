@@ -532,7 +532,7 @@ function SetStatusPagoEcommerce($id,$status,$comment)
         if($pedidosModel->save($pedidosEntity->getArrayCopy()) == REGISTRO_SUCCESS)
         {
               $respuesta["message"] = $MyMessageAlert->Message("ecommerce_cambiar_status_pedido_success");
-              $respuesta["status"] = getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $status[1], $status[0]);
+              $respuesta["status"] = getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $status[0], $status[1]);
 
               $EcommercelogstatusEntity->setState($status[0]);
               $EcommercelogstatusEntity->setStatus($status[1]);
@@ -935,7 +935,7 @@ function CancelOrder($id)
         {
            
               $respuesta["message"] = $MyMessageAlert->Message("ecommerce_order_canceled_success");
-              $respuesta["status"] = getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $status, $state);
+              $respuesta["status"] = getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $state, $status);
 
               $EcommercelogstatusEntity->setState($state);
               $EcommercelogstatusEntity->setStatus($status);
