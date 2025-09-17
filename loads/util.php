@@ -617,8 +617,8 @@ function getDataOrder($orderId)
 }
 
 function getShippingPlainPrice() {
-    $tipo = getCoreConfig("ecommerce/plain-price/tipo");
-    $price = getCoreConfig("ecommerce/plain-price/price");
+    $tipo = getCoreConfig("ecommerce/plain_price/tipo");
+    $price = getCoreConfig("ecommerce/plain_price/price");
     $MyCarrito = getMyIdCarrito();
     if($tipo == "porcentaje") {
         return $MyCarrito->getTotalItems() * ($price/100);
