@@ -63,21 +63,18 @@
 </div>
 <script type="text/javascript">
 window.admingrid = <?php echo json_encode($lista_admin_data); ?>;
+window.showDelete = <?=(getCoreConfig('ecommerce/promociones/showdelete') == 1 ? 1 : 0) ?>;
 </script>
 <script >
 $(window).load(function(){
     $(".btn_adm_eliminar").click(function(event){
-
          event.preventDefault();
          var nuevo_estado = ($(this).attr("href").replace("#","") == "activar" ? 1 : 0);
-         <?php if(getCoreConfig('ecommerce/promociones/showdelete') == 0): ?>      
-                EliminarRegistro('<?php echo $deleteFunction; ?>',$(this).attr("id"),nuevo_estado,'','EliminarRegistorPanelRemove')
-        <?php else: ?>
-                EliminarRegistro('<?php echo $deleteFunction; ?>',$(this).attr("id"),nuevo_estado)
-         <?php endif; ?>
-   
+         if(window.showDelete == 0){
+            EliminarRegistro('<?php echo $deleteFunction; ?>',$(this).attr("id"),nuevo_estado,'','EliminarRegistorPanelRemove');
+         } else {
+            EliminarRegistro('<?php echo $deleteFunction; ?>',$(this).attr("id"),nuevo_estado);
+         }  
     });
-
-
 });
 </script>
