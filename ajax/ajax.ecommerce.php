@@ -809,6 +809,9 @@ function placeOrder()
                             $EcommerceDireccionesFacturacionModel->save($EcommerceDireccionesFacturacionEntity->getArrayCopy());
                         }
                     }
+                    if ($data['id_invoiced'] == 1) {
+                        $ObserverManager->dispatch('invoice_order',["id" => $orderId]);
+                    }
                     $productosHTML = render(PROJECT_DIR.'/modulos/ecommerce/diseno/email/productos.phtml',['items' =>$productosComprados]);
 
                     //Se envia el email
@@ -942,7 +945,7 @@ function CancelOrder($id)
               $EcommercelogstatusEntity->setStatus($status);
               $EcommercelogstatusEntity->setCreatedAt(date('Y-m-d H:i:s'));
               $EcommercelogstatusEntity->setOrderId($Tokenizer->decode($id));
-              $EcommercelogstatusEntity->setComment("Orden cancelada");
+              $EcommercelogstatusEntity->setComment(_ecommerce("Orden cancelada"));
               $EcommercelogstatusModel->save($EcommercelogstatusEntity->getArrayCopy());
 
               $ObserverManager->dispatch('cancel_order',["id" => $Tokenizer->decode($id)]);
@@ -963,7 +966,7 @@ function CancelOrder($id)
     return $respuesta;
 }
 
-function setInvoice($id)
+function InvoiceOrder($id)
 {
     global $MyAccessList;
     global $MyMessageAlert;
@@ -1002,7 +1005,7 @@ function setInvoice($id)
                 $EcommercelogstatusEntity->setStatus($status);
                 $EcommercelogstatusEntity->setCreatedAt(date('Y-m-d H:i:s'));
                 $EcommercelogstatusEntity->setOrderId($Tokenizer->decode($id));
-                $EcommercelogstatusEntity->setComment("Orden cancelada");
+                $EcommercelogstatusEntity->setComment(_ecommerce("Orden facturada"));
                 $EcommercelogstatusModel->save($EcommercelogstatusEntity->getArrayCopy());
             }
             $ObserverManager->dispatch('invoice_order',["id" => $Tokenizer->decode($id)]);
@@ -1050,5 +1053,5 @@ $MyAjax->register("setCustomerDataCheckout");
 $MyAjax->register("placeOrder");
 $MyAjax->register("EliminarStatusEcommerce");
 $MyAjax->register("CancelOrder");
-$MyAjax->register("setInvoice");
+$MyAjax->register("InvoiceOrder");
 ?>

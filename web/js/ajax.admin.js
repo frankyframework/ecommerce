@@ -226,7 +226,7 @@ function CancelOrderHTML(response)
 
 
 
-function CancelOrder()
+function InvoiceOrder()
 {
 
     var now = $.now();
