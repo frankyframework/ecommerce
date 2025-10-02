@@ -9,7 +9,7 @@
 
     <div class="w-xxxx-12 cont_header_panel">
     <?php if($detalle_pedido['is_canceled'] == 0): ?>
-        <?php if($detalle_pedido['is_shipping'] == 0): ?>
+        <?php if($detalle_pedido['is_shipping'] == 0 && $detalle_pedido['requiere_envio'] == 1): ?>
             <div class="_wrapp_form_serch">   
             <a href="#" class="shippingbtn">Enviar</a>
             </div>
@@ -19,7 +19,7 @@
             <a href="#" class="invoicebtn">Facturar</a>
           </div>
           <?php endif; ?>
-          <?php if($detalle_pedido['is_shipping'] == 0): ?>
+          <?php if($detalle_pedido['is_shipping'] == 0 ): ?>
             <div class="_wrapp_form_serch">
               <a href="#" class="cancelbtn">Cancelar</a>
             </div>
@@ -179,5 +179,9 @@
   $(".cancelbtn").click(function(e){
     e.preventDefault();
     CancelOrder();
+  });
+  $(".invoicebtn").click(function(e){
+    e.preventDefault();
+    InvoiceOrder();
   });
 </script>

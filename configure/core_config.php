@@ -67,6 +67,13 @@ return array(
                 'data' => getStatusTransaccion(DATA_STORE_CONFIG["id"]),
                 'value' => '1'
                 ) ,
+                array('path' => 'ecommerce/ventas/status-invoice',
+                'type' => 'select',
+                'label' => 'Status invoice',
+                'validation' => array('required' => true),
+                'data' => getStatusTransaccion(DATA_STORE_CONFIG["id"]),
+                'value' => '1'
+                ) ,
                 array('path' => 'ecommerce/ventas/email-sales',
                 'type' => 'select',
                 'label' => 'Template E-mail para nueva orden',

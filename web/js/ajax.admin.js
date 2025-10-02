@@ -223,3 +223,64 @@ function CancelOrderHTML(response)
 
     }
 }
+
+
+
+function CancelOrder()
+{
+
+    var now = $.now();
+    var msg = "¿Realmente quieres hacer el invoice pedido?";
+
+
+
+    var confirm = $('<div id="dialog-confirm'+now+'" title="Advertencia">\
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>'+msg+'</p>\
+    </div>');
+
+
+    $(function() {
+        $( confirm ).dialog({
+            resizable: false,
+            height:140,
+            modal: true,
+            buttons: {
+                "Aceptar": function() {
+                  var var_query = {
+                    "function": "InvoiceOrder",
+                    "vars_ajax":[window.ORDER_ID]
+                  };
+
+                  pasarelaAjax('POST',var_query,"InvoiceOrderHTML",var_query.vars_ajax);
+                    $( this ).dialog( "close" );
+
+                },
+                "Cancelar": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    });
+
+}
+
+
+function InvoiceOrderHTML(response)
+{
+    var respuesta = null;
+
+    if(response != "null")
+    {
+        respuesta = JSON.parse(response);
+
+        if(!respuesta.error)
+        {
+            window.location.reload();
+        }
+        else
+        {
+             _alert(respuesta["message"],"Error");
+        }
+
+    }
+}

@@ -744,6 +744,7 @@ function placeOrder()
                 $data['payment_total'] = $payment['total']; 
                 $data['state'] = $payment['state']; 
                 $data['status'] = $payment['status']; 
+                $data['is_invoiced'] = $payment['is_invoiced']; 
                 $data['order_id'] = sprintf("%010d", $MyCarrito->getId());
                 unset($data['id']);
                 unset($data['update_at']);
@@ -962,6 +963,67 @@ function CancelOrder($id)
     return $respuesta;
 }
 
+function setInvoice($id)
+{
+    global $MyAccessList;
+    global $MyMessageAlert;
+    $ObserverManager = new \Franky\Core\ObserverManager;
+    $statusCode = explode("_",getCoreConfig('ecommerce/ventas/status-invoice'));
+    $status = $statusCode[1];
+    $state = $statusCode[0];
+    $Tokenizer = new \Franky\Haxor\Tokenizer;
+    $pedidosModel    = new \Ecommerce\model\PedidosModel();
+    $pedidosEntity   = new \Ecommerce\entity\PedidosEntity();
+
+    $EcommercelogstatusModel    = new \Ecommerce\model\EcommerceStatusHistoryModel();
+    $EcommercelogstatusEntity   = new \Ecommerce\entity\EcommerceStatusHistoryEntity();
+
+    $detalle_pedido = getDataOrder($Tokenizer->decode($id));
+
+    $respuesta = array("error" => false);
+
+    if($MyAccessList->MeDasChancePasar("administrar_pedidos") && $detalle_pedido["is_shipping"] == 0)
+    {
+        if ($detalle_pedido["state"] != "new") {
+            $pedidosEntity->setStatus($status);
+            $pedidosEntity->setState($state);
+        }
+        $pedidosEntity->setId($Tokenizer->decode($id));  
+        $pedidosEntity->setUpdateAt(date('Y-m-d H:i:s'));
+        $pedidosEntity->setIsInvoiced(1);
+
+        if($pedidosModel->save($pedidosEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+        {
+           
+            $respuesta["message"] = $MyMessageAlert->Message("ecommerce_order_canceled_success");
+            $respuesta["status"] = getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $state, $status);
+            if ($detalle_pedido["state"] != "new") {
+                $EcommercelogstatusEntity->setState($state);
+                $EcommercelogstatusEntity->setStatus($status);
+                $EcommercelogstatusEntity->setCreatedAt(date('Y-m-d H:i:s'));
+                $EcommercelogstatusEntity->setOrderId($Tokenizer->decode($id));
+                $EcommercelogstatusEntity->setComment("Orden cancelada");
+                $EcommercelogstatusModel->save($EcommercelogstatusEntity->getArrayCopy());
+            }
+            $ObserverManager->dispatch('invoice_order',["id" => $Tokenizer->decode($id)]);
+        }
+        else
+        {
+            $respuesta["message"] = $MyMessageAlert->Message("ecommerce_order_canceled_error");
+            $respuesta["error"] = true;
+        }
+        
+    }
+    else
+    {
+        $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
+        $respuesta["error"] = true;
+    }
+
+
+    return $respuesta;
+}
+
 /******************************** EJECUTA *************************/
 $MyAjax->register("EliminarDireccionEcommerce");
 $MyAjax->register("EliminarDireccionFacturacionEcommerce");
@@ -988,4 +1050,5 @@ $MyAjax->register("setCustomerDataCheckout");
 $MyAjax->register("placeOrder");
 $MyAjax->register("EliminarStatusEcommerce");
 $MyAjax->register("CancelOrder");
+$MyAjax->register("setInvoice");
 ?>

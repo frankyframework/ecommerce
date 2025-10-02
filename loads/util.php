@@ -655,6 +655,7 @@ function placeOrderFreePay(){
         "created_at" => date('Y-m-d H:i:s'),
         "status" => "processing",
         "state" => "processing",
+        "is_invoiced" => "1",
         "data_email" => []
     ];
 }
