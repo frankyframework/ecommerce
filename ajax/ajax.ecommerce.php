@@ -987,9 +987,12 @@ function InvoiceOrder($id)
 
     if($MyAccessList->MeDasChancePasar("administrar_pedidos") && $detalle_pedido["is_shipping"] == 0)
     {
-        if ($detalle_pedido["state"] != "new") {
+        if ($detalle_pedido["state"] == "new") {
             $pedidosEntity->setStatus($status);
             $pedidosEntity->setState($state);
+        } else {
+            $pedidosEntity->setStatus($detalle_pedido["status"]);
+            $pedidosEntity->setState($detalle_pedido["state"]);
         }
         $pedidosEntity->setId($Tokenizer->decode($id));  
         $pedidosEntity->setUpdateAt(date('Y-m-d H:i:s'));
@@ -997,17 +1000,17 @@ function InvoiceOrder($id)
 
         if($pedidosModel->save($pedidosEntity->getArrayCopy()) == REGISTRO_SUCCESS)
         {
-           
+            
             $respuesta["message"] = $MyMessageAlert->Message("ecommerce_order_canceled_success");
             $respuesta["status"] = getLabelStatusTransaccion(DATA_STORE_CONFIG["id"], $state, $status);
-            if ($detalle_pedido["state"] != "new") {
-                $EcommercelogstatusEntity->setState($state);
-                $EcommercelogstatusEntity->setStatus($status);
-                $EcommercelogstatusEntity->setCreatedAt(date('Y-m-d H:i:s'));
-                $EcommercelogstatusEntity->setOrderId($Tokenizer->decode($id));
-                $EcommercelogstatusEntity->setComment(_ecommerce("Orden facturada"));
-                $EcommercelogstatusModel->save($EcommercelogstatusEntity->getArrayCopy());
-            }
+           
+            $EcommercelogstatusEntity->setState($pedidosEntity->getState());
+            $EcommercelogstatusEntity->setStatus($pedidosEntity->getStatus());
+            $EcommercelogstatusEntity->setCreatedAt(date('Y-m-d H:i:s'));
+            $EcommercelogstatusEntity->setOrderId($Tokenizer->decode($id));
+            $EcommercelogstatusEntity->setComment(_ecommerce("Orden facturada"));
+            $EcommercelogstatusModel->save($EcommercelogstatusEntity->getArrayCopy());
+            
             $ObserverManager->dispatch('invoice_order',["id" => $Tokenizer->decode($id)]);
         }
         else
