@@ -65,31 +65,36 @@
                 "name":"total",
                 "type":"float",
                 "length":11,
-                "null":0
+                "null":0,
+                "default": 0
             },
             {
                 "name":"total_items",
                 "type":"float",
                 "length":11,
-                "null":0
+                "null":0,
+                "default": 0
             },
             {
                 "name":"subtotal",
                 "type":"float",
                 "length":11,
-                "null":0
+                "null":0,
+                "default": 0
             },
             {
                 "name":"tax",
                 "type":"float",
                 "length":11,
-                "null":0
+                "null":0,
+                "default": 0
             },
             {
                 "name":"discount",
                 "type":"float",
                 "length":11,
-                "null":0
+                "null":0,
+                "default": 0
             },
             {
                 "name":"coupon",

@@ -232,7 +232,7 @@ function addProductoCarrito($producto,$qty=1,$caracteristicas="{}")
                         
                         if($foto['principal'] == 1)
                         {
-                           if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE.'/'.$Tokenizer->decode($producto).'/'.$foto['img']))
+                            if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE.'/'.$Tokenizer->decode($producto).'/'.$foto['img']))
                             {
                                 $imagen = imageResize($MyConfigure->getUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE."/".$Tokenizer->decode($producto).'/'.$foto['img'],50,50, true);  
                             }
@@ -244,11 +244,12 @@ function addProductoCarrito($producto,$qty=1,$caracteristicas="{}")
                 $imagen = imageResize($MyConfigure->getUploadDir()."/".DIRECTORIO_IMAGENES_PRODUCTOS_ECOMMERCE."/".$Tokenizer->decode($producto).'/'.$_imagen,50,50, true);
             }
         }
+        
         $iva = DATA_STORE_CONFIG['iva'];
         $price = parsePrecio($productData['price']*$qty,$iva,$productData['incluye_iva']);
         
         
-        $link = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $productData['url_key']]);
+        $link = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $productData[getCoreConfig('catalog/product/urlkey')]]);
         $MyCarritoProductoEntity->setIdProduct($Tokenizer->decode($producto));
         $MyCarritoProductoEntity->setQty($qty);
         $MyCarritoProductoEntity->setPrice($productData['price']);

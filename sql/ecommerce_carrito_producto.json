@@ -67,37 +67,43 @@
                 "name":"custom_price",
                 "type":"float",
                 "length":11,
-                "null":0
+                "null":0,
+                "default": 0
             },
             {
                 "name":"total_custom_price",
                 "type":"float",
                 "length":11,
-                "null":0
+                "null":0,
+                "default": 0
             },
             {
                 "name":"price_discount",
                 "type":"float",
                 "length":11,
-                "null":0
+                "null":0,
+                "default": 0
             },
             {
                 "name":"total",
                 "type":"float",
                 "length":11,
-                "null":0
+                "null":0,
+                "default": 0
             },
             {
                 "name":"total_discount",
                 "type":"float",
                 "length":11,
-                "null":0
+                "null":0,
+                "default": 0
             },
             {
                 "name":"envio_requerido",
                 "type":"int",
                 "length":1,
-                "null":0
+                "null":0,
+                "default": 0
             },
             {
                 "name":"created_at",
