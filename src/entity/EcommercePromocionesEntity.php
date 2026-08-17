@@ -28,7 +28,7 @@ class EcommercePromocionesEntity
 
     public function exchangeArray($data)
     {
-        $this->id = (isset($data["id"]) ? $data["id"] : null);
+        $this->id = (isset($data["id"]) && !empty($data["id"]) ? $data["id"] : null);
         $this->titulo = (isset($data["titulo"]) ? $data["titulo"] : null);
         $this->id_promocion = (isset($data["id_promocion"]) ? $data["id_promocion"] : null);
         $this->fecha_inicio = (isset($data["fecha_inicio"]) ? $data["fecha_inicio"] : null);
