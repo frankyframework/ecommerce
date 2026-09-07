@@ -45,13 +45,13 @@ return array(
                 'type' => 'text',
                 'label' => 'Formato de direccion',
                 'validation' => array('required' => true),
-                'value' => 'Calle %s #%s, Colonia %s, municipio %s,%s C.P. %d'
+                'value' => 'Calle {calle} #numero, Colonia {colonia}, municipio {municipio},{estado} C.P. {cp}'
                 ),
                 array('path' => 'ecommerce/ventas/addressf-format',
                 'type' => 'text',
                 'label' => 'Formato de direccion',
                 'validation' => array('required' => true),
-                'value' => 'Nombre: %s, RFC: %s,Calle %s #%s, Colonia %s, municipio %s,%s C.P. %d'
+                'value' => 'Nombre: {nombre}, RFC: {rfc},Calle {calle} #{numero}, Colonia {colonia}, municipio {municipio},{estado} C.P. {cp}'
                 ),
                 array('path' => 'ecommerce/ventas/email-template-cambiostatus',
                 'type' => 'select',
